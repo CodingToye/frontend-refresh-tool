@@ -14,76 +14,93 @@ function TopicItem({
   onArrowDown,
 }: TopicItemProps) {
   return (
-    <li>
-      <button
-        onClick={onToggleOpen}
-        onKeyDown={(e) => {
-          if (e.key === "ArrowDown") onArrowDown();
-          if (e.key === "ArrowUp") onArrowUp();
-        }}
-        className={`w-full rounded-lg border  px-3 py-3 text-left transition
-          ${
-            isChecked
-              ? "border-amber-600 bg-amber-900/40 hover:bg-amber-900/60"
-              : "border-black/50 bg-slate-900 hover:bg-slate-950 hover:border-black"
-          }`}
-      >
-        <div className="flex items-center justify-between gap-4">
+    <li
+      className={`w-full rounded-lg border px-3 py-3 text-left transition ${
+        isChecked
+          ? "border-amber-600 bg-amber-900/40 hover:bg-amber-900/60"
+          : "border-black/50 bg-slate-900 hover:bg-slate-950 hover:border-black"
+      }`}
+    >
+      <div className="flex items-center gap-3">
+        <input
+          type="checkbox"
+          checked={isChecked}
+          onChange={() => onToggleChecked(subject, sectionTitle, item.name)}
+          className="h-4 w-4 shrink-0 rounded border-slate-600 bg-slate-800 accent-amber-600 cursor-pointer"
+        />
+
+        <button
+          type="button"
+          onClick={onToggleOpen}
+          onKeyDown={(e) => {
+            if (e.key === "ArrowDown") onArrowDown();
+            if (e.key === "ArrowUp") onArrowUp();
+          }}
+          className="flex flex-1 items-center justify-between gap-4 text-left group"
+        >
           <div className="flex items-center gap-3">
-            <input
-              type="checkbox"
-              checked={isChecked}
-              onChange={() => onToggleChecked(subject, sectionTitle, item.name)}
-              onClick={(e) => e.stopPropagation()}
-              className="h-4 w-4 rounded border-slate-600 bg-slate-800 accent-amber-600"
-            />
             <span className="font-medium text-slate-100">{item.name}</span>
+
             {item.interview && (
               <span className="ml-2 rounded bg-amber-500 px-2 py-0.5 text-xs text-black">
                 Potential interview question
               </span>
             )}
           </div>
-          <span className="text-slate-400">{isOpen ? "−" : "+"}</span>
-        </div>
 
-        {isOpen && (
-          <div className="mt-3 space-y-3">
-            <p className="text-xs mb-6 leading-6 text-slate-300">
-              {item.summary}
-            </p>
-            {item.code && (
-              <SyntaxHighlighter
-                language="tsx"
-                style={oneDark}
-                PreTag="pre"
-                CodeTag="code"
-                wrapLongLines={false}
-                showLineNumbers
-                customStyle={{
-                  margin: 0,
-                  padding: "16px",
-                  borderRadius: "0.75rem",
-                  background: "#020617",
+          <svg
+            className={`h-4 w-4 text-slate-400 group-hover:text-white transition-all duration-200 ${
+              isOpen ? "rotate-180 text-white" : ""
+            }`}
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fillRule="evenodd"
+              d="M5.23 7.21a.75.75 0 011.06.02L10 11.17l3.71-3.94a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </button>
+      </div>
+
+      {isOpen && (
+        <div className="mt-3 space-y-3 pl-7">
+          <p className="mb-6 text-xs leading-6 text-slate-300">
+            {item.summary}
+          </p>
+
+          {item.code && (
+            <SyntaxHighlighter
+              language="tsx"
+              style={oneDark}
+              PreTag="pre"
+              CodeTag="code"
+              wrapLongLines={false}
+              showLineNumbers
+              customStyle={{
+                margin: 0,
+                padding: "0px",
+                borderRadius: "0.75rem",
+                background: "#020617",
+                whiteSpace: "pre-wrap",
+                overflowX: "auto",
+                fontSize: "0.75rem",
+                lineHeight: "1.6",
+              }}
+              codeTagProps={{
+                style: {
                   whiteSpace: "pre-wrap",
-                  overflowX: "auto",
-                  fontSize: "0.75rem",
-                  lineHeight: "1.6",
-                }}
-                codeTagProps={{
-                  style: {
-                    whiteSpace: "pre-wrap",
-                    display: "block",
-                    fontFamily: "var(--font-mono)",
-                  },
-                }}
-              >
-                {item.code.trim()}
-              </SyntaxHighlighter>
-            )}
-          </div>
-        )}
-      </button>
+                  display: "block",
+                  fontFamily: "var(--font-mono)",
+                },
+              }}
+            >
+              {item.code.trim()}
+            </SyntaxHighlighter>
+          )}
+        </div>
+      )}
     </li>
   );
 }

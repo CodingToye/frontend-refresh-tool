@@ -9,21 +9,21 @@ export type TopicModalProps = {
   onClose: () => void;
   onToggleOpen: (topicName: string | null) => void;
   onToggleChecked: (
-    subject: string,
+    subject: SubjectKey,
     sectionTitle: string,
     topicName: string,
   ) => void;
 };
 
 export type TopicItemProps = {
-  subject?: SubjectKey;
+  subject: SubjectKey;
   item: Topic;
   sectionTitle: string;
   isOpen: boolean;
   isChecked: boolean;
   onToggleOpen: () => void;
   onToggleChecked: (
-    subject: string,
+    subject: SubjectKey,
     sectionTitle: string,
     topicName: string,
   ) => void;

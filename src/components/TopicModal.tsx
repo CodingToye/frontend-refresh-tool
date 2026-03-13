@@ -46,7 +46,7 @@ export function TopicModal({
           <h2 className="text-xl font-semibold">{section.title}</h2>
           <button
             onClick={onClose}
-            className="text-xs text-slate-300 hover:text-white"
+            className="text-xs text-slate-300 hover:text-white transition-all duration-200"
           >
             Close
           </button>
@@ -87,6 +87,7 @@ export function TopicModal({
                 key={item.name}
                 item={item}
                 sectionTitle={section.title}
+                subject={subject}
                 isOpen={isOpen}
                 isChecked={isChecked}
                 onToggleOpen={() => onToggleOpen(isOpen ? null : item.name)}

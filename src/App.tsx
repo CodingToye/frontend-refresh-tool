@@ -65,7 +65,11 @@ export default function App() {
     })
     .filter((section) => section.items.length > 0);
 
-  const toggleTopicChecked = (sectionTitle: string, topicName: string) => {
+  const toggleTopicChecked = (
+    subject: SubjectKey,
+    sectionTitle: string,
+    topicName: string,
+  ) => {
     const key = getTopicKey(subject, sectionTitle, topicName);
     setCheckedTopics((prev) => ({
       ...prev,
