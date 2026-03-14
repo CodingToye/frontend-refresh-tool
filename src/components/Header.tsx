@@ -1,13 +1,14 @@
 import type {HeaderProps} from "../types/Header.types";
-import {TopicFilterToggle} from "./TopicFilter";
 
 function Header({
   searchTerm,
   onSearchChange,
   reviewedCount,
   onResetProgress,
-  topicFilter,
-  onTopicFilterChange,
+  showInterviewOnly,
+  onShowInterviewOnlyChange,
+  showFlaggedOnly,
+  onShowFlaggedOnlyChange,
 }: HeaderProps) {
   return (
     <div className="mb-8 flex flex-row gap-4">
@@ -18,17 +19,37 @@ function Header({
         className="w-full max-w-md rounded-full bg-slate-800 pl-4 text-xxs text-white outline-none placeholder:text-slate-400 focus:bg-slate-700 shadow-inner transition-all"
       />
 
-      <TopicFilterToggle value={topicFilter} onChange={onTopicFilterChange} />
+      <div className="flex flex-wrap items-center gap-4">
+        <label className="flex items-center gap-2 text-xxs text-slate-300">
+          <input
+            type="checkbox"
+            checked={showInterviewOnly}
+            onChange={(e) => onShowInterviewOnlyChange(e.target.checked)}
+            className="h-4 w-4 accent-accent"
+          />
+          Interview topics only
+        </label>
+
+        <label className="flex items-center gap-2 text-xxs text-slate-300">
+          <input
+            type="checkbox"
+            checked={showFlaggedOnly}
+            onChange={(e) => onShowFlaggedOnlyChange(e.target.checked)}
+            className="h-4 w-4 accent-accent"
+          />
+          Flagged for review only
+        </label>
+      </div>
 
       <div className="flex items-center gap-3">
         {reviewedCount > 0 && (
-          <p className="text-xs text-amber-600">
-            {reviewedCount} topics reviewed
+          <p className="text-xs text-accent">
+            {reviewedCount} topics completed
           </p>
         )}
         <button
           onClick={onResetProgress}
-          className="rounded-lg border border-slate-600 px-3 py-2 text-xs text-slate-200 transition hover:border-slate-400 hover:text-white"
+          className="rounded-lg bg-surface px-2 py-1 text-xxs text-white transition hover:bg-surface-hover"
         >
           Reset progress
         </button>

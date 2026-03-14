@@ -6,14 +6,15 @@ import {TopicModal} from "./components/TopicModal";
 import {getTopicKey} from "./utils/topicKeys";
 import type {Section, CheckedTopics} from "./types/shared.types";
 import type {SubjectKey} from "./data/subjects";
-import {STORAGE_KEY} from "./constants/storage";
+import {STORAGE_KEY, FLAGGED_STORAGE_KEY} from "./constants/storage";
 
 export default function App() {
   const [subject, setSubject] = useState<SubjectKey>("react");
   const sections = subjectData[subject].sections;
   const [selectedSection, setSelectedSection] = useState<Section | null>(null);
   const [expandedTopic, setExpandedTopic] = useState<string | null>(null);
-  const [topicFilter, setTopicFilter] = useState<"all" | "interview">("all");
+  const [showInterviewOnly, setShowInterviewOnly] = useState(false);
+  const [showFlaggedOnly, setShowFlaggedOnly] = useState(false);
   const [checkedTopics, setCheckedTopics] = useState<CheckedTopics>(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
@@ -23,6 +24,16 @@ export default function App() {
     }
   });
   const [searchTerm, setSearchTerm] = useState("");
+  const [flaggedTopics, setFlaggedTopics] = useState<Record<string, boolean>>(
+    () => {
+      try {
+        const saved = localStorage.getItem(FLAGGED_STORAGE_KEY);
+        return saved ? JSON.parse(saved) : {};
+      } catch {
+        return {};
+      }
+    },
+  );
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -40,16 +51,25 @@ export default function App() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(checkedTopics));
   }, [checkedTopics]);
 
+  useEffect(() => {
+    localStorage.setItem(FLAGGED_STORAGE_KEY, JSON.stringify(flaggedTopics));
+  }, [flaggedTopics]);
+
   const query = searchTerm.trim().toLowerCase();
 
   const filteredSections = sections
     .map((section) => {
       let items = section.items;
 
-      if (topicFilter === "interview") {
+      if (showInterviewOnly) {
         items = items.filter((item) => item.interview);
       }
-
+      if (showFlaggedOnly) {
+        items = items.filter(
+          (item) =>
+            flaggedTopics[getTopicKey(subject, section.title, item.name)],
+        );
+      }
       if (query) {
         items = items.filter(
           (item) =>
@@ -71,7 +91,32 @@ export default function App() {
     topicName: string,
   ) => {
     const key = getTopicKey(subject, sectionTitle, topicName);
-    setCheckedTopics((prev) => ({
+
+    setCheckedTopics((prev) => {
+      const isNowChecked = !prev[key];
+
+      if (isNowChecked) {
+        setFlaggedTopics((flags) => {
+          const copy = {...flags};
+          delete copy[key];
+          return copy;
+        });
+      }
+
+      return {
+        ...prev,
+        [key]: isNowChecked,
+      };
+    });
+  };
+
+  const toggleTopicFlagged = (
+    subject: SubjectKey,
+    sectionTitle: string,
+    topicName: string,
+  ) => {
+    const key = getTopicKey(subject, sectionTitle, topicName);
+    setFlaggedTopics((prev) => ({
       ...prev,
       [key]: !prev[key],
     }));
@@ -88,6 +133,11 @@ export default function App() {
         Object.entries(prev).filter(([key]) => !key.startsWith(`${subject}::`)),
       ),
     );
+    setFlaggedTopics((prev) =>
+      Object.fromEntries(
+        Object.entries(prev).filter(([key]) => !key.startsWith(`${subject}::`)),
+      ),
+    );
   };
 
   const reviewedCount = Object.entries(checkedTopics).filter(
@@ -97,7 +147,7 @@ export default function App() {
   const subjects = Object.entries(subjectData);
 
   return (
-    <div className="min-h-screen bg-slate-900 p-10 text-white">
+    <div className="min-h-screen bg-bg p-10 text-text">
       <div className="fixed top-0 left-0 w-full mb-6 p-1 flex flex-wrap gap-1 bg-black/20">
         {subjects.map(([key, value]) => (
           <button
@@ -128,8 +178,10 @@ export default function App() {
           onSearchChange={setSearchTerm}
           reviewedCount={reviewedCount}
           onResetProgress={handleResetSubjectProgress}
-          topicFilter={topicFilter}
-          onTopicFilterChange={setTopicFilter}
+          showInterviewOnly={showInterviewOnly}
+          onShowInterviewOnlyChange={setShowInterviewOnly}
+          showFlaggedOnly={showFlaggedOnly}
+          onShowFlaggedOnlyChange={setShowFlaggedOnly}
         />
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3 xl:grid-cols-5">
@@ -144,8 +196,10 @@ export default function App() {
               <SectionCard
                 key={section.title}
                 section={section}
+                subject={subject}
                 completedTopics={completedTopics}
                 totalTopics={totalTopics}
+                flaggedTopics={flaggedTopics}
                 onOpen={() => {
                   setSelectedSection(section);
                   setExpandedTopic(null);
@@ -165,6 +219,8 @@ export default function App() {
           onClose={handleCloseModal}
           onToggleOpen={setExpandedTopic}
           onToggleChecked={toggleTopicChecked}
+          flaggedTopics={flaggedTopics}
+          onToggleFlagged={toggleTopicFlagged}
         />
       )}
     </div>

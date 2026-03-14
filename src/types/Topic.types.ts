@@ -6,9 +6,15 @@ export type TopicModalProps = {
   section: Section;
   expandedTopic: string | null;
   checkedTopics: CheckedTopics;
+  flaggedTopics: Record<string, boolean>;
   onClose: () => void;
   onToggleOpen: (topicName: string | null) => void;
   onToggleChecked: (
+    subject: SubjectKey,
+    sectionTitle: string,
+    topicName: string,
+  ) => void;
+  onToggleFlagged: (
     subject: SubjectKey,
     sectionTitle: string,
     topicName: string,
@@ -21,8 +27,14 @@ export type TopicItemProps = {
   sectionTitle: string;
   isOpen: boolean;
   isChecked: boolean;
+  isFlagged: boolean;
   onToggleOpen: () => void;
   onToggleChecked: (
+    subject: SubjectKey,
+    sectionTitle: string,
+    topicName: string,
+  ) => void;
+  onToggleFlagged: (
     subject: SubjectKey,
     sectionTitle: string,
     topicName: string,

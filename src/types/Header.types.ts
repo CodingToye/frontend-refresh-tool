@@ -3,6 +3,8 @@ export type HeaderProps = {
   onSearchChange: (value: string) => void;
   reviewedCount: number;
   onResetProgress: () => void;
-  topicFilter: "all" | "interview";
-  onTopicFilterChange: (value: "all" | "interview") => void;
+  showInterviewOnly: boolean;
+  onShowInterviewOnlyChange: (value: boolean) => void;
+  showFlaggedOnly: boolean;
+  onShowFlaggedOnlyChange: (value: boolean) => void;
 };

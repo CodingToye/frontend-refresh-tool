@@ -8,9 +8,11 @@ export function TopicModal({
   section,
   expandedTopic,
   checkedTopics,
+  flaggedTopics,
   onClose,
   onToggleOpen,
   onToggleChecked,
+  onToggleFlagged,
 }: TopicModalProps) {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -39,7 +41,7 @@ export function TopicModal({
       onClick={onClose}
     >
       <div
-        className={`w-full max-w-5xl rounded-xl bg-slate-800 p-6 transition-all duration-200 ${isVisible ? "scale-100 opacity-100" : "scale-75 opacity-0"}`}
+        className={`w-full max-w-5xl rounded-xl bg-surface p-6 transition-all duration-200 ${isVisible ? "scale-100 opacity-100" : "scale-75 opacity-0"}`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mb-4 flex items-center justify-between">
@@ -63,7 +65,7 @@ export function TopicModal({
           <div className="h-2 rounded-full bg-slate-900">
             <div
               className={`h-2 rounded-full transition-all duration-300 ${
-                isComplete ? "bg-amber-500" : "bg-amber-600"
+                isComplete ? "bg-accent" : "bg-accent"
               }`}
               style={{width: `${progress}%`}}
             />
@@ -81,6 +83,7 @@ export function TopicModal({
             const isOpen = expandedTopic === item.name;
             const topicKey = getTopicKey(subject, section.title, item.name);
             const isChecked = !!checkedTopics[topicKey];
+            const isFlagged = !!flaggedTopics[topicKey];
 
             return (
               <TopicItem
@@ -90,8 +93,10 @@ export function TopicModal({
                 subject={subject}
                 isOpen={isOpen}
                 isChecked={isChecked}
+                isFlagged={isFlagged}
                 onToggleOpen={() => onToggleOpen(isOpen ? null : item.name)}
                 onToggleChecked={onToggleChecked}
+                onToggleFlagged={onToggleFlagged}
                 onArrowDown={() => {
                   const next = section.items[index + 1];
                   if (next) onToggleOpen(next.name);

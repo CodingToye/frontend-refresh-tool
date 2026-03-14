@@ -8,8 +8,10 @@ function TopicItem({
   sectionTitle,
   isOpen,
   isChecked,
+  isFlagged,
   onToggleOpen,
   onToggleChecked,
+  onToggleFlagged,
   onArrowUp,
   onArrowDown,
 }: TopicItemProps) {
@@ -17,8 +19,8 @@ function TopicItem({
     <li
       className={`w-full rounded-lg border px-3 py-3 text-left transition ${
         isChecked
-          ? "border-amber-600 bg-amber-900/40 hover:bg-amber-900/60"
-          : "border-black/50 bg-slate-900 hover:bg-slate-950 hover:border-black"
+          ? "border-black/50 bg-card/50 hover:bg-card-hover/50 opacity-25"
+          : "border-black/50 bg-card hover:bg-card-hover hover:border-black"
       }`}
     >
       <div className="flex items-center gap-3">
@@ -26,7 +28,7 @@ function TopicItem({
           type="checkbox"
           checked={isChecked}
           onChange={() => onToggleChecked(subject, sectionTitle, item.name)}
-          className="h-4 w-4 shrink-0 rounded border-slate-600 bg-slate-800 accent-amber-600 cursor-pointer"
+          className="h-4 w-4 shrink-0 rounded border-slate-600 bg-slate-800 accent-accent cursor-pointer"
         />
 
         <button
@@ -42,7 +44,7 @@ function TopicItem({
             <span className="font-medium text-slate-100">{item.name}</span>
 
             {item.interview && (
-              <span className="ml-2 rounded bg-amber-500 px-2 py-0.5 text-xs text-black">
+              <span className="ml-2 rounded bg-accent px-2 py-0.5 text-xxs text-black">
                 Potential interview question
               </span>
             )}
@@ -61,6 +63,25 @@ function TopicItem({
               clipRule="evenodd"
             />
           </svg>
+        </button>
+
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onToggleFlagged(subject, sectionTitle, item.name);
+          }}
+          disabled={isChecked}
+          className={`transition ${isFlagged ? " text-accent" : " text-white"}`}
+        >
+          <span
+            className={`material-symbols-outlined text-lg ${
+              isFlagged
+                ? "[font-variation-settings:'FILL'_1]"
+                : "[font-variation-settings:'FILL'_0]"
+            }`}
+          >
+            flag
+          </span>
         </button>
       </div>
 
