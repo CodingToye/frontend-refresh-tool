@@ -1,38 +1,54 @@
 import {useEffect, useState} from "react";
-import Header from "./components/Header";
+
 import {subjectData} from "./data/subjects";
+import type {SubjectKey} from "./data/subjects";
+
+import Toolbar from "./components/Toolbar";
 import SectionCard from "./components/SectionCard";
 import {TopicModal} from "./components/TopicModal";
+import {MockQuestionsModal} from "./components/MockQuestionsModal";
+
 import {getTopicKey} from "./utils/topicKeys";
-import type {Section, CheckedTopics} from "./types/shared.types";
-import type {SubjectKey} from "./data/subjects";
-import {STORAGE_KEY, FLAGGED_STORAGE_KEY} from "./constants/storage";
+import {filterSections} from "./utils/filterSections";
+import {getMockQuestionTopics} from "./utils/getMockQuestionTopics";
+
+import {useTopicProgress} from "./hooks/useTopicProgress";
+
+import type {Section} from "./types/shared.types";
 
 export default function App() {
   const [subject, setSubject] = useState<SubjectKey>("react");
-  const sections = subjectData[subject].sections;
   const [selectedSection, setSelectedSection] = useState<Section | null>(null);
   const [expandedTopic, setExpandedTopic] = useState<string | null>(null);
   const [showInterviewOnly, setShowInterviewOnly] = useState(false);
   const [showFlaggedOnly, setShowFlaggedOnly] = useState(false);
-  const [checkedTopics, setCheckedTopics] = useState<CheckedTopics>(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      return saved ? JSON.parse(saved) : {};
-    } catch {
-      return {};
-    }
-  });
+  const [showMockQuestions, setShowMockQuestions] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [flaggedTopics, setFlaggedTopics] = useState<Record<string, boolean>>(
-    () => {
-      try {
-        const saved = localStorage.getItem(FLAGGED_STORAGE_KEY);
-        return saved ? JSON.parse(saved) : {};
-      } catch {
-        return {};
-      }
-    },
+
+  const sections = subjectData[subject].sections;
+  const subjects = Object.entries(subjectData);
+
+  const {
+    checkedTopics,
+    flaggedTopics,
+    toggleTopicChecked,
+    toggleTopicFlagged,
+    resetSubjectProgress,
+  } = useTopicProgress();
+
+  const filteredSections = filterSections({
+    sections,
+    subject,
+    flaggedTopics,
+    showInterviewOnly,
+    showFlaggedOnly,
+    searchTerm,
+  });
+
+  const mockQuestionTopics = getMockQuestionTopics(
+    sections,
+    subject,
+    flaggedTopics,
   );
 
   useEffect(() => {
@@ -40,6 +56,7 @@ export default function App() {
       if (e.key === "Escape") {
         setSelectedSection(null);
         setExpandedTopic(null);
+        setShowMockQuestions(false);
       }
     };
 
@@ -47,79 +64,28 @@ export default function App() {
     return () => window.removeEventListener("keydown", handler);
   }, []);
 
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(checkedTopics));
-  }, [checkedTopics]);
-
-  useEffect(() => {
-    localStorage.setItem(FLAGGED_STORAGE_KEY, JSON.stringify(flaggedTopics));
-  }, [flaggedTopics]);
-
-  const query = searchTerm.trim().toLowerCase();
-
-  const filteredSections = sections
-    .map((section) => {
-      let items = section.items;
-
-      if (showInterviewOnly) {
-        items = items.filter((item) => item.interview);
-      }
-      if (showFlaggedOnly) {
-        items = items.filter(
-          (item) =>
-            flaggedTopics[getTopicKey(subject, section.title, item.name)],
-        );
-      }
-      if (query) {
-        items = items.filter(
-          (item) =>
-            item.name.toLowerCase().includes(query) ||
-            item.summary.toLowerCase().includes(query),
-        );
-      }
-
-      return {
-        ...section,
-        items,
-      };
-    })
-    .filter((section) => section.items.length > 0);
-
-  const toggleTopicChecked = (
+  const generateAIQuestions = async (
     subject: SubjectKey,
     sectionTitle: string,
     topicName: string,
-  ) => {
-    const key = getTopicKey(subject, sectionTitle, topicName);
+  ): Promise<void> => {
+    try {
+      const mockQuestions = [
+        `What is ${topicName} and when would you use it?`,
+        `What problem does ${topicName} solve in ${sectionTitle}?`,
+        `What are common mistakes developers make with ${topicName}?`,
+        `How would you explain ${topicName} in a React and TypeScript interview?`,
+      ];
 
-    setCheckedTopics((prev) => {
-      const isNowChecked = !prev[key];
-
-      if (isNowChecked) {
-        setFlaggedTopics((flags) => {
-          const copy = {...flags};
-          delete copy[key];
-          return copy;
-        });
-      }
-
-      return {
-        ...prev,
-        [key]: isNowChecked,
-      };
-    });
-  };
-
-  const toggleTopicFlagged = (
-    subject: SubjectKey,
-    sectionTitle: string,
-    topicName: string,
-  ) => {
-    const key = getTopicKey(subject, sectionTitle, topicName);
-    setFlaggedTopics((prev) => ({
-      ...prev,
-      [key]: !prev[key],
-    }));
+      console.log("Generate mock questions:", {
+        subject,
+        sectionTitle,
+        topicName,
+        questions: mockQuestions,
+      });
+    } catch (error) {
+      console.error("Error generating AI questions:", error);
+    }
   };
 
   const handleCloseModal = () => {
@@ -127,24 +93,13 @@ export default function App() {
     setExpandedTopic(null);
   };
 
-  const handleResetSubjectProgress = () => {
-    setCheckedTopics((prev) =>
-      Object.fromEntries(
-        Object.entries(prev).filter(([key]) => !key.startsWith(`${subject}::`)),
-      ),
-    );
-    setFlaggedTopics((prev) =>
-      Object.fromEntries(
-        Object.entries(prev).filter(([key]) => !key.startsWith(`${subject}::`)),
-      ),
-    );
-  };
-
   const reviewedCount = Object.entries(checkedTopics).filter(
     ([key, value]) => key.startsWith(`${subject}::`) && value,
   ).length;
 
-  const subjects = Object.entries(subjectData);
+  const flaggedCount = Object.entries(flaggedTopics).filter(([key, value]) => {
+    return key.startsWith(`${subject}::`) && value;
+  }).length;
 
   return (
     <div className="min-h-screen bg-bg p-10 text-text">
@@ -173,17 +128,18 @@ export default function App() {
           </p>
         </header>
 
-        <Header
+        <Toolbar
           searchTerm={searchTerm}
           onSearchChange={setSearchTerm}
           reviewedCount={reviewedCount}
-          onResetProgress={handleResetSubjectProgress}
+          flaggedCount={flaggedCount}
+          onResetProgress={() => resetSubjectProgress(subject)}
           showInterviewOnly={showInterviewOnly}
           onShowInterviewOnlyChange={setShowInterviewOnly}
           showFlaggedOnly={showFlaggedOnly}
           onShowFlaggedOnlyChange={setShowFlaggedOnly}
+          onShowMockQuestions={() => setShowMockQuestions(true)}
         />
-
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3 xl:grid-cols-5">
           {filteredSections.map((section) => {
             const totalTopics = section.items.length;
@@ -210,6 +166,13 @@ export default function App() {
         </div>
       </div>
 
+      <MockQuestionsModal
+        subject={subject}
+        showMockQuestions={showMockQuestions}
+        setShowMockQuestions={setShowMockQuestions}
+        topics={mockQuestionTopics}
+      />
+
       {selectedSection && (
         <TopicModal
           subject={subject}
@@ -221,6 +184,7 @@ export default function App() {
           onToggleChecked={toggleTopicChecked}
           flaggedTopics={flaggedTopics}
           onToggleFlagged={toggleTopicFlagged}
+          onGenerateAIQuestions={generateAIQuestions}
         />
       )}
     </div>

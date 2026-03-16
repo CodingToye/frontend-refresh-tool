@@ -14,6 +14,7 @@ function TopicItem({
   onToggleFlagged,
   onArrowUp,
   onArrowDown,
+  onGenerateAIQuestions,
 }: TopicItemProps) {
   return (
     <li
@@ -87,6 +88,14 @@ function TopicItem({
 
       {isOpen && (
         <div className="mt-3 space-y-3 pl-7">
+          <button
+            onClick={() =>
+              onGenerateAIQuestions(subject, sectionTitle, item.name)
+            }
+            className="mt-2 rounded bg-amber-600 px-3 py-1 text-xs font-medium text-black hover:bg-amber-500"
+          >
+            Generate AI Questions
+          </button>
           <p className="mb-6 text-xs leading-6 text-slate-300">
             {item.summary}
           </p>

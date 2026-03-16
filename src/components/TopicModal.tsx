@@ -13,6 +13,7 @@ export function TopicModal({
   onToggleOpen,
   onToggleChecked,
   onToggleFlagged,
+  onGenerateAIQuestions,
 }: TopicModalProps) {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -105,6 +106,7 @@ export function TopicModal({
                   const prev = section.items[index - 1];
                   if (prev) onToggleOpen(prev.name);
                 }}
+                onGenerateAIQuestions={onGenerateAIQuestions}
               />
             );
           })}

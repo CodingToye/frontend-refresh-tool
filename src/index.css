@@ -13,11 +13,12 @@
 @theme {
   --color-bg: #0b132b;
   --color-surface: #1c2541;
-  --color-surface-hover: #2b3c64;
+  --color-surface-light: #2b3c64;
   --color-card: #3a506b;
   --color-card-hover: #4a6785;
 
   --color-accent: #5bc0be;
+  --color-accent-hover: #288280;
   --color-text: #e0e1dd;
   --font-heading: Urbanist, system-ui, sans-serif;
   --font-sans: Inter, system-ui, sans-serif;
@@ -25,6 +26,7 @@
     "JetBrains Mono", SF Mono, SF Mono Regular, Consolas, "Liberation Mono",
     Menlo, Courier, monospace;
   --text-xxs: 13px;
+  --default-transition-duration: 500ms;
 }
 
 :root {
@@ -121,5 +123,5 @@ code {
 }
 
 .material-symbols-outlined {
-  font-size: inherit;
+  font-size: 18px;
 }

@@ -1,6 +1,12 @@
 import type {Section, Topic, CheckedTopics} from "./shared.types";
 import type {SubjectKey} from "../data/subjects";
 
+export type GenerateAIQuestionsHandler = (
+  subject: SubjectKey,
+  sectionTitle: string,
+  topicName: string,
+) => Promise<void>;
+
 export type TopicModalProps = {
   subject: SubjectKey;
   section: Section;
@@ -19,6 +25,7 @@ export type TopicModalProps = {
     sectionTitle: string,
     topicName: string,
   ) => void;
+  onGenerateAIQuestions: GenerateAIQuestionsHandler;
 };
 
 export type TopicItemProps = {
@@ -41,4 +48,5 @@ export type TopicItemProps = {
   ) => void;
   onArrowUp: () => void;
   onArrowDown: () => void;
+  onGenerateAIQuestions: GenerateAIQuestionsHandler;
 };
