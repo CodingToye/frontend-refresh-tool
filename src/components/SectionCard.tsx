@@ -28,8 +28,8 @@ function SectionCard({
 
   ${
     isComplete
-      ? "border-white/10 bg-surface/50 hover:bg-surface-hover/50 opacity-30"
-      : "border-white/10 bg-surface hover:bg-surface-hover"
+      ? "border-white/10 bg-surface/50 hover:bg-surface-light/50 opacity-30"
+      : "border-white/10 bg-surface hover:bg-surface-light"
   }`}
     >
       <div>
