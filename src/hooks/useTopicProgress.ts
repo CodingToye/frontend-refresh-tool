@@ -1,8 +1,12 @@
 import {useLocalStorageState} from "./useLocalStorageState";
 import {getTopicKey} from "../utils/topicKeys";
-import type {CheckedTopics} from "../types/shared.types";
+import type {CheckedTopics} from "../types/Topic.types";
 import type {SubjectKey} from "../data/subjects";
-import {STORAGE_KEY, FLAGGED_STORAGE_KEY} from "../constants/storage";
+import {
+  STORAGE_KEY,
+  FLAGGED_STORAGE_KEY,
+  MOCK_SELECTED_STORAGE_KEY,
+} from "../constants/storage";
 
 export function useTopicProgress() {
   const [checkedTopics, setCheckedTopics] = useLocalStorageState<CheckedTopics>(
@@ -12,6 +16,10 @@ export function useTopicProgress() {
   const [flaggedTopics, setFlaggedTopics] = useLocalStorageState<
     Record<string, boolean>
   >(FLAGGED_STORAGE_KEY, {});
+
+  const [mockSelectedTopics, setMockSelectedTopics] = useLocalStorageState<
+    Record<string, boolean>
+  >(MOCK_SELECTED_STORAGE_KEY, {});
 
   const toggleTopicChecked = (
     subject: SubjectKey,
@@ -50,6 +58,18 @@ export function useTopicProgress() {
     }));
   };
 
+  const toggleMockSelected = (
+    subject: SubjectKey,
+    sectionTitle: string,
+    topicName: string,
+  ) => {
+    const key = getTopicKey(subject, sectionTitle, topicName);
+    setMockSelectedTopics((prev) => ({
+      ...prev,
+      [key]: !prev[key],
+    }));
+  };
+
   const resetSubjectProgress = (subject: SubjectKey) => {
     setCheckedTopics((prev) =>
       Object.fromEntries(
@@ -61,13 +81,20 @@ export function useTopicProgress() {
         Object.entries(prev).filter(([key]) => !key.startsWith(`${subject}::`)),
       ),
     );
+    setMockSelectedTopics((prev) =>
+      Object.fromEntries(
+        Object.entries(prev).filter(([key]) => !key.startsWith(`${subject}::`)),
+      ),
+    );
   };
 
   return {
     checkedTopics,
     flaggedTopics,
+    mockSelectedTopics,
     toggleTopicChecked,
     toggleTopicFlagged,
+    toggleMockSelected,
     resetSubjectProgress,
   };
 }

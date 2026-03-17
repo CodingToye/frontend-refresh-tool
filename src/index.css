@@ -16,16 +16,19 @@
   --color-surface-light: #2b3c64;
   --color-card: #3a506b;
   --color-card-hover: #4a6785;
-
+  --color-card-dark: #2c435e;
   --color-accent: #5bc0be;
   --color-accent-hover: #288280;
   --color-text: #e0e1dd;
+  --color-note: #ff9f1c;
+  --color-note-text: #1c2541;
+  --color-note-dark: #6b5d06;
   --font-heading: Urbanist, system-ui, sans-serif;
   --font-sans: Inter, system-ui, sans-serif;
   --font-mono:
     "JetBrains Mono", SF Mono, SF Mono Regular, Consolas, "Liberation Mono",
     Menlo, Courier, monospace;
-  --text-xxs: 13px;
+  --text-xxs: 12px;
   --default-transition-duration: 500ms;
 }
 

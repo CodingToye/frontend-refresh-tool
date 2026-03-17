@@ -9,10 +9,12 @@ export function TopicModal({
   expandedTopic,
   checkedTopics,
   flaggedTopics,
+  mockSelectedTopics,
   onClose,
   onToggleOpen,
   onToggleChecked,
   onToggleFlagged,
+  onToggleMockSelected,
   onGenerateAIQuestions,
 }: TopicModalProps) {
   const [isVisible, setIsVisible] = useState(false);
@@ -85,6 +87,7 @@ export function TopicModal({
             const topicKey = getTopicKey(subject, section.title, item.name);
             const isChecked = !!checkedTopics[topicKey];
             const isFlagged = !!flaggedTopics[topicKey];
+            const key = getTopicKey(subject, section.title, item.name);
 
             return (
               <TopicItem
@@ -95,9 +98,11 @@ export function TopicModal({
                 isOpen={isOpen}
                 isChecked={isChecked}
                 isFlagged={isFlagged}
+                isMockSelected={!!mockSelectedTopics[key]}
                 onToggleOpen={() => onToggleOpen(isOpen ? null : item.name)}
                 onToggleChecked={onToggleChecked}
                 onToggleFlagged={onToggleFlagged}
+                onToggleMockSelected={onToggleMockSelected}
                 onArrowDown={() => {
                   const next = section.items[index + 1];
                   if (next) onToggleOpen(next.name);

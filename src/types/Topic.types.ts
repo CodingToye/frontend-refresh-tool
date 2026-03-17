@@ -1,11 +1,16 @@
-import type {Section, Topic, CheckedTopics} from "./shared.types";
+import type {Section} from "./Section.types";
 import type {SubjectKey} from "../data/subjects";
+import type {MockQuestion} from "./MockQuestions.types";
 
-export type GenerateAIQuestionsHandler = (
-  subject: SubjectKey,
-  sectionTitle: string,
-  topicName: string,
-) => Promise<void>;
+export type Topic = {
+  name: string;
+  summary: string;
+  code?: string;
+  interview?: boolean;
+  mockQuestions?: MockQuestion[];
+};
+
+export type CheckedTopics = Record<string, boolean>;
 
 export type TopicModalProps = {
   subject: SubjectKey;
@@ -13,6 +18,7 @@ export type TopicModalProps = {
   expandedTopic: string | null;
   checkedTopics: CheckedTopics;
   flaggedTopics: Record<string, boolean>;
+  mockSelectedTopics: Record<string, boolean>;
   onClose: () => void;
   onToggleOpen: (topicName: string | null) => void;
   onToggleChecked: (
@@ -25,7 +31,11 @@ export type TopicModalProps = {
     sectionTitle: string,
     topicName: string,
   ) => void;
-  onGenerateAIQuestions: GenerateAIQuestionsHandler;
+  onToggleMockSelected: (
+    subject: SubjectKey,
+    sectionTitle: string,
+    topicName: string,
+  ) => void;
 };
 
 export type TopicItemProps = {
@@ -35,6 +45,7 @@ export type TopicItemProps = {
   isOpen: boolean;
   isChecked: boolean;
   isFlagged: boolean;
+  isMockSelected: boolean;
   onToggleOpen: () => void;
   onToggleChecked: (
     subject: SubjectKey,
@@ -46,7 +57,11 @@ export type TopicItemProps = {
     sectionTitle: string,
     topicName: string,
   ) => void;
+  onToggleMockSelected: (
+    subject: SubjectKey,
+    sectionTitle: string,
+    topicName: string,
+  ) => void;
   onArrowUp: () => void;
   onArrowDown: () => void;
-  onGenerateAIQuestions: GenerateAIQuestionsHandler;
 };

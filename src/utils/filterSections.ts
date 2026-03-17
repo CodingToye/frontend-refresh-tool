@@ -1,4 +1,4 @@
-import type {Section} from "../types/shared.types";
+import type {Section} from "../types/Section.types";
 import type {SubjectKey} from "../data/subjects";
 import {getTopicKey} from "./topicKeys";
 

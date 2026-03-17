@@ -10,11 +10,11 @@ import {MockQuestionsModal} from "./components/MockQuestionsModal";
 
 import {getTopicKey} from "./utils/topicKeys";
 import {filterSections} from "./utils/filterSections";
-import {getMockQuestionTopics} from "./utils/getMockQuestionTopics";
+import {getMockSessionQuestions} from "./utils/getMockSessionQuestions";
 
 import {useTopicProgress} from "./hooks/useTopicProgress";
 
-import type {Section} from "./types/shared.types";
+import type {Section} from "./types/Section.types";
 
 export default function App() {
   const [subject, setSubject] = useState<SubjectKey>("react");
@@ -31,8 +31,10 @@ export default function App() {
   const {
     checkedTopics,
     flaggedTopics,
+    mockSelectedTopics,
     toggleTopicChecked,
     toggleTopicFlagged,
+    toggleMockSelected,
     resetSubjectProgress,
   } = useTopicProgress();
 
@@ -45,10 +47,9 @@ export default function App() {
     searchTerm,
   });
 
-  const mockQuestionTopics = getMockQuestionTopics(
-    sections,
+  const mockSessionQuestions = getMockSessionQuestions(
     subject,
-    flaggedTopics,
+    mockSelectedTopics,
   );
 
   useEffect(() => {
@@ -64,30 +65,6 @@ export default function App() {
     return () => window.removeEventListener("keydown", handler);
   }, []);
 
-  const generateAIQuestions = async (
-    subject: SubjectKey,
-    sectionTitle: string,
-    topicName: string,
-  ): Promise<void> => {
-    try {
-      const mockQuestions = [
-        `What is ${topicName} and when would you use it?`,
-        `What problem does ${topicName} solve in ${sectionTitle}?`,
-        `What are common mistakes developers make with ${topicName}?`,
-        `How would you explain ${topicName} in a React and TypeScript interview?`,
-      ];
-
-      console.log("Generate mock questions:", {
-        subject,
-        sectionTitle,
-        topicName,
-        questions: mockQuestions,
-      });
-    } catch (error) {
-      console.error("Error generating AI questions:", error);
-    }
-  };
-
   const handleCloseModal = () => {
     setSelectedSection(null);
     setExpandedTopic(null);
@@ -101,9 +78,15 @@ export default function App() {
     return key.startsWith(`${subject}::`) && value;
   }).length;
 
+  const mockQuestionsCount = Object.entries(mockSelectedTopics).filter(
+    ([key, value]) => {
+      return key.startsWith(`${subject}::`) && value;
+    },
+  ).length;
+
   return (
     <div className="min-h-screen bg-bg p-10 text-text">
-      <div className="fixed top-0 left-0 w-full mb-6 p-1 flex flex-wrap gap-1 bg-black/20">
+      <div className="fixed top-0 left-0 w-full mb-6 p-1 flex flex-wrap gap-1 bg-black/20 justify-center">
         {subjects.map(([key, value]) => (
           <button
             key={key}
@@ -133,6 +116,7 @@ export default function App() {
           onSearchChange={setSearchTerm}
           reviewedCount={reviewedCount}
           flaggedCount={flaggedCount}
+          mockQuestionsCount={mockQuestionsCount}
           onResetProgress={() => resetSubjectProgress(subject)}
           showInterviewOnly={showInterviewOnly}
           onShowInterviewOnlyChange={setShowInterviewOnly}
@@ -140,7 +124,7 @@ export default function App() {
           onShowFlaggedOnlyChange={setShowFlaggedOnly}
           onShowMockQuestions={() => setShowMockQuestions(true)}
         />
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3 xl:grid-cols-5">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3 xl:grid-cols-4">
           {filteredSections.map((section) => {
             const totalTopics = section.items.length;
             const completedTopics = section.items.filter(
@@ -156,6 +140,7 @@ export default function App() {
                 completedTopics={completedTopics}
                 totalTopics={totalTopics}
                 flaggedTopics={flaggedTopics}
+                mockQuestions={mockSelectedTopics}
                 onOpen={() => {
                   setSelectedSection(section);
                   setExpandedTopic(null);
@@ -170,7 +155,7 @@ export default function App() {
         subject={subject}
         showMockQuestions={showMockQuestions}
         setShowMockQuestions={setShowMockQuestions}
-        topics={mockQuestionTopics}
+        questions={mockSessionQuestions}
       />
 
       {selectedSection && (
@@ -183,8 +168,9 @@ export default function App() {
           onToggleOpen={setExpandedTopic}
           onToggleChecked={toggleTopicChecked}
           flaggedTopics={flaggedTopics}
+          mockSelectedTopics={mockSelectedTopics}
+          onToggleMockSelected={toggleMockSelected}
           onToggleFlagged={toggleTopicFlagged}
-          onGenerateAIQuestions={generateAIQuestions}
         />
       )}
     </div>

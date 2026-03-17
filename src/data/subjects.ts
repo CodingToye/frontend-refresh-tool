@@ -8,7 +8,7 @@ import {sections as testingSections} from "./testingSections";
 import {sections as accessibilitySections} from "./accessibilitySections";
 import {sections as browserAPIsSections} from "./browserAPIsSections";
 import {sections as webPerformanceSections} from "./webperformanceSections";
-import type {Section} from "../types/shared.types";
+import type {Section} from "../types/Section.types";
 
 export const subjectData = {
   react: {

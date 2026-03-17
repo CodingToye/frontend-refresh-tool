@@ -1,4 +1,4 @@
-import type {Section} from "../types/shared.types";
+import type {Section} from "../types/Section.types";
 
 export const sections: Section[] = [
   {
@@ -78,6 +78,21 @@ export const sections: Section[] = [
         summary:
           "Runs side effects after render, such as subscriptions, timers, or syncing external data.",
         interview: true,
+        mockQuestions: [
+          {
+            id: "useeffect-1",
+            question: "What is useEffect and when would you use it?",
+            answer:
+              "useEffect is used to handle side effects in React function components, such as data fetching, subscriptions, timers, or synchronising with external systems.",
+          },
+          {
+            id: "useeffect-2",
+            question:
+              "What are common mistakes developers make with useEffect?",
+            answer:
+              "Common mistakes include missing dependencies, adding unstable dependencies unnecessarily, causing infinite re-renders, and using useEffect for logic that should happen during rendering instead.",
+          },
+        ],
         code: `useEffect(() => {
   document.title = \`Count: \${count}\`;
 }, [count]);`,
@@ -102,6 +117,14 @@ return <div>{theme}</div>;`,
         summary:
           "Memoise computed values or functions when referential stability matters.",
         interview: true,
+        mockQuestions: [
+          {
+            id: "usememo-1",
+            question: "What problem does useMemo solve?",
+            answer:
+              "useMemo helps avoid recomputing expensive derived values on every render by memoising the result until its dependencies change.",
+          },
+        ],
         code: `const total = useMemo(() => items.reduce(sumFn, 0), [items]);
 const onClick = useCallback(() => save(id), [id]);`,
       },
