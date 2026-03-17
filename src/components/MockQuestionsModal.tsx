@@ -79,7 +79,7 @@ export function MockQuestionsModal({
         onClick={() => setShowMockQuestions(false)}
       >
         <div
-          className="w-full max-w-2xl rounded-2xl bg-slate-800 p-6"
+          className="w-full max-w-2xl rounded-2xl bg-surface p-6"
           onClick={(e) => e.stopPropagation()}
         >
           <div className="mb-4 flex items-center justify-between">
@@ -95,7 +95,7 @@ export function MockQuestionsModal({
           </div>
 
           <div className="space-y-3">
-            <p className="text-lg font-medium text-white">
+            <p className="text-lg font-medium text-accent">
               Score: {totalScore} / {maxScore}
             </p>
             <p className="text-sm text-slate-300">
@@ -111,7 +111,7 @@ export function MockQuestionsModal({
                 setScores({});
                 setAnswers({});
               }}
-              className="rounded-xl bg-note px-4 py-2 text-xs font-medium text-black transition hover:bg-amber-600"
+              className="rounded-xl bg-note px-4 py-2 text-xs font-medium text-black transition shadow-lg shadow-white/10 hover:bg-amber-600"
             >
               Restart Session
             </button>
@@ -163,7 +163,7 @@ export function MockQuestionsModal({
       onClick={() => setShowMockQuestions(false)}
     >
       <div
-        className="w-full max-w-3xl rounded-2xl bg-slate-800 p-6"
+        className="w-full max-w-3xl rounded-2xl bg-surface-light p-6"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mb-4 flex flex-col">
@@ -192,7 +192,7 @@ export function MockQuestionsModal({
           </span>
         </div>
 
-        <div className="mb-6 rounded-xl border border-white/10 bg-slate-900/40 p-4">
+        <div className="mb-6 rounded-xl border border-black/10 bg-surface p-4">
           <p className="text-base text-white">{currentQuestion.question}</p>
         </div>
 
@@ -205,7 +205,7 @@ export function MockQuestionsModal({
             onChange={(e) => setCurrentAnswer(e.target.value)}
             rows={8}
             disabled={revealed}
-            className="w-full rounded-xl bg-slate-900 px-4 py-3 text-sm text-white outline-none placeholder:text-slate-500"
+            className="w-full rounded-xl bg-surface px-4 py-3 text-xs text-white outline-none placeholder:text-slate-400 shadow-inner transition focus:bg-black/50 inset-shadow-sm inset-shadow-black/20"
             placeholder="Type your answer here..."
           />
         </div>
@@ -221,37 +221,37 @@ export function MockQuestionsModal({
           </div>
         ) : (
           <div className="space-y-4">
-            <div className="rounded-xl border border-white/10 bg-slate-900/40 p-4">
-              <h3 className="mb-2 text-sm font-medium text-amber-400">
+            <div className="rounded-xl border border-black/10 bg-surface p-4">
+              <h3 className="mb-2 text-sm font-medium text-accent">
                 Suggested answer
               </h3>
               <p className="text-sm text-slate-200">{currentQuestion.answer}</p>
             </div>
 
             <div>
-              <p className="mb-2 text-sm text-slate-300">Score your answer</p>
-              <div className="flex flex-wrap gap-2">
+              <p className="mb-4 text-sm text-slate-300">Score your answer</p>
+              <div className="flex flex-wrap justify-center gap-2">
                 <button
                   onClick={() => handleScore(0)}
-                  className="rounded-xl bg-slate-700 px-4 py-2 text-sm text-white transition hover:bg-slate-600"
+                  className="rounded-xl bg-danger px-4 py-1 text-xs text-white shadow-lg shadow-white/10 transition hover:bg-danger-dark"
                 >
                   0 - Missed
                 </button>
                 <button
                   onClick={() => handleScore(1)}
-                  className="rounded-xl bg-slate-700 px-4 py-2 text-sm text-white transition hover:bg-slate-600"
+                  className="rounded-xl bg-warning px-4 py-1 text-xs text-white shadow-lg shadow-white/10 transition hover:bg-warning-dark"
                 >
                   1 - Weak
                 </button>
                 <button
                   onClick={() => handleScore(2)}
-                  className="rounded-xl bg-slate-700 px-4 py-2 text-sm text-white transition hover:bg-slate-600"
+                  className="rounded-xl bg-info px-4 py-1 text-xs text-white shadow-lg shadow-white/10 transition hover:bg-info-dark"
                 >
                   2 - Decent
                 </button>
                 <button
                   onClick={() => handleScore(3)}
-                  className="rounded-xl bg-slate-700 px-4 py-2 text-sm text-white transition hover:bg-slate-600"
+                  className="rounded-xl bg-success px-4 py-1 text-xs text-white shadow-lg shadow-white/10 transition hover:bg-success-dark"
                 >
                   3 - Strong
                 </button>

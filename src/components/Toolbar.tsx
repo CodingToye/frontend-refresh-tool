@@ -22,12 +22,12 @@ function Toolbar({
               value={searchTerm}
               onChange={(e) => onSearchChange(e.target.value)}
               placeholder="Search topics or summaries"
-              className="w-full rounded-xl bg-slate-800 px-4 py-3 text-xs text-white outline-none placeholder:text-slate-400 shadow-inner transition focus:bg-black/50"
+              className="w-full rounded-xl bg-slate-800 px-4 py-3 text-xs text-white outline-none placeholder:text-slate-400 shadow-inner transition focus:bg-black/50 inset-shadow-sm inset-shadow-black/20"
             />
           </div>
 
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between xl:justify-end">
-            <div className="flex  flex-wrap items-center gap-4 rounded-xl bg-black/20 px-4 py-3">
+            <div className="flex  flex-wrap items-center gap-4 rounded-xl bg-black/20 px-4 py-3 inset-shadow-sm inset-shadow-black/20">
               <label className="flex items-center gap-2 text-xs text-slate-300">
                 <input
                   type="checkbox"
@@ -52,7 +52,7 @@ function Toolbar({
             <div className="flex flex-row gap-2">
               <button
                 onClick={onShowMockQuestions}
-                className="rounded-xl bg-note px-4 py-2 text-xs font-medium text-black transition hover:bg-amber-600"
+                className="rounded-xl bg-note px-4 py-2 text-xs font-medium text-black transition hover:bg-amber-600 shadow-lg shadow-white/10"
               >
                 <span className="material-symbols-outlined align-middle mr-2">
                   quick_reference
@@ -62,7 +62,7 @@ function Toolbar({
 
               <button
                 onClick={onResetProgress}
-                className="rounded-xl bg-accent px-4 py-2 text-xs text-black transition hover:bg-accent-hover"
+                className="rounded-xl bg-accent px-4 py-2 text-xs text-black transition hover:bg-accent-hover shadow-lg shadow-white/10"
               >
                 <span className="material-symbols-outlined align-middle mr-2">
                   refresh

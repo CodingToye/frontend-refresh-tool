@@ -33,7 +33,7 @@ function SectionCard({
 
   ${
     isComplete
-      ? "border-white/10 bg-surface/50 hover:bg-surface-light/50 opacity-30"
+      ? "border-none bg-surface/50 hover:bg-surface-light/50 opacity-30 inset-shadow-sm inset-shadow-black"
       : "border-white/10 bg-surface hover:bg-surface-light"
   }`}
     >
@@ -72,14 +72,14 @@ function SectionCard({
         )}
       </div>
       <div className="bg-black/30 border border-black/20 py-2 px-3 rounded-lg">
-        <div className="flex gap-2 items-center text-xs text-slate-400">
+        <div className="flex gap-2 items-center text-xxs text-text/50">
           <span>
             {completedTopics}/{totalTopics}
           </span>
           <div className="flex-1">
             <div className="h-2 rounded-full bg-slate-900">
               <div
-                className={`h-2 rounded-full transition-all duration-300 ${
+                className={`h-2 rounded-full transition-all duration-300 shadow-lg shadow-accent/50 ${
                   isComplete ? "bg-accent" : "bg-accent"
                 }`}
                 style={{width: `${progress}%`}}

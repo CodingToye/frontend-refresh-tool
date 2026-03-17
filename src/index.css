@@ -23,6 +23,14 @@
   --color-note: #ff9f1c;
   --color-note-text: #1c2541;
   --color-note-dark: #6b5d06;
+  --color-danger: #dc4c64;
+  --color-warning: #e4a11b;
+  --color-info: #54b4d3;
+  --color-success: #14a44d;
+  --color-danger-dark: #9c1f34;
+  --color-warning-dark: #9e6e0e;
+  --color-info-dark: #27748c;
+  --color-success-dark: #085e2a;
   --font-heading: Urbanist, system-ui, sans-serif;
   --font-sans: Inter, system-ui, sans-serif;
   --font-mono:
