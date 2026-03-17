@@ -15,7 +15,6 @@ export function TopicModal({
   onToggleChecked,
   onToggleFlagged,
   onToggleMockSelected,
-  onGenerateAIQuestions,
 }: TopicModalProps) {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -67,7 +66,7 @@ export function TopicModal({
 
           <div className="h-2 rounded-full bg-slate-900">
             <div
-              className={`h-2 rounded-full transition-all duration-300 ${
+              className={`h-2 rounded-full transition-all duration-300 shadow-lg shadow-accent/50 ${
                 isComplete ? "bg-accent" : "bg-accent"
               }`}
               style={{width: `${progress}%`}}
@@ -111,7 +110,6 @@ export function TopicModal({
                   const prev = section.items[index - 1];
                   if (prev) onToggleOpen(prev.name);
                 }}
-                onGenerateAIQuestions={onGenerateAIQuestions}
               />
             );
           })}

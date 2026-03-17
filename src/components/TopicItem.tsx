@@ -1,5 +1,6 @@
 import {Prism as SyntaxHighlighter} from "react-syntax-highlighter";
-import {oneDark} from "react-syntax-highlighter/dist/esm/styles/prism";
+import {nord} from "react-syntax-highlighter/dist/esm/styles/prism";
+import {subjectData} from "../data/subjects";
 import type {TopicItemProps} from "../types/Topic.types";
 
 function TopicItem({
@@ -19,9 +20,9 @@ function TopicItem({
 }: TopicItemProps) {
   return (
     <li
-      className={`w-full rounded-lg border px-3 py-3 text-left transition ${
+      className={`w-full rounded-lg border px-3 py-3 text-left transition inset-shadow-sm inset-shadow-accent/20 ${
         isChecked
-          ? "border-black/50 bg-card/50 hover:bg-card-hover/50 opacity-25"
+          ? "border-black/50 bg-card/50 hover:bg-card-hover/50 opacity-25 inset-shadow-sm inset-shadow-black"
           : "border-black/50 bg-card hover:bg-card-hover hover:border-black"
       } ${isOpen ? "bg-card-hover" : ""}`}
     >
@@ -47,7 +48,7 @@ function TopicItem({
               <span className="font-medium text-slate-100">{item.name}</span>
 
               {item.interview && (
-                <span className="ml-2 rounded bg-accent px-2 py-0.5 text-xxs text-black">
+                <span className="ml-2 rounded bg-accent px-2 py-0.5 text-xxs text-black shadow-lg shadow-white/10">
                   Potential interview question
                 </span>
               )}
@@ -55,7 +56,7 @@ function TopicItem({
 
             <div className="flex gap-2 justify-end">
               {isMockSelected && (
-                <span className="flex items-center bg-note border border-black px-2 pl-3 text-xxs text-black rounded">
+                <span className="flex items-center bg-note border border-black/70 px-2 pl-3 text-xxs text-black/70 rounded shadow-lg shadow-white/10">
                   Mock interview question{" "}
                   <span
                     className="material-symbols-outlined pl-1"
@@ -69,7 +70,7 @@ function TopicItem({
                 </span>
               )}
               {isFlagged && (
-                <span className="flex items-center bg-note border border-black px-2 pl-3 text-xxs text-black rounded">
+                <span className="flex items-center bg-note border border-black/70 px-2 pl-3 text-xxs text-black/70 rounded shadow-lg shadow-white/10">
                   Flagged for review
                   <span
                     className="material-symbols-outlined pl-1"
@@ -108,33 +109,40 @@ function TopicItem({
           </p>
 
           {item.code && (
-            <SyntaxHighlighter
-              language="tsx"
-              style={oneDark}
-              PreTag="pre"
-              CodeTag="code"
-              wrapLongLines={false}
-              showLineNumbers
-              customStyle={{
-                margin: 0,
-                padding: "0px",
-                borderRadius: "0.75rem",
-                background: "#020617",
-                whiteSpace: "pre-wrap",
-                overflowX: "auto",
-                fontSize: "0.75rem",
-                lineHeight: "1.6",
-              }}
-              codeTagProps={{
-                style: {
+            <div className="relative">
+              <span className="absolute top-0 right-10 text-xxs bg-note text-black px-2 uppercase shadow-lg shadow-note/30 rounded-b ">
+                {subjectData[subject].fileType}
+              </span>
+              <SyntaxHighlighter
+                language={subjectData[subject].fileType}
+                style={nord}
+                PreTag="pre"
+                CodeTag="code"
+                wrapLongLines={false}
+                showLineNumbers
+                customStyle={{
+                  margin: 0,
+                  padding: "0px",
+                  borderRadius: "0.75rem",
+                  background: "#020617",
                   whiteSpace: "pre-wrap",
-                  display: "block",
-                  fontFamily: "var(--font-mono)",
-                },
-              }}
-            >
-              {item.code.trim()}
-            </SyntaxHighlighter>
+                  overflowX: "auto",
+                  fontSize: "0.75rem",
+                  lineHeight: "1.6",
+                }}
+                codeTagProps={{
+                  style: {
+                    whiteSpace: "pre-wrap",
+                    display: "block",
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "13px",
+                    padding: "16px",
+                  },
+                }}
+              >
+                {item.code.trim()}
+              </SyntaxHighlighter>
+            </div>
           )}
 
           <div className="flex gap-4 mt-4">
@@ -144,7 +152,7 @@ function TopicItem({
                 onToggleMockSelected(subject, sectionTitle, item.name);
               }}
               disabled={isChecked}
-              className={`rounded bg-surface px-2 py-0.5 text-xxs font-medium text-white transition  ${isMockSelected ? "opacity-100" : "opacity-20"}`}
+              className={`rounded bg-surface px-2 py-0.5 text-xxs font-medium text-white transition  ${isMockSelected ? "opacity-100 inset-shadow-sm inset-shadow-black shadow-lg shadow-white/10" : "opacity-20"}`}
             >
               Mock interview question
             </button>
@@ -154,7 +162,7 @@ function TopicItem({
                 onToggleFlagged(subject, sectionTitle, item.name);
               }}
               disabled={isChecked}
-              className={`rounded bg-surface px-2 py-0.5 text-xxs font-medium text-white transition  ${isFlagged ? "opacity-100" : "opacity-20"}`}
+              className={`rounded bg-surface px-2 py-0.5 text-xxs font-medium text-white transition  ${isMockSelected ? "opacity-100 inset-shadow-sm inset-shadow-black shadow-lg shadow-white/10" : "opacity-20"}`}
             >
               Flag for review
             </button>
