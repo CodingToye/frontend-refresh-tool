@@ -3,6 +3,7 @@ export type ToolbarProps = {
   onSearchChange: (value: string) => void;
   reviewedCount: number;
   flaggedCount: number;
+  mockQuestionsCount: number;
   onResetProgress: () => void;
   showInterviewOnly: boolean;
   onShowInterviewOnlyChange: (value: boolean) => void;

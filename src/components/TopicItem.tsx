@@ -9,12 +9,13 @@ function TopicItem({
   isOpen,
   isChecked,
   isFlagged,
+  isMockSelected,
   onToggleOpen,
   onToggleChecked,
   onToggleFlagged,
+  onToggleMockSelected,
   onArrowUp,
   onArrowDown,
-  onGenerateAIQuestions,
 }: TopicItemProps) {
   return (
     <li
@@ -22,7 +23,7 @@ function TopicItem({
         isChecked
           ? "border-black/50 bg-card/50 hover:bg-card-hover/50 opacity-25"
           : "border-black/50 bg-card hover:bg-card-hover hover:border-black"
-      }`}
+      } ${isOpen ? "bg-card-hover" : ""}`}
     >
       <div className="flex items-center gap-3">
         <input
@@ -41,14 +42,47 @@ function TopicItem({
           }}
           className="flex flex-1 items-center justify-between gap-4 text-left group"
         >
-          <div className="flex items-center gap-3">
-            <span className="font-medium text-slate-100">{item.name}</span>
+          <div className="flex items-center gap-3 w-full justify-between">
+            <div>
+              <span className="font-medium text-slate-100">{item.name}</span>
 
-            {item.interview && (
-              <span className="ml-2 rounded bg-accent px-2 py-0.5 text-xxs text-black">
-                Potential interview question
-              </span>
-            )}
+              {item.interview && (
+                <span className="ml-2 rounded bg-accent px-2 py-0.5 text-xxs text-black">
+                  Potential interview question
+                </span>
+              )}
+            </div>
+
+            <div className="flex gap-2 justify-end">
+              {isMockSelected && (
+                <span className="flex items-center bg-note border border-black px-2 pl-3 text-xxs text-black rounded">
+                  Mock interview question{" "}
+                  <span
+                    className="material-symbols-outlined pl-1"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onToggleMockSelected(subject, sectionTitle, item.name);
+                    }}
+                  >
+                    close
+                  </span>
+                </span>
+              )}
+              {isFlagged && (
+                <span className="flex items-center bg-note border border-black px-2 pl-3 text-xxs text-black rounded">
+                  Flagged for review
+                  <span
+                    className="material-symbols-outlined pl-1"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onToggleFlagged(subject, sectionTitle, item.name);
+                    }}
+                  >
+                    close
+                  </span>
+                </span>
+              )}
+            </div>
           </div>
 
           <svg
@@ -65,37 +99,10 @@ function TopicItem({
             />
           </svg>
         </button>
-
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            onToggleFlagged(subject, sectionTitle, item.name);
-          }}
-          disabled={isChecked}
-          className={`transition ${isFlagged ? " text-accent" : " text-white"}`}
-        >
-          <span
-            className={`material-symbols-outlined text-lg ${
-              isFlagged
-                ? "[font-variation-settings:'FILL'_1]"
-                : "[font-variation-settings:'FILL'_0]"
-            }`}
-          >
-            flag
-          </span>
-        </button>
       </div>
 
       {isOpen && (
         <div className="mt-3 space-y-3 pl-7">
-          <button
-            onClick={() =>
-              onGenerateAIQuestions(subject, sectionTitle, item.name)
-            }
-            className="mt-2 rounded bg-amber-600 px-3 py-1 text-xs font-medium text-black hover:bg-amber-500"
-          >
-            Generate AI Questions
-          </button>
           <p className="mb-6 text-xs leading-6 text-slate-300">
             {item.summary}
           </p>
@@ -129,6 +136,29 @@ function TopicItem({
               {item.code.trim()}
             </SyntaxHighlighter>
           )}
+
+          <div className="flex gap-4 mt-4">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onToggleMockSelected(subject, sectionTitle, item.name);
+              }}
+              disabled={isChecked}
+              className={`rounded bg-surface px-2 py-0.5 text-xxs font-medium text-white transition  ${isMockSelected ? "opacity-100" : "opacity-20"}`}
+            >
+              Mock interview question
+            </button>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                onToggleFlagged(subject, sectionTitle, item.name);
+              }}
+              disabled={isChecked}
+              className={`rounded bg-surface px-2 py-0.5 text-xxs font-medium text-white transition  ${isFlagged ? "opacity-100" : "opacity-20"}`}
+            >
+              Flag for review
+            </button>
+          </div>
         </div>
       )}
     </li>

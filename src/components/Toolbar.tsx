@@ -5,6 +5,7 @@ function Toolbar({
   onSearchChange,
   reviewedCount,
   flaggedCount,
+  mockQuestionsCount,
   onResetProgress,
   showInterviewOnly,
   onShowInterviewOnlyChange,
@@ -51,7 +52,7 @@ function Toolbar({
             <div className="flex flex-row gap-2">
               <button
                 onClick={onShowMockQuestions}
-                className="rounded-xl bg-amber-400 px-4 py-2 text-xs font-medium text-black transition hover:bg-amber-600"
+                className="rounded-xl bg-note px-4 py-2 text-xs font-medium text-black transition hover:bg-amber-600"
               >
                 <span className="material-symbols-outlined align-middle mr-2">
                   quick_reference
@@ -61,7 +62,7 @@ function Toolbar({
 
               <button
                 onClick={onResetProgress}
-                className="rounded-xl bg-accent px-4 py-2 text-xs text-white transition hover:bg-accent-hover"
+                className="rounded-xl bg-accent px-4 py-2 text-xs text-black transition hover:bg-accent-hover"
               >
                 <span className="material-symbols-outlined align-middle mr-2">
                   refresh
@@ -92,6 +93,16 @@ function Toolbar({
           {flaggedCount !== 1
             ? `${flaggedCount} topics flagged for review`
             : `${flaggedCount} topic flagged for review`}
+        </p>
+        <p
+          className={`text-xs pl-4 text-left transition ${mockQuestionsCount > 0 ? "opacity-100" : "opacity-50"}`}
+        >
+          <span className="material-symbols-outlined align-middle mr-1 text-amber-400">
+            quick_reference
+          </span>
+          {mockQuestionsCount !== 1
+            ? `${mockQuestionsCount} topics added to mock interview`
+            : `${mockQuestionsCount} topic added to mock interview`}
         </p>
       </div>
     </div>
