@@ -1,14 +1,4 @@
-// import type {Topic} from "./Topic.types";
 import type {SubjectKey} from "../data/subjects";
-
-// type MockQuestionTopic = {
-//   key: string;
-//   sectionTitle: string;
-//   item: Topic;
-//   isInterview: boolean;
-//   isFlagged: boolean;
-//   priority: number;
-// };
 
 export type MockSessionQuestion = {
   id: string;
@@ -24,6 +14,11 @@ export type MockQuestionsModalProps = {
   showMockQuestions: boolean;
   setShowMockQuestions: (show: boolean) => void;
   questions: MockSessionQuestion[];
+  saveInterviewScore: (
+    subject: SubjectKey,
+    sectionTitle: string,
+    score: number,
+  ) => void;
 };
 
 export type MockQuestion = {

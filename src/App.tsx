@@ -12,7 +12,7 @@ import {getTopicKey} from "./utils/topicKeys";
 import {filterSections} from "./utils/filterSections";
 import {getMockSessionQuestions} from "./utils/getMockSessionQuestions";
 
-import {useTopicProgress} from "./hooks/useTopicProgress";
+import {useLearningProgress} from "./hooks/useLearningProgress";
 
 import type {Section} from "./types/Section.types";
 
@@ -28,15 +28,22 @@ export default function App() {
   const sections = subjectData[subject].sections;
   const subjects = Object.entries(subjectData);
 
+  console.log(sections);
+
   const {
     checkedTopics,
     flaggedTopics,
     mockSelectedTopics,
+    saveInterviewScore,
+    getInterviewScore,
+    getSubjectScore,
     toggleTopicChecked,
     toggleTopicFlagged,
     toggleMockSelected,
-    resetSubjectProgress,
-  } = useTopicProgress();
+    resetStudyProgress,
+    resetInterviewProgress,
+    resetAllProgress,
+  } = useLearningProgress();
 
   const filteredSections = filterSections({
     sections,
@@ -112,17 +119,21 @@ export default function App() {
         </header>
 
         <Toolbar
+          subjectKey={subject}
           searchTerm={searchTerm}
           onSearchChange={setSearchTerm}
           reviewedCount={reviewedCount}
           flaggedCount={flaggedCount}
           mockQuestionsCount={mockQuestionsCount}
-          onResetProgress={() => resetSubjectProgress(subject)}
+          onResetProgress={() => resetStudyProgress(subject)}
+          onResetInterviewProgress={() => resetInterviewProgress(subject)}
+          onResetAllProgress={() => resetAllProgress(subject)}
           showInterviewOnly={showInterviewOnly}
           onShowInterviewOnlyChange={setShowInterviewOnly}
           showFlaggedOnly={showFlaggedOnly}
           onShowFlaggedOnlyChange={setShowFlaggedOnly}
           onShowMockQuestions={() => setShowMockQuestions(true)}
+          subjectScore={getSubjectScore(subject)}
         />
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3 xl:grid-cols-4">
           {filteredSections.map((section) => {
@@ -141,6 +152,7 @@ export default function App() {
                 totalTopics={totalTopics}
                 flaggedTopics={flaggedTopics}
                 mockQuestions={mockSelectedTopics}
+                interviewScore={getInterviewScore(subject, section.title)}
                 onOpen={() => {
                   setSelectedSection(section);
                   setExpandedTopic(null);
@@ -156,6 +168,7 @@ export default function App() {
         showMockQuestions={showMockQuestions}
         setShowMockQuestions={setShowMockQuestions}
         questions={mockSessionQuestions}
+        saveInterviewScore={saveInterviewScore}
       />
 
       {selectedSection && (

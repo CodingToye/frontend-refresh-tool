@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useState, useEffect, useRef} from "react";
 import {subjectData} from "../data/subjects";
 import type {MockQuestionsModalProps} from "../types/MockQuestions.types";
 
@@ -6,6 +6,7 @@ export function MockQuestionsModal({
   subject,
   showMockQuestions,
   setShowMockQuestions,
+  saveInterviewScore,
   questions,
 }: MockQuestionsModalProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -13,18 +14,7 @@ export function MockQuestionsModal({
   const [revealed, setRevealed] = useState(false);
   const [scores, setScores] = useState<Record<string, number>>({});
   const [answers, setAnswers] = useState<Record<string, string>>({});
-
-  const resetSession = () => {
-    setCurrentIndex(0);
-    setCurrentAnswer("");
-    setRevealed(false);
-    setScores({});
-    setAnswers({});
-  };
-
-  if (!showMockQuestions) {
-    return null;
-  }
+  const savedScoreRef = useRef(false);
 
   const totalQuestions = questions.length;
   const maxScore = totalQuestions * 3;
@@ -36,16 +26,48 @@ export function MockQuestionsModal({
     maxScore > 0 ? Math.round((totalScore / maxScore) * 100) : 0;
   const isComplete = totalQuestions > 0 && currentIndex >= totalQuestions;
 
-  const handleClose = () => {
+  useEffect(() => {
+    if (!isComplete || savedScoreRef.current) return;
+
+    const sectionTotals: Record<string, {earned: number; max: number}> = {};
+
+    questions.forEach((question) => {
+      const sectionTitle = question.sectionTitle;
+      const score = scores[question.id] ?? 0;
+
+      if (!sectionTotals[sectionTitle]) {
+        sectionTotals[sectionTitle] = {earned: 0, max: 0};
+      }
+
+      sectionTotals[sectionTitle].earned += score;
+      sectionTotals[sectionTitle].max += 3;
+    });
+
+    console.log("sectionTotals", sectionTotals);
+
+    Object.entries(sectionTotals).forEach(([sectionTitle, totals]) => {
+      const sectionPercentage =
+        totals.max > 0 ? Math.round((totals.earned / totals.max) * 100) : 0;
+      console.log("saving", {subject, sectionTitle, sectionPercentage});
+      saveInterviewScore(subject, sectionTitle, sectionPercentage);
+    });
+
+    savedScoreRef.current = true;
+  }, [isComplete, questions, scores, subject, saveInterviewScore]);
+
+  if (!showMockQuestions) {
+    return null;
+  }
+
+  const handlePause = () => {
     setShowMockQuestions(false);
-    resetSession();
   };
 
   if (questions.length === 0) {
     return (
       <div
         className="fixed inset-0 z-30 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
-        onClick={handleClose}
+        onClick={handlePause}
       >
         <div
           className="w-full max-w-2xl rounded-2xl bg-slate-800 p-6"
@@ -56,10 +78,13 @@ export function MockQuestionsModal({
               {subjectData[subject].label} Mock Questions
             </h2>
             <button
-              onClick={() => setShowMockQuestions(false)}
-              className="text-sm text-slate-300 hover:text-white"
+              onClick={handlePause}
+              className="flex items-center rounded-xl bg-note px-4 py-1 text-xxs font-medium text-black transition shadow-lg shadow-white/10 hover:bg-note-dark"
             >
-              Close
+              <span className="material-symbols-outlined mr-2">
+                pause_circle
+              </span>
+              Pause Interview
             </button>
           </div>
 
@@ -76,7 +101,7 @@ export function MockQuestionsModal({
     return (
       <div
         className="fixed inset-0 z-30 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
-        onClick={() => setShowMockQuestions(false)}
+        onClick={handlePause}
       >
         <div
           className="w-full max-w-2xl rounded-2xl bg-surface p-6"
@@ -86,12 +111,6 @@ export function MockQuestionsModal({
             <h2 className="text-xl font-semibold">
               {subjectData[subject].label} Mock Results
             </h2>
-            <button
-              onClick={() => setShowMockQuestions(false)}
-              className="text-sm text-slate-300 hover:text-white"
-            >
-              Close
-            </button>
           </div>
 
           <div className="space-y-3">
@@ -104,16 +123,10 @@ export function MockQuestionsModal({
             </p>
 
             <button
-              onClick={() => {
-                setCurrentIndex(0);
-                setCurrentAnswer("");
-                setRevealed(false);
-                setScores({});
-                setAnswers({});
-              }}
+              onClick={handlePause}
               className="rounded-xl bg-note px-4 py-2 text-xs font-medium text-black transition shadow-lg shadow-white/10 hover:bg-amber-600"
             >
-              Restart Session
+              Finish Interview
             </button>
           </div>
         </div>
@@ -160,22 +173,25 @@ export function MockQuestionsModal({
   return (
     <div
       className="fixed inset-0 z-30 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
-      onClick={() => setShowMockQuestions(false)}
+      onClick={handlePause}
     >
       <div
         className="w-full max-w-3xl rounded-2xl bg-surface-light p-6"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mb-4 flex flex-col">
-          <div className="flex justify-between">
+          <div className="flex justify-between items-center">
             <h2 className="text-xl font-semibold">
               {subjectData[subject].label} Mock Interview
             </h2>
             <button
-              onClick={handleClose}
-              className="text-sm text-slate-300 hover:text-white"
+              onClick={handlePause}
+              className="flex items-center rounded-xl bg-note px-4 py-1 text-xxs font-medium text-black transition shadow-lg shadow-white/10 hover:bg-note-dark"
             >
-              Close
+              <span className="material-symbols-outlined mr-2">
+                pause_circle
+              </span>
+              Pause Interview
             </button>
           </div>
           <p className="mt-1 text-sm text-slate-400 text-left">

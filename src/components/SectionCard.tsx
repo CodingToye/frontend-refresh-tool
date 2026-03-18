@@ -4,6 +4,7 @@ import {getTopicKey} from "../utils/topicKeys";
 function SectionCard({
   subject,
   section,
+  interviewScore,
   completedTopics,
   flaggedTopics,
   mockQuestions,
@@ -25,6 +26,8 @@ function SectionCard({
   const mockQuestionsCount = section.items.filter(
     (item) => mockQuestions[getTopicKey(subject, section.title, item.name)],
   ).length;
+
+  const score = interviewScore;
 
   return (
     <button
@@ -50,27 +53,40 @@ function SectionCard({
           )}
         </div>
 
-        {(flaggedCount > 0 || mockQuestionsCount > 0) && (
+        {(flaggedCount > 0 || mockQuestionsCount > 0 || score !== null) && (
           <div className="bg-note border border-black text-note-text py-1 px-3 rounded-lg mb-4">
             {flaggedCount > 0 && (
-              <p className="text-xxs  flex items-center justify-between">
+              <p className="text-xxs flex items-center justify-between">
                 Flagged for further review
-                <span className="rounded-full inline-flex items-center justify-center w-4 h-4 bg-white/30 border border-black/50 text-xxs  font-bold text-black/70 ml-2">
+                <span className="rounded-full inline-flex items-center justify-center w-4 h-4 bg-white/30 border border-black/50 text-xxs font-bold text-black/70 ml-2">
                   {flaggedCount}
                 </span>
               </p>
             )}
+
             {mockQuestionsCount > 0 && (
-              <p className="text-xxs  flex items-center justify-between">
+              <p className="text-xxs flex items-center justify-between">
                 Added to mock interview
-                <span className="rounded-full inline-flex items-center justify-center w-4 h-4 bg-white/30 border border-black/50 text-xxs  font-bold text-black/70 ml-2">
+                <span className="rounded-full inline-flex items-center justify-center w-4 h-4 bg-white/30 border border-black/50 text-xxs font-bold text-black/70 ml-2">
                   {mockQuestionsCount}
                 </span>
               </p>
             )}
+
+            {score !== null && (
+              <div className="bg-card rounded px-2 py-1 my-2 inset-shadow-sm inset-shadow-black/20">
+                <p className="text-xxs text-white flex flex-row items-center justify-between">
+                  Current Interview Score
+                  <span className="bg-accent px-1 text-black rounded">
+                    {score}%
+                  </span>
+                </p>
+              </div>
+            )}
           </div>
         )}
       </div>
+
       <div className="bg-black/30 border border-black/20 py-2 px-3 rounded-lg">
         <div className="flex gap-2 items-center text-xxs text-text/50">
           <span>

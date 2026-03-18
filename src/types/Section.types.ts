@@ -12,6 +12,7 @@ export type SectionCardProps = {
   completedTopics: number;
   flaggedTopics: Record<string, boolean>;
   mockQuestions: Record<string, boolean>;
+  interviewScore: number | null;
   totalTopics: number;
   onOpen: () => void;
 };
