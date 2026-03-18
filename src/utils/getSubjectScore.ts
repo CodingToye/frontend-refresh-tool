@@ -1,7 +1,7 @@
-import {getProgress} from "./progressStorage";
+import {getStudyProgress} from "./progressStorage";
 
 export const getSubjectScore = (subjectKey: string) => {
-  const progress = getProgress();
+  const progress = getStudyProgress();
   const subject = progress?.[subjectKey];
 
   if (!subject) return null;
