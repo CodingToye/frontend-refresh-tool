@@ -31,6 +31,12 @@
   --color-warning-dark: #9e6e0e;
   --color-info-dark: #27748c;
   --color-success-dark: #085e2a;
+
+  --color-btn-blue-400: #222f4d;
+  --color-btn-blue-500: #1a243d;
+  --color-btn-blue-600: #12192b;
+  --color-btn-blue-700: #0c111d;
+
   --font-heading: Urbanist, system-ui, sans-serif;
   --font-sans: Inter, system-ui, sans-serif;
   --font-mono:
@@ -134,5 +140,5 @@ code {
 }
 
 .material-symbols-outlined {
-  font-size: 18px;
+  font-size: 24px;
 }

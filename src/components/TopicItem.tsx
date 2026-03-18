@@ -59,7 +59,7 @@ function TopicItem({
                 <span className="flex items-center bg-note border border-black/70 px-2 pl-3 text-xxs text-black/70 rounded shadow-lg shadow-white/10">
                   Mock interview question{" "}
                   <span
-                    className="material-symbols-outlined pl-1"
+                    className="material-symbols-outlined pl-1 text-sm!"
                     onClick={(e) => {
                       e.stopPropagation();
                       onToggleMockSelected(subject, sectionTitle, item.name);
@@ -73,7 +73,7 @@ function TopicItem({
                 <span className="flex items-center bg-note border border-black/70 px-2 pl-3 text-xxs text-black/70 rounded shadow-lg shadow-white/10">
                   Flagged for review
                   <span
-                    className="material-symbols-outlined pl-1"
+                    className="material-symbols-outlined pl-1 text-sm!"
                     onClick={(e) => {
                       e.stopPropagation();
                       onToggleFlagged(subject, sectionTitle, item.name);
@@ -146,23 +146,26 @@ function TopicItem({
           )}
 
           <div className="flex gap-4 mt-4">
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onToggleMockSelected(subject, sectionTitle, item.name);
-              }}
-              disabled={isChecked}
-              className={`rounded bg-surface px-2 py-0.5 text-xxs font-medium text-white transition  ${isMockSelected ? "opacity-100 inset-shadow-sm inset-shadow-black shadow-lg shadow-white/10" : "opacity-20"}`}
-            >
-              Mock interview question
-            </button>
+            {item.mockQuestions && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onToggleMockSelected(subject, sectionTitle, item.name);
+                }}
+                disabled={isChecked}
+                className={`rounded bg-surface px-2 py-0.5 text-xxs font-medium text-white transition  ${isMockSelected ? "opacity-100 inset-shadow-sm inset-shadow-black shadow-lg shadow-white/10" : "opacity-20"}`}
+              >
+                Mock interview question
+              </button>
+            )}
+
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 onToggleFlagged(subject, sectionTitle, item.name);
               }}
               disabled={isChecked}
-              className={`rounded bg-surface px-2 py-0.5 text-xxs font-medium text-white transition  ${isMockSelected ? "opacity-100 inset-shadow-sm inset-shadow-black shadow-lg shadow-white/10" : "opacity-20"}`}
+              className={`rounded bg-surface px-2 py-0.5 text-xxs font-medium text-white transition  ${isFlagged ? "opacity-100 inset-shadow-sm inset-shadow-black shadow-lg shadow-white/10" : "opacity-20"}`}
             >
               Flag for review
             </button>
