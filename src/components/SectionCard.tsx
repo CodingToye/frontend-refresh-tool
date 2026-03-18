@@ -1,5 +1,6 @@
 import type {SectionCardProps} from "../types/Section.types";
 import {getTopicKey} from "../utils/topicKeys";
+import {Badge} from "./shared/Badge";
 
 function SectionCard({
   subject,
@@ -42,34 +43,29 @@ function SectionCard({
     >
       <div className="flex flex-col gap-6">
         <div className="flex flex-col">
-          <div className="flex items-center justify-between gap-2">
+          <div className="flex justify-between gap-2">
             <h3 className="text-lg font-semibold">{section.title}</h3>
-            <div className="inline-flex items-center justify-center rounded-full bg-accent w-4 h-4 text-xxs font-bold text-black">
-              {section.items.length}
-            </div>
+
+            <Badge badgeLabel={section.items.length} badgeStyle="primary" />
           </div>
           {interviewCount > 0 && (
-            <p className="my-1 text-xs text-accent">Interview-focused</p>
+            <p className="my-1 text-xs text-primary-500">Interview-focused</p>
           )}
         </div>
 
         {(flaggedCount > 0 || mockQuestionsCount > 0 || score !== null) && (
-          <div className="bg-note border border-black text-note-text py-1 px-3 rounded-lg mb-4">
+          <div className="bg-secondary-400 border border-black text-secondary-text py-1 px-3 rounded-lg mb-4">
             {flaggedCount > 0 && (
               <p className="text-xxs flex items-center justify-between">
                 Flagged for further review
-                <span className="rounded-full inline-flex items-center justify-center w-4 h-4 bg-white/30 border border-black/50 text-xxs font-bold text-black/70 ml-2">
-                  {flaggedCount}
-                </span>
+                <Badge badgeLabel={flaggedCount} badgeStyle="secondary" />
               </p>
             )}
 
             {mockQuestionsCount > 0 && (
               <p className="text-xxs flex items-center justify-between">
                 Added to mock interview
-                <span className="rounded-full inline-flex items-center justify-center w-4 h-4 bg-white/30 border border-black/50 text-xxs font-bold text-black/70 ml-2">
-                  {mockQuestionsCount}
-                </span>
+                <Badge badgeLabel={mockQuestionsCount} badgeStyle="secondary" />
               </p>
             )}
 
@@ -77,7 +73,7 @@ function SectionCard({
               <div className="bg-card rounded px-2 py-1 my-2 inset-shadow-sm inset-shadow-black/20">
                 <p className="text-xxs text-white flex flex-row items-center justify-between">
                   Current Interview Score
-                  <span className="bg-accent px-1 text-black rounded">
+                  <span className="bg-primary-500 px-1 text-black rounded">
                     {score}%
                   </span>
                 </p>
@@ -95,8 +91,8 @@ function SectionCard({
           <div className="flex-1">
             <div className="h-2 rounded-full bg-slate-900">
               <div
-                className={`h-2 rounded-full transition-all duration-300 shadow-lg shadow-accent/50 ${
-                  isComplete ? "bg-accent" : "bg-accent"
+                className={`h-2 rounded-full transition-all duration-300 shadow-lg shadow-primary-500/50 ${
+                  isComplete ? "bg-primary-500" : "bg-primary-500"
                 }`}
                 style={{width: `${progress}%`}}
               />

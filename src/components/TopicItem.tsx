@@ -20,7 +20,7 @@ function TopicItem({
 }: TopicItemProps) {
   return (
     <li
-      className={`w-full rounded-lg border px-3 py-3 text-left transition inset-shadow-sm inset-shadow-accent/20 ${
+      className={`w-full rounded-lg border px-3 py-3 text-left transition inset-shadow-sm inset-shadow-primary/20 ${
         isChecked
           ? "border-black/50 bg-card/50 hover:bg-card-hover/50 opacity-25 inset-shadow-sm inset-shadow-black"
           : "border-black/50 bg-card hover:bg-card-hover hover:border-black"
@@ -31,7 +31,7 @@ function TopicItem({
           type="checkbox"
           checked={isChecked}
           onChange={() => onToggleChecked(subject, sectionTitle, item.name)}
-          className="h-4 w-4 shrink-0 rounded border-slate-600 bg-slate-800 accent-accent cursor-pointer"
+          className="h-4 w-4 shrink-0 rounded border-slate-600 bg-slate-800 accent-primary-500 cursor-pointer"
         />
 
         <button
@@ -48,7 +48,7 @@ function TopicItem({
               <span className="font-medium text-slate-100">{item.name}</span>
 
               {item.interview && (
-                <span className="ml-2 rounded bg-accent px-2 py-0.5 text-xxs text-black shadow-lg shadow-white/10">
+                <span className="ml-2 rounded bg-primary-500 px-2 py-0.5 text-xxs text-black shadow-lg shadow-white/10">
                   Potential interview question
                 </span>
               )}
@@ -56,10 +56,10 @@ function TopicItem({
 
             <div className="flex gap-2 justify-end">
               {isMockSelected && (
-                <span className="flex items-center bg-note border border-black/70 px-2 pl-3 text-xxs text-black/70 rounded shadow-lg shadow-white/10">
+                <span className="flex items-center bg-secondary-500 border border-black/70 px-2 pl-3 text-xxs text-black/70 rounded shadow-lg shadow-white/10">
                   Mock interview question{" "}
                   <span
-                    className="material-symbols-outlined pl-1 text-sm!"
+                    className="material-symbols-outlined pl-1 leading-none! text-sm!"
                     onClick={(e) => {
                       e.stopPropagation();
                       onToggleMockSelected(subject, sectionTitle, item.name);
@@ -70,10 +70,10 @@ function TopicItem({
                 </span>
               )}
               {isFlagged && (
-                <span className="flex items-center bg-note border border-black/70 px-2 pl-3 text-xxs text-black/70 rounded shadow-lg shadow-white/10">
+                <span className="flex items-center bg-secondary-500 border border-black/70 px-2 pl-3 text-xxs text-black/70 rounded shadow-lg shadow-white/10">
                   Flagged for review
                   <span
-                    className="material-symbols-outlined pl-1 text-sm!"
+                    className="material-symbols-outlined pl-1 leading-none! text-sm!"
                     onClick={(e) => {
                       e.stopPropagation();
                       onToggleFlagged(subject, sectionTitle, item.name);
@@ -110,7 +110,7 @@ function TopicItem({
 
           {item.code && (
             <div className="relative">
-              <span className="absolute top-0 right-10 text-xxs bg-note text-black px-2 uppercase shadow-lg shadow-note/30 rounded-b ">
+              <span className="absolute top-0 right-10 text-xxs bg-secondary text-black px-2 uppercase shadow-lg shadow-secondary/30 rounded-b ">
                 {subjectData[subject].fileType}
               </span>
               <SyntaxHighlighter
