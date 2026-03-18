@@ -1,13 +1,13 @@
 import type {Section} from "./Section.types";
 import type {SubjectKey} from "../data/subjects";
-import type {MockQuestion} from "../components/MockInterview/types";
+// import type {MockQuestion} from "../components/MockInterview/types";
 
 export type Topic = {
   name: string;
   summary: string;
   code?: string;
   interview?: boolean;
-  mockQuestions?: MockQuestion[];
+  // mockQuestions?: MockQuestion[];
 };
 
 export type CheckedTopics = Record<string, boolean>;

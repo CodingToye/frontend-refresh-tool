@@ -1,6 +1,6 @@
 import type {BadgeProps} from "./types";
 
-export function Badge({badgeLabel, badgeStyle = "primary-500"}: BadgeProps) {
+export function Badge({badgeLabel, badgeStyle = "primary"}: BadgeProps) {
   const baseClasses =
     "rounded-full inline-flex items-center justify-center w-4 h-4 border text-xxs font-bold ml-2";
   const colourMap = {
