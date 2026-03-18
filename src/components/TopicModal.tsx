@@ -66,8 +66,8 @@ export function TopicModal({
 
           <div className="h-2 rounded-full bg-slate-900">
             <div
-              className={`h-2 rounded-full transition-all duration-300 shadow-lg shadow-accent/50 ${
-                isComplete ? "bg-accent" : "bg-accent"
+              className={`h-2 rounded-full transition-all duration-300 shadow-lg shadow-primary-500/50 ${
+                isComplete ? "bg-primary-500" : "bg-primary-500"
               }`}
               style={{width: `${progress}%`}}
             />

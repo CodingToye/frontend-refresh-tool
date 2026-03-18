@@ -3,10 +3,10 @@ import {useEffect, useState} from "react";
 import {subjectData} from "./data/subjects";
 import type {SubjectKey} from "./data/subjects";
 
-import Toolbar from "./components/Toolbar";
+import {Toolbar} from "./components/Toolbar";
 import SectionCard from "./components/SectionCard";
 import {TopicModal} from "./components/TopicModal";
-import {MockQuestionsModal} from "./components/MockQuestionsModal";
+import {MockInterview} from "./components/MockInterview";
 
 import {getTopicKey} from "./utils/topicKeys";
 import {filterSections} from "./utils/filterSections";
@@ -163,7 +163,7 @@ export default function App() {
         </div>
       </div>
 
-      <MockQuestionsModal
+      <MockInterview
         subject={subject}
         showMockQuestions={showMockQuestions}
         setShowMockQuestions={setShowMockQuestions}

@@ -1,6 +1,6 @@
 import type {Section} from "./Section.types";
 import type {SubjectKey} from "../data/subjects";
-import type {MockQuestion} from "./MockQuestions.types";
+import type {MockQuestion} from "../components/MockInterview/types";
 
 export type Topic = {
   name: string;

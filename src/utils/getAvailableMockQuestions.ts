@@ -1,7 +1,7 @@
 import {subjectData} from "../data/subjects";
 import {getTopicKey} from "./topicKeys";
 import type {SubjectKey} from "../data/subjects";
-import type {MockSessionQuestion} from "../types/MockQuestions.types";
+import type {MockSessionQuestion} from "../components/MockInterview/types";
 
 export const getAvailableMockQuestions = (
   subject: SubjectKey,

@@ -12,17 +12,14 @@
 
 @theme {
   --color-bg: #0b132b;
+  --color-text: #e0e1dd;
+
   --color-surface: #1c2541;
   --color-surface-light: #2b3c64;
   --color-card: #3a506b;
   --color-card-hover: #4a6785;
   --color-card-dark: #2c435e;
-  --color-accent: #5bc0be;
-  --color-accent-hover: #288280;
-  --color-text: #e0e1dd;
-  --color-note: #ff9f1c;
-  --color-note-text: #1c2541;
-  --color-note-dark: #6b5d06;
+
   --color-danger: #dc4c64;
   --color-warning: #e4a11b;
   --color-info: #54b4d3;
@@ -32,10 +29,20 @@
   --color-info-dark: #27748c;
   --color-success-dark: #085e2a;
 
-  --color-btn-blue-400: #222f4d;
-  --color-btn-blue-500: #1a243d;
-  --color-btn-blue-600: #12192b;
-  --color-btn-blue-700: #0c111d;
+  --color-primary-400: #7dcbc9;
+  --color-primary-500: #5bc0be;
+  --color-primary-600: #42a1a0;
+  --color-primary-700: #288280;
+
+  --color-secondary-400: #ffca82;
+  --color-secondary-500: #ff9f1c;
+  --color-secondary-600: #6b5d06;
+  --color-secondary-text: #1c2541;
+
+  --color-btn-tertiary-400: #222f4d;
+  --color-btn-tertiary-500: #1a243d;
+  --color-btn-tertiary-600: #12192b;
+  --color-btn-tertiary-700: #0c111d;
 
   --font-heading: Urbanist, system-ui, sans-serif;
   --font-sans: Inter, system-ui, sans-serif;
