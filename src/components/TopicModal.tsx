@@ -25,6 +25,13 @@ export function TopicModal({
 
     return () => cancelAnimationFrame(id);
   }, []);
+
+  useEffect(() => {
+    if (isVisible) {
+      document.body.style.overflow = "hidden";
+    }
+  }, [isVisible]);
+
   const totalTopics = section.items.length;
 
   const completedTopics = section.items.filter(

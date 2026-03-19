@@ -3,4 +3,5 @@ export type ButtonProps = {
   buttonIcon?: string;
   buttonStyle?: "primary" | "secondary" | "tertiary";
   handleClick: () => void;
+  extraClasses?: string;
 };
