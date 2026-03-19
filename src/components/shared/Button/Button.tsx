@@ -4,9 +4,9 @@ export function Button({
   buttonIcon,
   buttonStyle = "primary",
   handleClick,
+  extraClasses,
 }: ButtonProps) {
-  const baseClasses =
-    "flex items-center rounded-xl px-4 h-8 text-xxs transition shadow-sm";
+  const baseClasses = `flex items-center rounded-xl px-4 h-8 text-xxs transition shadow-sm ${extraClasses}`;
   const styleMap = {
     primary:
       "bg-primary-500 text-black hover:bg-primary-600 shadow-primary-400",

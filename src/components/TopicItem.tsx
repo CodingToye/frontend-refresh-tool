@@ -26,7 +26,7 @@ function TopicItem({
           : "border-black/50 bg-card hover:bg-card-hover hover:border-black"
       } ${isOpen ? "bg-card-hover" : ""}`}
     >
-      <div className="flex items-center gap-3">
+      <div className="flex items-start lg:items-center gap-3">
         <input
           type="checkbox"
           checked={isChecked}
@@ -41,20 +41,20 @@ function TopicItem({
             if (e.key === "ArrowDown") onArrowDown();
             if (e.key === "ArrowUp") onArrowUp();
           }}
-          className="flex flex-1 items-center justify-between gap-4 text-left group"
+          className="flex flex-1 items-start lg:items-center justify-between lg:gap-4 text-left group"
         >
           <div className="flex items-center gap-3 w-full justify-between">
-            <div>
+            <div className="flex flex-col">
               <span className="font-medium text-slate-100">{item.name}</span>
 
               {item.interview && (
-                <span className="ml-2 rounded bg-primary-500 px-2 py-0.5 text-xxs text-black shadow-lg shadow-white/10">
+                <span className="lg:ml-2 rounded bg-primary-500 px-1 lg:px-2 lg:py-0.5 text-xxs text-black shadow-lg shadow-white/10">
                   Potential interview question
                 </span>
               )}
             </div>
 
-            <div className="flex gap-2 justify-end">
+            <div className="hidden lg:flex gap-2 justify-end">
               {isMockSelected && (
                 <span className="flex items-center bg-secondary-500 border border-black/70 px-2 pl-3 text-xxs text-black/70 rounded shadow-lg shadow-white/10">
                   Mock interview question{" "}
@@ -103,13 +103,13 @@ function TopicItem({
       </div>
 
       {isOpen && (
-        <div className="mt-3 space-y-3 pl-7">
+        <div className="mt-3 space-y-3 lg:pl-7">
           <p className="mb-6 text-xs leading-6 text-slate-300">
             {item.summary}
           </p>
 
           {item.code && (
-            <div className="relative">
+            <div className="relative hidden lg:block">
               <span className="absolute top-0 right-10 text-xxs bg-secondary text-black px-2 uppercase shadow-lg shadow-secondary/30 rounded-b ">
                 {subjectData[subject].fileType}
               </span>
@@ -145,7 +145,7 @@ function TopicItem({
             </div>
           )}
 
-          <div className="flex gap-4 mt-4">
+          <div className="flex flex-col lg:flex-row gap-2 lg:gap-4 mt-4">
             {item.mockQuestions && (
               <button
                 onClick={(e) => {

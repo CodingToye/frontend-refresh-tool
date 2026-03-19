@@ -15,7 +15,7 @@ export function MockInterviewNoQuestions({
         className="w-full max-w-2xl rounded-2xl bg-slate-800 p-6"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="mb-4 flex items-center justify-between">
+        <div className="mb-4 flex flex-col lg:flex-row items-center justify-between">
           <h2 className="text-xl font-semibold">
             {subjectData[subject].label} Mock Interview
           </h2>

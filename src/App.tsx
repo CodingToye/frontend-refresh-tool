@@ -7,6 +7,7 @@ import {Toolbar} from "./components/Toolbar";
 import SectionCard from "./components/SectionCard";
 import {TopicModal} from "./components/TopicModal";
 import {MockInterview} from "./components/MockInterview";
+import {SubjectNav} from "./components/SubjectNav";
 
 import {getTopicKey} from "./utils/topicKeys";
 import {filterSections} from "./utils/filterSections";
@@ -27,8 +28,6 @@ export default function App() {
 
   const sections = subjectData[subject].sections;
   const subjects = Object.entries(subjectData);
-
-  console.log(sections);
 
   const {
     checkedTopics,
@@ -72,7 +71,16 @@ export default function App() {
     return () => window.removeEventListener("keydown", handler);
   }, []);
 
+  useEffect(() => {
+    if (showMockQuestions) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+  }, [showMockQuestions]);
+
   const handleCloseModal = () => {
+    document.body.style.overflow = "";
     setSelectedSection(null);
     setExpandedTopic(null);
   };
@@ -92,22 +100,12 @@ export default function App() {
   ).length;
 
   return (
-    <div className="min-h-screen bg-bg p-10 text-text">
-      <div className="fixed top-0 left-0 w-full mb-6 p-1 flex flex-wrap gap-1 bg-black/20 justify-center">
-        {subjects.map(([key, value]) => (
-          <button
-            key={key}
-            onClick={() => setSubject(key as SubjectKey)}
-            className={`rounded px-4 py-2 text-xs font-medium transition ${
-              subject === key
-                ? " text-amber-400 hover:text-amber-600"
-                : " text-white hover:text-amber-600"
-            }`}
-          >
-            {value.label}
-          </button>
-        ))}
-      </div>
+    <div className="min-h-screen bg-bg p-10 pt-0 text-text">
+      <SubjectNav
+        subjects={subjects}
+        subject={subject}
+        setSubject={setSubject}
+      />
       <div className="mx-auto max-w-7xl">
         <header className="mt-4 mb-8">
           <h1 className="mb-0 text-3xl font-bold">
