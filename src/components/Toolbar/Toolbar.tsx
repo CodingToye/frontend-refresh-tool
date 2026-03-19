@@ -34,7 +34,7 @@ export function Toolbar({
           </div>
 
           <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between xl:justify-end">
-            <div className="flex  flex-wrap items-center gap-2 rounded-xl bg-black/20 px-4 h-8 shadow-sm shadow-primary-500/10 inset-shadow-sm inset-shadow-black/20">
+            <div className="flex lg:flex-row flex-wrap items-center gap-2 rounded-xl bg-black/20 px-4 py-4 lg:h-8 lg:py-0 shadow-sm shadow-primary-500/10 inset-shadow-sm inset-shadow-black/20">
               <label className="flex items-center gap-2 text-xs text-slate-300">
                 <input
                   type="checkbox"
@@ -56,7 +56,7 @@ export function Toolbar({
               </label>
             </div>
 
-            <div className="flex flex-row gap-2">
+            <div className="flex flex-col lg:flex-row gap-2">
               <Button
                 buttonLabel="Reset Study"
                 buttonStyle="tertiary"
@@ -81,8 +81,8 @@ export function Toolbar({
           </div>
         </div>
       </div>
-      <div className="flex justify-between items-center bg-black/70 rounded-xl px-4 py-3 border border-black/90 text-xs text-white/50">
-        <div className="flex">
+      <div className="flex flex-col lg:flex-row gap-4 lg:gap-0 justify-between items-center bg-black/70 rounded-xl px-4 py-3 border border-black/90 text-xs text-white/50">
+        <div className="flex flex-col lg:flex-row gap-4 lg:gap-0">
           <p
             className={`text-xs text-left transition ${reviewedCount > 0 ? "opacity-100" : "opacity-50"}`}
           >
@@ -94,7 +94,7 @@ export function Toolbar({
               : `${reviewedCount} topic completed`}
           </p>
           <p
-            className={`text-xs pl-4 text-left transition ${flaggedCount > 0 ? "opacity-100" : "opacity-50"}`}
+            className={`text-xs lg:pl-4 text-left transition ${flaggedCount > 0 ? "opacity-100" : "opacity-50"}`}
           >
             <span className="material-symbols-outlined align-middle mr-1 text-primary-500">
               flag
@@ -104,7 +104,7 @@ export function Toolbar({
               : `${flaggedCount} topic flagged for review`}
           </p>
           <p
-            className={`text-xs pl-4 text-left transition ${mockQuestionsCount > 0 ? "opacity-100" : "opacity-50"}`}
+            className={`text-xs lg:pl-4 text-left transition ${mockQuestionsCount > 0 ? "opacity-100" : "opacity-50"}`}
           >
             <span className="material-symbols-outlined align-middle mr-1 text-secondary-500">
               quick_reference
@@ -114,16 +114,17 @@ export function Toolbar({
               : `${mockQuestionsCount} topic added to mock interview`}
           </p>
         </div>
-        <div className="flex items-center">
+        <div className="flex flex-col lg:flex-row gap-2 lg:gap-0 items-center w-full lg:w-auto">
           <Button
             buttonLabel="Mock Interview"
             buttonIcon="groups"
             buttonStyle="primary"
             handleClick={onShowMockQuestions}
+            extraClasses="w-full justify-center lg:w-auto lg:justify-normal"
           />
 
           {subjectScore !== null && (
-            <p className="pl-4 text-xs text-left text-white/80">
+            <p className="lg:pl-4 text-xs text-center lg:text-left text-white/80">
               <span className="material-symbols-outlined align-middle mr-1 text-primary-400">
                 workspace_premium
               </span>
