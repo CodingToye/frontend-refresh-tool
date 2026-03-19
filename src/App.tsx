@@ -25,6 +25,7 @@ export default function App() {
   const [showFlaggedOnly, setShowFlaggedOnly] = useState(false);
   const [showMockQuestions, setShowMockQuestions] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [mockInterviewResetKey, setMockInterviewResetKey] = useState(0);
 
   const sections = subjectData[subject].sections;
   const subjects = Object.entries(subjectData);
@@ -124,8 +125,14 @@ export default function App() {
           flaggedCount={flaggedCount}
           mockQuestionsCount={mockQuestionsCount}
           onResetProgress={() => resetStudyProgress(subject)}
-          onResetInterviewProgress={() => resetInterviewProgress(subject)}
-          onResetAllProgress={() => resetAllProgress(subject)}
+          onResetInterviewProgress={() => {
+            resetInterviewProgress(subject);
+            setMockInterviewResetKey((prev) => prev + 1);
+          }}
+          onResetAllProgress={() => {
+            resetAllProgress(subject);
+            setMockInterviewResetKey((prev) => prev + 1);
+          }}
           showInterviewOnly={showInterviewOnly}
           onShowInterviewOnlyChange={setShowInterviewOnly}
           showFlaggedOnly={showFlaggedOnly}
@@ -162,6 +169,7 @@ export default function App() {
       </div>
 
       <MockInterview
+        key={`${subject}-${mockInterviewResetKey}`}
         subject={subject}
         showMockQuestions={showMockQuestions}
         setShowMockQuestions={setShowMockQuestions}

@@ -49,7 +49,7 @@ export function MockInterview({
     Object.entries(sectionTotals).forEach(([sectionTitle, totals]) => {
       const sectionPercentage =
         totals.max > 0 ? Math.round((totals.earned / totals.max) * 100) : 0;
-      console.log("saving", {subject, sectionTitle, sectionPercentage});
+
       saveInterviewScore(subject, sectionTitle, sectionPercentage);
     });
 

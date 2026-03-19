@@ -132,11 +132,16 @@ export function useLearningProgress() {
   };
 
   const resetInterviewProgress = (subject: SubjectKey) => {
-    setInterviewScores((prev) =>
-      Object.fromEntries(
+    setInterviewScores((prev) => {
+      console.log("before reset", prev);
+
+      const next = Object.fromEntries(
         Object.entries(prev).filter(([key]) => !key.startsWith(`${subject}::`)),
-      ),
-    );
+      );
+
+      console.log("after reset", next);
+      return next;
+    });
   };
 
   const removeSubjectEntries = <T extends Record<string, unknown>>(

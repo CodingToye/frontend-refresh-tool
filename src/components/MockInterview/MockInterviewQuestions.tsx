@@ -25,7 +25,7 @@ export function MockInterviewQuestions({
       >
         <div>
           <div className="mb-4 flex flex-col gap-4 lg:gap-0 items-center lg:items-start">
-            <div className="flex flex-col justify-between items-center">
+            <div className="flex flex-col lg:flex-row lg:w-full justify-between items-center">
               <h2 className="text-xl font-semibold">
                 {subjectData[subject].label} Mock Interview
               </h2>
