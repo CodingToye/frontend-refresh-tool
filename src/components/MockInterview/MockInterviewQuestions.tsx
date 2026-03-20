@@ -93,25 +93,25 @@ export function MockInterviewQuestions({
                 <div className="flex flex-wrap justify-center gap-2">
                   <button
                     onClick={() => onHandleScore(0)}
-                    className="rounded-xl bg-danger px-4 py-1 text-xs text-white shadow-lg shadow-white/10 transition hover:bg-danger-dark"
+                    className="rounded-xl bg-danger-400 px-4 py-1 text-xs text-white shadow-lg shadow-white/10 transition hover:bg-danger-600"
                   >
                     0 - Missed
                   </button>
                   <button
                     onClick={() => onHandleScore(1)}
-                    className="rounded-xl bg-warning px-4 py-1 text-xs text-white shadow-lg shadow-white/10 transition hover:bg-warning-dark"
+                    className="rounded-xl bg-warning-400 px-4 py-1 text-xs text-white shadow-lg shadow-white/10 transition hover:bg-warning-600"
                   >
                     1 - Weak
                   </button>
                   <button
                     onClick={() => onHandleScore(2)}
-                    className="rounded-xl bg-info px-4 py-1 text-xs text-white shadow-lg shadow-white/10 transition hover:bg-info-dark"
+                    className="rounded-xl bg-info-400 px-4 py-1 text-xs text-white shadow-lg shadow-white/10 transition hover:bg-info-600"
                   >
                     2 - Decent
                   </button>
                   <button
                     onClick={() => onHandleScore(3)}
-                    className="rounded-xl bg-success px-4 py-1 text-xs text-white shadow-lg shadow-white/10 transition hover:bg-success-dark"
+                    className="rounded-xl bg-success-400 px-4 py-1 text-xs text-white shadow-lg shadow-white/10 transition hover:bg-success-600"
                   >
                     3 - Strong
                   </button>
