@@ -1,4 +1,4 @@
-import {useEffect,useState} from "react";
+import {useEffect, useState} from "react";
 
 import type {SubjectKey} from "@/data/subjects";
 
@@ -45,8 +45,8 @@ export function SubjectNav({subjects, subject, setSubject}: SubjectNavProps) {
             onClick={() => setSubject(key as SubjectKey)}
             className={`rounded px-4 py-2 text-xs font-medium transition ${
               subject === key
-                ? "text-amber-400 hover:text-amber-600"
-                : "text-white hover:text-amber-600"
+                ? "text-secondary-400 hover:text-secondary-500"
+                : "text-white hover:text-secondary-400"
             }`}
           >
             {value.label}
