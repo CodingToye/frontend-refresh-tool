@@ -1,13 +1,14 @@
-import {useLocalStorageState} from "./useLocalStorageState";
-import {getTopicKey} from "../utils/topicKeys";
-import type {CheckedTopics} from "../types/Topic.types";
-import type {SubjectKey} from "../data/subjects";
+import type {CheckedTopics} from "@/components/TopicModal/types";
 import {
-  STORAGE_KEY,
   FLAGGED_STORAGE_KEY,
-  MOCK_SELECTED_STORAGE_KEY,
   INTERVIEW_SCORE_STORAGE_KEY,
-} from "../constants/storage";
+  MOCK_SELECTED_STORAGE_KEY,
+  STORAGE_KEY,
+} from "@/constants/storage";
+import type {SubjectKey} from "@/data/subjects";
+import {getTopicKey} from "@/utils/topicKeys";
+
+import {useLocalStorageState} from "./useLocalStorageState";
 
 export function useLearningProgress() {
   const [checkedTopics, setCheckedTopics] = useLocalStorageState<CheckedTopics>(

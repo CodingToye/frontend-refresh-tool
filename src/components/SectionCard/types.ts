@@ -1,5 +1,5 @@
-import type {Topic} from "./Topic.types";
-import type {SubjectKey} from "../data/subjects";
+import type {Topic} from "@/components/TopicItem/types";
+import type {SubjectKey} from "@/data/subjects";
 
 export type Section = {
   title: string;

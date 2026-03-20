@@ -1,14 +1,14 @@
-import {sections as reactSections} from "./reactSections";
-import {sections as javascriptSections} from "./javascriptSections";
-import {sections as cssSections} from "./cssSections";
-import {sections as typescriptSections} from "./typescriptSections";
-import {sections as htmlSections} from "./htmlSections";
-import {sections as nodeSections} from "./nodeSections";
-import {sections as testingSections} from "./testingSections";
+import type {Section} from "../components/SectionCard/types";
 import {sections as accessibilitySections} from "./accessibilitySections";
 import {sections as browserAPIsSections} from "./browserAPIsSections";
+import {sections as cssSections} from "./cssSections";
+import {sections as htmlSections} from "./htmlSections";
+import {sections as javascriptSections} from "./javascriptSections";
+import {sections as nodeSections} from "./nodeSections";
+import {sections as reactSections} from "./reactSections";
+import {sections as testingSections} from "./testingSections";
+import {sections as typescriptSections} from "./typescriptSections";
 import {sections as webPerformanceSections} from "./webperformanceSections";
-import type {Section} from "../types/Section.types";
 
 type SubjectFileType = "jsx" | "js" | "css" | "tsx" | "ts" | "html" | "basic";
 

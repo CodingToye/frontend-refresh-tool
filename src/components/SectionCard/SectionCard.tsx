@@ -1,8 +1,9 @@
-import type {SectionCardProps} from "../types/Section.types";
-import {getTopicKey} from "../utils/topicKeys";
-import {Badge} from "./shared/Badge";
+import {Badge} from "@/components/shared/Badge";
+import {getTopicKey} from "@/utils/topicKeys";
 
-function SectionCard({
+import type {SectionCardProps} from "./types";
+
+export function SectionCard({
   subject,
   section,
   interviewScore,
@@ -103,5 +104,3 @@ function SectionCard({
     </button>
   );
 }
-
-export default SectionCard;

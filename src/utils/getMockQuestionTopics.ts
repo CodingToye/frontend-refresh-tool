@@ -1,6 +1,7 @@
+import type {Section} from "@/components/SectionCard/types";
+import type {SubjectKey} from "@/data/subjects";
+
 import {getTopicKey} from "./topicKeys";
-import type {Section} from "../types/Section.types";
-import type {SubjectKey} from "../data/subjects";
 
 export const getMockQuestionTopics = (
   sections: Section[],

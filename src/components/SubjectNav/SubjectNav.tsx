@@ -1,5 +1,6 @@
-import {useState, useEffect} from "react";
-import type {SubjectKey} from "../data/subjects";
+import {useEffect,useState} from "react";
+
+import type {SubjectKey} from "@/data/subjects";
 
 type SubjectNavProps = {
   subjects: [string, {label: string}][];
@@ -37,7 +38,7 @@ export function SubjectNav({subjects, subject, setSubject}: SubjectNavProps) {
       </div>
 
       {/* Desktop nav */}
-      <div className="mb-6 hidden w-full flex-wrap justify-center gap-1 bg-black/20 p-1 lg:fixed lg:left-0 lg:top-0 lg:flex">
+      <div className="mb-6 hidden w-full flex-wrap justify-center gap-1 bg-surface shadow-lg shadow-black/10 p-1 lg:fixed lg:left-0 lg:top-0 lg:flex">
         {subjects.map(([key, value]) => (
           <button
             key={key}

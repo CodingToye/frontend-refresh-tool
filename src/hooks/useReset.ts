@@ -1,5 +1,5 @@
-import {getStudyProgress, saveStudyProgress} from "../utils/progressStorage";
-import type {SectionProgress} from "../types/Progress.types";
+import type {SectionProgress} from "@/types/Progress.types";
+import {getStudyProgress, saveStudyProgress} from "@/utils/progressStorage";
 
 export function useReset(subjectKey: string) {
   const resetStudyProgress = () => {

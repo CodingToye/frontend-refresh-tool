@@ -20,14 +20,37 @@
   --color-card-hover: #4a6785;
   --color-card-dark: #2c435e;
 
-  --color-danger: #dc4c64;
-  --color-warning: #e4a11b;
-  --color-info: #54b4d3;
-  --color-success: #14a44d;
-  --color-danger-dark: #9c1f34;
-  --color-warning-dark: #9e6e0e;
-  --color-info-dark: #27748c;
-  --color-success-dark: #085e2a;
+  --color-success-200: #96dfb2;
+  --color-success-300: #66ce8d;
+  --color-success-400: #3dbd6d;
+  --color-success-500: #14a44d;
+  --color-success-600: #108a40;
+  --color-success-700: #0c6931;
+  --color-success-800: #084d24;
+
+  --color-warning-200: #f2cf8d;
+  --color-warning-300: #ecb754;
+  --color-warning-400: #eaa93d;
+  --color-warning-500: #e4a11b;
+  --color-warning-600: #c28917;
+  --color-warning-700: #946912;
+  --color-warning-800: #66480c;
+
+  --color-danger-200: #f1c3c3;
+  --color-danger-300: #e98a8a;
+  --color-danger-400: #e37070;
+  --color-danger-500: #dc4c64;
+  --color-danger-600: #bc3f54;
+  --color-danger-700: #943242;
+  --color-danger-800: #6b2430;
+
+  --color-info-200: #c6e9f1;
+  --color-info-300: #9adbed;
+  --color-info-400: #75c3db;
+  --color-info-500: #54b4d3;
+  --color-info-600: #4699b3;
+  --color-info-700: #37778b;
+  --color-info-800: #285665;
 
   --color-primary-400: #7dcbc9;
   --color-primary-500: #5bc0be;
@@ -39,10 +62,13 @@
   --color-secondary-600: #6b5d06;
   --color-secondary-text: #1c2541;
 
-  --color-btn-tertiary-400: #222f4d;
-  --color-btn-tertiary-500: #1a243d;
-  --color-btn-tertiary-600: #12192b;
-  --color-btn-tertiary-700: #0c111d;
+  --color-tertiary-200: #798194;
+  --color-tertiary-300: #4a5268;
+  --color-tertiary-400: #323c54;
+  --color-tertiary-500: #1a243d;
+  --color-tertiary-600: #151d31;
+  --color-tertiary-700: #12192b;
+  --color-tertiary-800: #0c111d;
 
   --font-heading: Urbanist, system-ui, sans-serif;
   --font-sans: Inter, system-ui, sans-serif;
@@ -110,8 +136,8 @@ h2 {
 }
 
 h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
+  font-size: 56px !default;
+  letter-spacing: -1.68px !default;
   @media (max-width: 1024px) {
     font-size: 36px;
     margin: 20px 0;
@@ -147,4 +173,17 @@ code {
 
 .material-symbols-outlined {
   font-size: 24px;
+}
+
+.material-filled {
+  font-variation-settings: "FILL" 1;
+}
+
+@keyframes toast-progress {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
 }

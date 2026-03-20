@@ -1,4 +1,4 @@
-import type {Section} from "../types/Section.types";
+import type {Section} from "@/components/SectionCard/types";
 
 export const sections: Section[] = [
   {

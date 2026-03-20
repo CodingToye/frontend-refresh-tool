@@ -1,5 +1,4 @@
-import type {Section} from "./Section.types";
-import type {SubjectKey} from "../data/subjects";
+import type {SubjectKey} from "@/data/subjects";
 
 export type MockQuestion = {
   id: string;
@@ -13,34 +12,6 @@ export type Topic = {
   code?: string;
   interview?: boolean;
   mockQuestions?: MockQuestion[];
-};
-
-export type CheckedTopics = Record<string, boolean>;
-
-export type TopicModalProps = {
-  subject: SubjectKey;
-  section: Section;
-  expandedTopic: string | null;
-  checkedTopics: CheckedTopics;
-  flaggedTopics: Record<string, boolean>;
-  mockSelectedTopics: Record<string, boolean>;
-  onClose: () => void;
-  onToggleOpen: (topicName: string | null) => void;
-  onToggleChecked: (
-    subject: SubjectKey,
-    sectionTitle: string,
-    topicName: string,
-  ) => void;
-  onToggleFlagged: (
-    subject: SubjectKey,
-    sectionTitle: string,
-    topicName: string,
-  ) => void;
-  onToggleMockSelected: (
-    subject: SubjectKey,
-    sectionTitle: string,
-    topicName: string,
-  ) => void;
 };
 
 export type TopicItemProps = {

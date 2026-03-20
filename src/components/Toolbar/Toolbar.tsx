@@ -1,9 +1,8 @@
+import {Button} from "@/components/shared/Button";
+
 import type {ToolbarProps} from "./types";
 
-import {Button} from "../shared/Button";
-
 export function Toolbar({
-  // subjectKey,
   searchTerm,
   onSearchChange,
   reviewedCount,
@@ -19,11 +18,10 @@ export function Toolbar({
   onShowMockQuestions,
   subjectScore,
 }: ToolbarProps) {
-  // const subjectScore = getSubjectScore(subjectKey);
   return (
     <div className="mb-4">
       <div className="mb-8 rounded-2xl border border-white/10 bg-surface-light p-4 shadow-sm">
-        <div className="flex flex-col gap-2 xl:flex-row xl:items-center justify-between">
+        <div className="flex flex-col gap-2 justify-between">
           <div className="flex-1">
             <input
               value={searchTerm}
@@ -33,7 +31,7 @@ export function Toolbar({
             />
           </div>
 
-          <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between xl:justify-end">
+          <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex lg:flex-row flex-wrap items-center gap-2 rounded-xl bg-black/20 px-4 py-4 lg:h-8 lg:py-0 shadow-sm shadow-primary-500/10 inset-shadow-sm inset-shadow-black/20">
               <label className="flex items-center gap-2 text-xs text-slate-300">
                 <input
@@ -115,14 +113,15 @@ export function Toolbar({
           </p>
         </div>
         <div className="flex flex-col lg:flex-row gap-2 lg:gap-0 items-center w-full lg:w-auto">
-          <Button
-            buttonLabel="Mock Interview"
-            buttonIcon="groups"
-            buttonStyle="primary"
-            handleClick={onShowMockQuestions}
-            extraClasses="w-full justify-center lg:w-auto lg:justify-normal"
-          />
-
+          {mockQuestionsCount !== 0 && (
+            <Button
+              buttonLabel="Mock Interview"
+              buttonIcon="groups"
+              buttonStyle="primary"
+              handleClick={onShowMockQuestions}
+              extraClasses="w-full justify-center lg:w-auto lg:justify-normal"
+            />
+          )}
           {subjectScore !== null && (
             <p className="lg:pl-4 text-xs text-center lg:text-left text-white/80">
               <span className="material-symbols-outlined align-middle mr-1 text-primary-400">

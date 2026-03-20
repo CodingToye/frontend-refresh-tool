@@ -1,6 +1,7 @@
+import {Button} from "@/components/shared/Button";
+import {subjectData} from "@/data/subjects";
+
 import type {MockInterviewCompleteProps} from "./types";
-import {subjectData} from "../../data/subjects";
-import {Button} from "../shared/Button";
 
 export function MockInterviewComplete({
   subject,
