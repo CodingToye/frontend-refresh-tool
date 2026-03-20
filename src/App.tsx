@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 
 import {MockInterview} from "@/components/MockInterview";
+import {ScoreBoard} from "@/components/ScoreBoard";
 import {SectionCard} from "@/components/SectionCard";
 import type {Section} from "@/components/SectionCard/types";
 import {Toast} from "@/components/shared/Toast";
@@ -141,8 +142,6 @@ export default function App() {
           subjectKey={subject}
           searchTerm={searchTerm}
           onSearchChange={setSearchTerm}
-          reviewedCount={reviewedCount}
-          flaggedCount={flaggedCount}
           mockQuestionsCount={mockQuestionsCount}
           onResetProgress={handleResetStudy}
           onResetInterviewProgress={() => {
@@ -158,8 +157,15 @@ export default function App() {
           showFlaggedOnly={showFlaggedOnly}
           onShowFlaggedOnlyChange={setShowFlaggedOnly}
           onShowMockQuestions={() => setShowMockQuestions(true)}
-          subjectScore={getSubjectScore(subject)}
         />
+
+        <ScoreBoard
+          reviewedCount={reviewedCount}
+          flaggedCount={flaggedCount}
+          subjectScore={getSubjectScore(subject)}
+          mockQuestionsCount={mockQuestionsCount}
+        />
+
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3 xl:grid-cols-4">
           {filteredSections.map((section) => {
             const totalTopics = section.items.length;

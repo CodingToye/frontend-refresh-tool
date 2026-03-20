@@ -2,8 +2,6 @@ export type ToolbarProps = {
   subjectKey: string;
   searchTerm: string;
   onSearchChange: (value: string) => void;
-  reviewedCount: number;
-  flaggedCount: number;
   mockQuestionsCount: number;
   onResetProgress: () => void;
   onResetInterviewProgress: () => void;
@@ -13,5 +11,4 @@ export type ToolbarProps = {
   showFlaggedOnly: boolean;
   onShowFlaggedOnlyChange: (value: boolean) => void;
   onShowMockQuestions: () => void;
-  subjectScore: number | null;
 };

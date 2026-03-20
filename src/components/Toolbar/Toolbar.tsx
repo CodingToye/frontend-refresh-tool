@@ -5,8 +5,6 @@ import type {ToolbarProps} from "./types";
 export function Toolbar({
   searchTerm,
   onSearchChange,
-  reviewedCount,
-  flaggedCount,
   mockQuestionsCount,
   onResetProgress,
   onResetInterviewProgress,
@@ -16,7 +14,6 @@ export function Toolbar({
   showFlaggedOnly,
   onShowFlaggedOnlyChange,
   onShowMockQuestions,
-  subjectScore,
 }: ToolbarProps) {
   return (
     <div className="mb-4">
@@ -32,104 +29,81 @@ export function Toolbar({
           </div>
 
           <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
-            <div className="flex lg:flex-row flex-wrap items-center gap-2 rounded-xl bg-black/20 px-4 py-4 lg:h-8 lg:py-0 shadow-sm shadow-primary-500/10 inset-shadow-sm inset-shadow-black/20">
-              <label className="flex items-center gap-2 text-xs text-slate-300">
-                <input
-                  type="checkbox"
-                  checked={showInterviewOnly}
-                  onChange={(e) => onShowInterviewOnlyChange(e.target.checked)}
-                  className="h-3 w-3 primary-500-primary-500"
-                />
-                Interview only
-              </label>
+            <div className="flex flex-col flex-wrap items-start gap-2 rounded-xl bg-black/20 p-4 shadow-sm shadow-primary-500/10 inset-shadow-sm inset-shadow-black/20">
+              <small
+                className="uppercase text-primary-600 font-bold"
+                style={{fontSize: "12px"}}
+              >
+                {/* <span className="material-symbols-outlined align-middle mr-1 text-primary-500">
+                  filter_alt
+                </span> */}
+                Filter Topics
+              </small>
+              <div className="flex flex-col lg:flex-row gap-4">
+                <label className="flex items-center gap-2 text-xxs text-slate-300">
+                  <input
+                    type="checkbox"
+                    checked={showInterviewOnly}
+                    onChange={(e) =>
+                      onShowInterviewOnlyChange(e.target.checked)
+                    }
+                    className="h-3 w-3 accent-primary-500"
+                  />
+                  Interview focused
+                </label>
 
-              <label className="flex items-center gap-2 text-xs text-slate-300">
-                <input
-                  type="checkbox"
-                  checked={showFlaggedOnly}
-                  onChange={(e) => onShowFlaggedOnlyChange(e.target.checked)}
-                  className="h-3 w-3 primary-500-primary-500"
-                />
-                Flagged only
-              </label>
+                <label className="flex items-center gap-2 text-xxs text-slate-300">
+                  <input
+                    type="checkbox"
+                    checked={showFlaggedOnly}
+                    onChange={(e) => onShowFlaggedOnlyChange(e.target.checked)}
+                    className="h-3 w-3 accent-primary-500"
+                  />
+                  Flagged for review
+                </label>
+              </div>
             </div>
 
-            <div className="flex flex-col lg:flex-row gap-2">
-              <Button
-                buttonLabel="Reset Study"
-                buttonStyle="tertiary"
-                buttonIcon="school"
-                handleClick={onResetProgress}
-              />
+            <div className="flex flex-col flex-wrap items-start gap-2 rounded-xl bg-black/20 p-4 shadow-sm shadow-primary-500/10 inset-shadow-sm inset-shadow-black/20">
+              <small
+                className="uppercase text-primary-600 font-bold"
+                style={{fontSize: "12px"}}
+              >
+                Actions
+              </small>
+              <div className="flex flex-col w-full lg:w-auto lg:flex-row gap-4">
+                {mockQuestionsCount !== 0 && (
+                  <Button
+                    buttonLabel="Take Mock Interview"
+                    buttonIcon="groups"
+                    buttonStyle="primary"
+                    handleClick={onShowMockQuestions}
+                    extraClasses="w-full justify-center lg:w-auto lg:justify-normal"
+                  />
+                )}
+                <Button
+                  buttonLabel="Reset Study"
+                  buttonStyle="tertiary"
+                  buttonIcon="school"
+                  handleClick={onResetProgress}
+                />
 
-              <Button
-                buttonLabel="Reset Interview"
-                buttonStyle="tertiary"
-                buttonIcon="groups"
-                handleClick={onResetInterviewProgress}
-              />
+                <Button
+                  buttonLabel="Reset Interview"
+                  buttonStyle="tertiary"
+                  buttonIcon="groups"
+                  handleClick={onResetInterviewProgress}
+                />
 
-              <Button
-                buttonLabel="Reset All"
-                buttonStyle="tertiary"
-                buttonIcon="warning"
-                handleClick={onResetAllProgress}
-              />
+                <Button
+                  buttonLabel="Reset All"
+                  buttonStyle="tertiary"
+                  buttonIcon="restart_alt"
+                  handleClick={onResetAllProgress}
+                />
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-      <div className="flex flex-col lg:flex-row gap-4 lg:gap-0 justify-between items-center bg-black/70 rounded-xl px-4 py-3 border border-black/90 text-xs text-white/50">
-        <div className="flex flex-col lg:flex-row gap-4 lg:gap-0">
-          <p
-            className={`text-xs text-left transition ${reviewedCount > 0 ? "opacity-100" : "opacity-50"}`}
-          >
-            <span className="material-symbols-outlined align-middle mr-1 text-primary-500">
-              check
-            </span>
-            {reviewedCount !== 1
-              ? `${reviewedCount} topics completed`
-              : `${reviewedCount} topic completed`}
-          </p>
-          <p
-            className={`text-xs lg:pl-4 text-left transition ${flaggedCount > 0 ? "opacity-100" : "opacity-50"}`}
-          >
-            <span className="material-symbols-outlined align-middle mr-1 text-primary-500">
-              flag
-            </span>
-            {flaggedCount !== 1
-              ? `${flaggedCount} topics flagged for review`
-              : `${flaggedCount} topic flagged for review`}
-          </p>
-          <p
-            className={`text-xs lg:pl-4 text-left transition ${mockQuestionsCount > 0 ? "opacity-100" : "opacity-50"}`}
-          >
-            <span className="material-symbols-outlined align-middle mr-1 text-secondary-500">
-              quick_reference
-            </span>
-            {mockQuestionsCount !== 1
-              ? `${mockQuestionsCount} topics added to mock interview`
-              : `${mockQuestionsCount} topic added to mock interview`}
-          </p>
-        </div>
-        <div className="flex flex-col lg:flex-row gap-2 lg:gap-0 items-center w-full lg:w-auto">
-          {mockQuestionsCount !== 0 && (
-            <Button
-              buttonLabel="Mock Interview"
-              buttonIcon="groups"
-              buttonStyle="primary"
-              handleClick={onShowMockQuestions}
-              extraClasses="w-full justify-center lg:w-auto lg:justify-normal"
-            />
-          )}
-          {subjectScore !== null && (
-            <p className="lg:pl-4 text-xs text-center lg:text-left text-white/80">
-              <span className="material-symbols-outlined align-middle mr-1 text-primary-400">
-                workspace_premium
-              </span>
-              Overall interview score {subjectScore}%
-            </p>
-          )}
         </div>
       </div>
     </div>
