@@ -213,7 +213,7 @@ export default function App() {
         />
       )}
 
-      <div className="flex flex-col gap-2 fixed top-10 right-10">
+      <div className="flex flex-col gap-2 fixed w-full lg:w-auto top-0 left-0 lg:top-10 lg:left-auto lg:right-10">
         {toasts.map((toast) => (
           <Toast
             key={toast.id}

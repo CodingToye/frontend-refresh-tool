@@ -15,7 +15,7 @@ export function Toast({
   const [isVisible, setIsVisible] = useState(true);
   const closeTimeoutRef = useRef<number | null>(null);
   const removeTimeoutRef = useRef<number | null>(null);
-  const baseClasses = `flex flex-col items-start relative overflow-hidden transition-all duration-300   px-3 py-1 ${extraClasses ?? ""}`;
+  const baseClasses = `flex flex-col items-center relative overflow-hidden transition-all duration-300   px-3 py-1 ${extraClasses ?? ""}`;
   const colourMap = {
     success: "bg-success-200 border-success-700 text-success-700",
     warning: "bg-warning-200 border-warning-700 text-warning-700",
@@ -70,15 +70,13 @@ export function Toast({
     <div
       className={`${baseClasses} ${colourClasses} ${isClosing ? "opacity-0 translate-y-2" : "opacity-100 translate-y-0"}`}
     >
-      <header className="flex flex-row items-center justify-between w-full">
-        <div className="flex">
-          {!toastIconDisabled && (
-            <span className="material-symbols-outlined material-filled text-sm! mr-1">
-              {toastIcon[toastStyle]}
-            </span>
-          )}
-          <h1 className="text-sm tracking-normal">{title}</h1>
-        </div>
+      <header className="flex flex-row items-start lg:items-center justify-between w-full">
+        {!toastIconDisabled && (
+          <span className="material-symbols-outlined material-filled text-sm! mr-1">
+            {toastIcon[toastStyle]}
+          </span>
+        )}
+        <h1 className="text-sm tracking-normal">{title}</h1>
         <button
           type="button"
           className="material-symbols-outlined cursor-pointer"
