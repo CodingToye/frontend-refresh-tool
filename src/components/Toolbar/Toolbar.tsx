@@ -78,7 +78,7 @@ export function Toolbar({
                     buttonIcon="groups"
                     buttonStyle="primary"
                     handleClick={onShowMockQuestions}
-                    extraClasses="w-full justify-center lg:w-auto lg:justify-normal"
+                    extraClasses="w-full lg:justify-center lg:w-auto lg:justify-normal"
                   />
                 )}
                 <Button
