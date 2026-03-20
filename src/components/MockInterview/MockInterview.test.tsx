@@ -1,4 +1,5 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { fireEvent,render, screen } from '@testing-library/react';
+
 import { MockInterview } from './MockInterview';
 import type { MockSessionQuestion } from './types';
 

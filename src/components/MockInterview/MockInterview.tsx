@@ -1,9 +1,9 @@
-import {useState, useEffect, useRef} from "react";
-import type {MockInterviewProps} from "./types";
+import {useEffect, useRef,useState} from "react";
 
-import {MockInterviewNoQuestions} from "./MockInterviewNoQuestions";
 import {MockInterviewComplete} from "./MockInterviewComplete";
+import {MockInterviewNoQuestions} from "./MockInterviewNoQuestions";
 import {MockInterviewQuestions} from "./MockInterviewQuestions";
+import type {MockInterviewProps} from "./types";
 
 export function MockInterview({
   subject,

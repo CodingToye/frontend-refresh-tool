@@ -1,5 +1,5 @@
-import type {RefreshProgress} from "../types/Progress.types";
-import {STORAGE_KEY} from "../constants/storage";
+import {STORAGE_KEY} from "@/constants/storage";
+import type {RefreshProgress} from "@/types/Progress.types";
 
 export const getStudyProgress = (): RefreshProgress => {
   return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");

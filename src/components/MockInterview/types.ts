@@ -1,4 +1,4 @@
-import type {SubjectKey} from "../../data/subjects";
+import type {SubjectKey} from "@/data/subjects";
 
 export type MockSessionQuestion = {
   id: string;

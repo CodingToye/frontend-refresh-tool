@@ -1,7 +1,9 @@
-import type {TopicModalProps} from "../types/Topic.types";
-import TopicItem from "./TopicItem";
-import {getTopicKey} from "../utils/topicKeys";
 import {useEffect, useState} from "react";
+
+import {TopicItem} from "@/components/TopicItem";
+import {getTopicKey} from "@/utils/topicKeys";
+
+import type {TopicModalProps} from "./types";
 
 export function TopicModal({
   subject,

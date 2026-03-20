@@ -1,13 +1,15 @@
-import {subjectData} from "../data/subjects";
+import type {MockSessionQuestion} from "@/components/MockInterview/types";
+import type {Section} from "@/components/SectionCard/types";
+import type {SubjectKey} from "@/data/subjects";
+import {subjectData} from "@/data/subjects";
+
 import {getTopicKey} from "./topicKeys";
-import type {SubjectKey} from "../data/subjects";
-import type {MockSessionQuestion} from "../components/MockInterview/types";
 
 export const getMockSessionQuestions = (
   subject: SubjectKey,
   mockSelectedTopics: Record<string, boolean>,
 ): MockSessionQuestion[] => {
-  const sections = subjectData[subject].sections;
+  const sections: Section[] = subjectData[subject].sections;
 
   return sections.flatMap((section) =>
     section.items.flatMap((item) => {

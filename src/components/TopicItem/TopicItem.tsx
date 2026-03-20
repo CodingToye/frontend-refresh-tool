@@ -1,9 +1,11 @@
 import {Prism as SyntaxHighlighter} from "react-syntax-highlighter";
 import {nord} from "react-syntax-highlighter/dist/esm/styles/prism";
-import {subjectData} from "../data/subjects";
-import type {TopicItemProps} from "../types/Topic.types";
 
-function TopicItem({
+import {subjectData} from "@/data/subjects";
+
+import type {TopicItemProps} from "./types";
+
+export function TopicItem({
   item,
   subject,
   sectionTitle,
@@ -26,7 +28,7 @@ function TopicItem({
           : "border-black/50 bg-card hover:bg-card-hover hover:border-black"
       } ${isOpen ? "bg-card-hover" : ""}`}
     >
-      <div className="flex items-start lg:items-center gap-3">
+      <div className="flex items-start gap-3">
         <input
           type="checkbox"
           checked={isChecked}
@@ -41,14 +43,14 @@ function TopicItem({
             if (e.key === "ArrowDown") onArrowDown();
             if (e.key === "ArrowUp") onArrowUp();
           }}
-          className="flex flex-1 items-start lg:items-center justify-between lg:gap-4 text-left group"
+          className="flex flex-1 items-start justify-between lg:gap-4 text-left group"
         >
           <div className="flex items-center gap-3 w-full justify-between">
             <div className="flex flex-col">
               <span className="font-medium text-slate-100">{item.name}</span>
 
               {item.interview && (
-                <span className="lg:ml-2 rounded bg-primary-500 px-1 lg:px-2 lg:py-0.5 text-xxs text-black shadow-lg shadow-white/10">
+                <span className="rounded bg-primary-500 px-1 lg:px-2 text-xxs text-black shadow-lg shadow-white/10">
                   Potential interview question
                 </span>
               )}
@@ -153,9 +155,9 @@ function TopicItem({
                   onToggleMockSelected(subject, sectionTitle, item.name);
                 }}
                 disabled={isChecked}
-                className={`rounded bg-surface px-2 py-0.5 text-xxs font-medium text-white transition  ${isMockSelected ? "opacity-100 inset-shadow-sm inset-shadow-black shadow-lg shadow-white/10" : "opacity-20"}`}
+                className={`rounded bg-tertiary-500 hover:bg-tertiary-800 px-2 py-0.5 text-xxs font-medium text-white transition  ${isMockSelected ? "opacity-100 inset-shadow-sm inset-shadow-black shadow-lg shadow-white/10" : "opacity-50"}`}
               >
-                Mock interview question
+                Add mock interview questions
               </button>
             )}
 
@@ -165,7 +167,7 @@ function TopicItem({
                 onToggleFlagged(subject, sectionTitle, item.name);
               }}
               disabled={isChecked}
-              className={`rounded bg-surface px-2 py-0.5 text-xxs font-medium text-white transition  ${isFlagged ? "opacity-100 inset-shadow-sm inset-shadow-black shadow-lg shadow-white/10" : "opacity-20"}`}
+              className={`rounded bg-tertiary-500 hover:bg-tertiary-800 px-2 py-0.5 text-xxs font-medium text-white transition  ${isFlagged ? "opacity-100 inset-shadow-sm inset-shadow-black shadow-lg shadow-white/10" : "opacity-50"}`}
             >
               Flag for review
             </button>
@@ -175,5 +177,3 @@ function TopicItem({
     </li>
   );
 }
-
-export default TopicItem;

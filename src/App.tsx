@@ -1,21 +1,19 @@
 import {useEffect, useState} from "react";
 
-import {subjectData} from "./data/subjects";
-import type {SubjectKey} from "./data/subjects";
-
-import {Toolbar} from "./components/Toolbar";
-import SectionCard from "./components/SectionCard";
-import {TopicModal} from "./components/TopicModal";
-import {MockInterview} from "./components/MockInterview";
-import {SubjectNav} from "./components/SubjectNav";
-
-import {getTopicKey} from "./utils/topicKeys";
-import {filterSections} from "./utils/filterSections";
-import {getMockSessionQuestions} from "./utils/getMockSessionQuestions";
-
-import {useLearningProgress} from "./hooks/useLearningProgress";
-
-import type {Section} from "./types/Section.types";
+import {MockInterview} from "@/components/MockInterview";
+import {SectionCard} from "@/components/SectionCard";
+import type {Section} from "@/components/SectionCard/types";
+import {Toast} from "@/components/shared/Toast";
+import {SubjectNav} from "@/components/SubjectNav";
+import {Toolbar} from "@/components/Toolbar";
+import {TopicModal} from "@/components/TopicModal";
+import type {SubjectKey} from "@/data/subjects";
+import {subjectData} from "@/data/subjects";
+import {useLearningProgress} from "@/hooks/useLearningProgress";
+import {useToasts} from "@/hooks/useToasts";
+import {filterSections} from "@/utils/filterSections";
+import {getMockSessionQuestions} from "@/utils/getMockSessionQuestions";
+import {getTopicKey} from "@/utils/topicKeys";
 
 export default function App() {
   const [subject, setSubject] = useState<SubjectKey>("react");
@@ -44,6 +42,8 @@ export default function App() {
     resetInterviewProgress,
     resetAllProgress,
   } = useLearningProgress();
+
+  const {toasts, addToast, removeToast, clearToasts} = useToasts();
 
   const filteredSections = filterSections({
     sections,
@@ -100,8 +100,28 @@ export default function App() {
     },
   ).length;
 
+  function handleResetStudy() {
+    resetStudyProgress(subject);
+    addToast({
+      toastStyle: "success",
+      title: "Study reset",
+      message: "Your study progress has been reset.",
+    });
+  }
+
+  function handleResetAll() {
+    resetAllProgress(subject);
+    clearToasts();
+
+    addToast({
+      toastStyle: "success",
+      title: "Everything reset",
+      message: "All study progress has been cleared",
+    });
+  }
+
   return (
-    <div className="min-h-screen bg-bg p-10 pt-0 text-text">
+    <div className="min-h-screen bg-bg p-10 pt-0 lg:pt-10 text-text">
       <SubjectNav
         subjects={subjects}
         subject={subject}
@@ -124,13 +144,13 @@ export default function App() {
           reviewedCount={reviewedCount}
           flaggedCount={flaggedCount}
           mockQuestionsCount={mockQuestionsCount}
-          onResetProgress={() => resetStudyProgress(subject)}
+          onResetProgress={handleResetStudy}
           onResetInterviewProgress={() => {
             resetInterviewProgress(subject);
             setMockInterviewResetKey((prev) => prev + 1);
           }}
           onResetAllProgress={() => {
-            resetAllProgress(subject);
+            handleResetAll();
             setMockInterviewResetKey((prev) => prev + 1);
           }}
           showInterviewOnly={showInterviewOnly}
@@ -192,6 +212,18 @@ export default function App() {
           onToggleFlagged={toggleTopicFlagged}
         />
       )}
+
+      <div className="flex flex-col gap-2 fixed w-full lg:w-auto top-0 left-0 lg:top-10 lg:left-auto lg:right-10">
+        {toasts.map((toast) => (
+          <Toast
+            key={toast.id}
+            title={toast.title}
+            message={toast.message}
+            toastStyle={toast.toastStyle}
+            onDismiss={() => removeToast(toast.id)}
+          />
+        ))}
+      </div>
     </div>
   );
 }
