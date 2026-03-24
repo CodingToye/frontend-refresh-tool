@@ -1,6 +1,6 @@
 import type {SubjectKey} from "@/data/subjects";
 import type {InterviewAttempt} from "@/types/Interviews.types";
-import type {TopicReviewLevel} from "@/types/Progress.types";
+import type {TopicReviewLevel} from "@/utils/TopicReviewLevel";
 
 export type MockSessionQuestion = {
   id: string;

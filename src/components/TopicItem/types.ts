@@ -23,7 +23,7 @@ export type TopicItemProps = {
   isChecked: boolean;
   isFlagged: boolean;
   isMockSelected: boolean;
-  trend?: TrendLevel;
+  trend?: TrendLevel | null;
   onToggleOpen: () => void;
   onToggleChecked: (
     subject: SubjectKey,
