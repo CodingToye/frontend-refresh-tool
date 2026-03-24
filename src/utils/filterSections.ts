@@ -1,12 +1,13 @@
 import type {Section} from "@/components/SectionCard/types";
 import type {SubjectKey} from "@/data/subjects";
+import type {TopicReviewLevel} from "@/types/Progress.types";
 
 import {getTopicKey} from "./topicKeys";
 
 type FilterSectionsArgs = {
   sections: Section[];
   subject: SubjectKey;
-  flaggedTopics: Record<string, boolean>;
+  flaggedTopics: Record<string, TopicReviewLevel>;
   showInterviewOnly: boolean;
   showFlaggedOnly: boolean;
   searchTerm: string;

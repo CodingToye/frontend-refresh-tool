@@ -1,6 +1,9 @@
+import type {TopicReviewLevel} from "@/utils/TopicReviewLevel/types";
+export type TrendLevel = "up" | "down" | "same";
+
 export type SectionProgress = {
   completedTopics: Record<string, boolean>;
-  flaggedTopics: Record<string, boolean>;
+  flaggedTopics: Record<string, TopicReviewLevel>;
   mockQuestions: Record<string, boolean>;
   interviewScore?: number;
 };

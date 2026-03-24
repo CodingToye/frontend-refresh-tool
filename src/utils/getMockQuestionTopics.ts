@@ -6,7 +6,7 @@ import {getTopicKey} from "./topicKeys";
 export const getMockQuestionTopics = (
   sections: Section[],
   subject: SubjectKey,
-  flaggedTopics: Record<string, boolean>,
+  flaggedTopics: Record<string, "poor" | "weak">,
 ) => {
   return sections
     .flatMap((section) =>

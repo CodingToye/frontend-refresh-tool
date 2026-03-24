@@ -1,4 +1,5 @@
 export type ToolbarProps = {
+  interviewButtonMode: "take" | "view" | "retake" | null;
   subjectKey: string;
   searchTerm: string;
   onSearchChange: (value: string) => void;
@@ -11,4 +12,12 @@ export type ToolbarProps = {
   showFlaggedOnly: boolean;
   onShowFlaggedOnlyChange: (value: boolean) => void;
   onShowMockQuestions: () => void;
+};
+
+export type ActionButtonConfig = {
+  buttonLabel: string | number;
+  buttonIcon?: string;
+  buttonStyle?: "primary" | "secondary" | "tertiary";
+  handleClick: () => void;
+  extraClasses?: string;
 };

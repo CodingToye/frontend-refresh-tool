@@ -73,6 +73,7 @@ export function MockInterviewQuestions({
             <div className="flex justify-center lg:justify-end">
               <Button
                 buttonLabel="Reveal Answer"
+                buttonIcon="visibility"
                 buttonStyle="primary"
                 handleClick={onHandleReveal}
               />
@@ -95,7 +96,7 @@ export function MockInterviewQuestions({
                     onClick={() => onHandleScore(0)}
                     className="rounded-xl bg-danger-400 px-4 py-1 text-xs text-white shadow-lg shadow-white/10 transition hover:bg-danger-600"
                   >
-                    0 - Missed
+                    0 - Poor
                   </button>
                   <button
                     onClick={() => onHandleScore(1)}

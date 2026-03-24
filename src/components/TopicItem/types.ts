@@ -1,4 +1,5 @@
 import type {SubjectKey} from "@/data/subjects";
+import type {TrendLevel} from "@/types/Progress.types";
 
 export type MockQuestion = {
   id: string;
@@ -22,13 +23,9 @@ export type TopicItemProps = {
   isChecked: boolean;
   isFlagged: boolean;
   isMockSelected: boolean;
+  trend?: TrendLevel | null;
   onToggleOpen: () => void;
   onToggleChecked: (
-    subject: SubjectKey,
-    sectionTitle: string,
-    topicName: string,
-  ) => void;
-  onToggleFlagged: (
     subject: SubjectKey,
     sectionTitle: string,
     topicName: string,
@@ -38,6 +35,7 @@ export type TopicItemProps = {
     sectionTitle: string,
     topicName: string,
   ) => void;
+  onToggleFlagSelected: () => void;
   onArrowUp: () => void;
   onArrowDown: () => void;
 };

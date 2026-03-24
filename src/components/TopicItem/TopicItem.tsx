@@ -3,7 +3,23 @@ import {nord} from "react-syntax-highlighter/dist/esm/styles/prism";
 
 import {subjectData} from "@/data/subjects";
 
+import {Tag} from "../shared/Tag";
 import type {TopicItemProps} from "./types";
+
+const trendStyles = {
+  up: {
+    icon: "trending_up",
+    className: "text-success-300",
+  },
+  down: {
+    icon: "trending_down",
+    className: "text-danger-500",
+  },
+  same: {
+    icon: "horizontal_rule",
+    className: "text-warning-300",
+  },
+} as const;
 
 export function TopicItem({
   item,
@@ -13,77 +29,91 @@ export function TopicItem({
   isChecked,
   isFlagged,
   isMockSelected,
+  trend,
   onToggleOpen,
   onToggleChecked,
-  onToggleFlagged,
   onToggleMockSelected,
+  onToggleFlagSelected,
   onArrowUp,
   onArrowDown,
 }: TopicItemProps) {
+  // Data
+  const fileType = subjectData[subject].fileType;
+  const trendStyle = trend ? trendStyles[trend] : null;
+
+  // Handlers
+  const handleToggleChecked = () =>
+    onToggleChecked(subject, sectionTitle, item.name);
+  const handleToggleMockSelected = () =>
+    onToggleMockSelected(subject, sectionTitle, item.name);
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (e.key === "ArrowDown") onArrowDown();
+    if (e.key === "ArrowUp") onArrowUp();
+  };
+
+  // Presentation
+  const baseItemClasses =
+    "w-full rounded-lg border px-3 py-3 text-left transition inset-shadow-sm inset-shadow-primary/20";
+  const checkedClasses = isChecked
+    ? "border-black/50 bg-card/50 hover:bg-card-hover/50 opacity-25 inset-shadow-sm inset-shadow-black"
+    : "border-black/50 bg-card hover:bg-card-hover hover:border-black";
+  const openClasses = isOpen ? "bg-card-hover" : "";
+
+  // Render
   return (
-    <li
-      className={`w-full rounded-lg border px-3 py-3 text-left transition inset-shadow-sm inset-shadow-primary/20 ${
-        isChecked
-          ? "border-black/50 bg-card/50 hover:bg-card-hover/50 opacity-25 inset-shadow-sm inset-shadow-black"
-          : "border-black/50 bg-card hover:bg-card-hover hover:border-black"
-      } ${isOpen ? "bg-card-hover" : ""}`}
-    >
-      <div className="flex items-start gap-3">
+    <li className={`${baseItemClasses} ${checkedClasses} ${openClasses}`}>
+      <div className="flex items-center gap-3">
         <input
           type="checkbox"
           checked={isChecked}
-          onChange={() => onToggleChecked(subject, sectionTitle, item.name)}
+          onChange={handleToggleChecked}
           className="h-4 w-4 shrink-0 rounded border-slate-600 bg-slate-800 accent-primary-500 cursor-pointer"
         />
 
         <button
           type="button"
           onClick={onToggleOpen}
-          onKeyDown={(e) => {
-            if (e.key === "ArrowDown") onArrowDown();
-            if (e.key === "ArrowUp") onArrowUp();
-          }}
+          onKeyDown={handleKeyDown}
           className="flex flex-1 items-start justify-between lg:gap-4 text-left group"
         >
-          <div className="flex items-center gap-3 w-full justify-between">
-            <div className="flex flex-col">
+          <div className="flex items-start gap-3 w-full justify-between">
+            <div className="flex flex-row gap-2 items-start">
               <span className="font-medium text-slate-100">{item.name}</span>
-
-              {item.interview && (
-                <span className="rounded bg-primary-500 px-1 lg:px-2 text-xxs text-black shadow-lg shadow-white/10">
-                  Potential interview question
-                </span>
-              )}
+              <div>
+                {trendStyle && (
+                  <span
+                    className={`material-symbols-outlined align-middle mr-2 ${trendStyle.className}`}
+                  >
+                    {trendStyle.icon}
+                  </span>
+                )}
+              </div>
             </div>
 
             <div className="hidden lg:flex gap-2 justify-end">
+              {item.interview && (
+                <Tag
+                  tagLabel="Potential interview question"
+                  tagStyle="primary"
+                />
+              )}
               {isMockSelected && (
-                <span className="flex items-center bg-secondary-500 border border-black/70 px-2 pl-3 text-xxs text-black/70 rounded shadow-lg shadow-white/10">
-                  Mock interview question{" "}
-                  <span
-                    className="material-symbols-outlined pl-1 leading-none! text-sm!"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onToggleMockSelected(subject, sectionTitle, item.name);
-                    }}
-                  >
-                    close
-                  </span>
-                </span>
+                <Tag
+                  tagLabel="Mock interview question"
+                  tagStyle="secondary"
+                  tagVariant
+                  tagClose
+                  onClose={handleToggleMockSelected}
+                />
               )}
               {isFlagged && (
-                <span className="flex items-center bg-secondary-500 border border-black/70 px-2 pl-3 text-xxs text-black/70 rounded shadow-lg shadow-white/10">
-                  Flagged for review
-                  <span
-                    className="material-symbols-outlined pl-1 leading-none! text-sm!"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onToggleFlagged(subject, sectionTitle, item.name);
-                    }}
-                  >
-                    close
-                  </span>
-                </span>
+                <Tag
+                  tagLabel="Flagged for review"
+                  tagStyle="poor"
+                  tagVariant
+                  tagClose
+                  onClose={onToggleFlagSelected}
+                />
               )}
             </div>
           </div>
@@ -113,10 +143,10 @@ export function TopicItem({
           {item.code && (
             <div className="relative hidden lg:block">
               <span className="absolute top-0 right-10 text-xxs bg-secondary text-black px-2 uppercase shadow-lg shadow-secondary/30 rounded-b ">
-                {subjectData[subject].fileType}
+                {fileType}
               </span>
               <SyntaxHighlighter
-                language={subjectData[subject].fileType}
+                language={fileType}
                 style={nord}
                 PreTag="pre"
                 CodeTag="code"
@@ -152,7 +182,7 @@ export function TopicItem({
               <button
                 onClick={(e) => {
                   e.stopPropagation();
-                  onToggleMockSelected(subject, sectionTitle, item.name);
+                  handleToggleMockSelected();
                 }}
                 disabled={isChecked}
                 className={`rounded bg-tertiary-500 hover:bg-tertiary-800 px-2 py-0.5 text-xxs font-medium text-white transition  ${isMockSelected ? "opacity-100 inset-shadow-sm inset-shadow-black shadow-lg shadow-white/10" : "opacity-50"}`}
@@ -160,17 +190,6 @@ export function TopicItem({
                 Add mock interview questions
               </button>
             )}
-
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                onToggleFlagged(subject, sectionTitle, item.name);
-              }}
-              disabled={isChecked}
-              className={`rounded bg-tertiary-500 hover:bg-tertiary-800 px-2 py-0.5 text-xxs font-medium text-white transition  ${isFlagged ? "opacity-100 inset-shadow-sm inset-shadow-black shadow-lg shadow-white/10" : "opacity-50"}`}
-            >
-              Flag for review
-            </button>
           </div>
         </div>
       )}

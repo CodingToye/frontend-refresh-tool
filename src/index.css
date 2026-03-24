@@ -52,15 +52,17 @@
   --color-info-700: #37778b;
   --color-info-800: #285665;
 
+  --color-primary-300: #9fdedd;
   --color-primary-400: #7dcbc9;
   --color-primary-500: #5bc0be;
   --color-primary-600: #42a1a0;
   --color-primary-700: #288280;
+  --color-primary-800: #1f6665;
 
   --color-secondary-400: #ffca82;
   --color-secondary-500: #ff9f1c;
   --color-secondary-600: #6b5d06;
-  --color-secondary-text: #1c2541;
+  --color-secondary-700: #1c2541;
 
   --color-tertiary-200: #798194;
   --color-tertiary-300: #4a5268;
@@ -144,12 +146,12 @@ h1 {
   }
 }
 h2 {
-  font-size: 24px;
+  font-size: 24px !default;
   line-height: 118%;
-  letter-spacing: -0.24px;
+  letter-spacing: -0.24px !default;
   margin: 0 0 8px;
   @media (max-width: 1024px) {
-    font-size: 20px;
+    font-size: 20px !default;
   }
 }
 p {

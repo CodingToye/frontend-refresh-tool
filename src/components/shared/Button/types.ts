@@ -1,5 +1,5 @@
 export type ButtonProps = {
-  buttonLabel: string;
+  buttonLabel: string | number;
   buttonIcon?: string;
   buttonStyle?: "primary" | "secondary" | "tertiary";
   handleClick: () => void;
