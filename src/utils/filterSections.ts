@@ -1,6 +1,6 @@
 import type {Section} from "@/components/SectionCard/types";
 import type {SubjectKey} from "@/data/subjects";
-import type {TopicReviewLevel} from "@/types/Progress.types";
+import type {TopicReviewLevel} from "@/utils/TopicReviewLevel";
 
 import {getTopicKey} from "./topicKeys";
 
