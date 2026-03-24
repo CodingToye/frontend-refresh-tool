@@ -1,4 +1,7 @@
-import {useEffect, useRef,useState} from "react";
+import {useEffect, useRef, useState} from "react";
+
+import type {TopicReviewLevel} from "@/utils/TopicReviewLevel";
+import {getTopicReviewLevel} from "@/utils/TopicReviewLevel";
 
 import {MockInterviewComplete} from "./MockInterviewComplete";
 import {MockInterviewNoQuestions} from "./MockInterviewNoQuestions";
@@ -10,6 +13,8 @@ export function MockInterview({
   showMockQuestions,
   setShowMockQuestions,
   saveInterviewScore,
+  saveInterviewAttempt,
+  setTopicFlagged,
   questions,
 }: MockInterviewProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -53,8 +58,35 @@ export function MockInterview({
       saveInterviewScore(subject, sectionTitle, sectionPercentage);
     });
 
+    const topicResults: Record<string, TopicReviewLevel> = {};
+    const topicKeys = [...new Set(questions.map((q) => q.key))];
+
+    topicKeys.forEach((topicKey) => {
+      const topicScores = questions
+        .filter((q) => q.key === topicKey)
+        .map((q) => scores[q.id] ?? 0);
+
+      const topicLevel = getTopicReviewLevel(topicScores);
+
+      if (topicLevel) {
+        topicResults[topicKey] = topicLevel;
+      }
+    });
+
+    saveInterviewAttempt(subject, {
+      date: new Date().toISOString(),
+      topics: topicResults,
+    });
+
     savedScoreRef.current = true;
-  }, [isComplete, questions, scores, subject, saveInterviewScore]);
+  }, [
+    isComplete,
+    questions,
+    scores,
+    subject,
+    saveInterviewScore,
+    saveInterviewAttempt,
+  ]);
 
   if (!showMockQuestions) {
     return null;
@@ -83,10 +115,19 @@ export function MockInterview({
   const handleScore = (score: number) => {
     if (!currentQuestion) return;
 
-    setScores((prev) => ({
-      ...prev,
+    const updatedScores = {
+      ...scores,
       [currentQuestion.id]: score,
-    }));
+    };
+
+    setScores(updatedScores);
+
+    const topicScores = questions
+      .filter((question) => question.key === currentQuestion.key)
+      .map((question) => updatedScores[question.id] ?? 0);
+
+    const topicLevel = getTopicReviewLevel(topicScores);
+    setTopicFlagged(currentQuestion.key, topicLevel);
 
     if (isLastQuestion) {
       setCurrentIndex((prev) => prev + 1);

@@ -16,6 +16,8 @@ import {filterSections} from "@/utils/filterSections";
 import {getMockSessionQuestions} from "@/utils/getMockSessionQuestions";
 import {getTopicKey} from "@/utils/topicKeys";
 
+import {getSubjectMetrics} from "./utils/SubjectMetrics";
+
 export default function App() {
   const [subject, setSubject] = useState<SubjectKey>("react");
   const [selectedSection, setSelectedSection] = useState<Section | null>(null);
@@ -34,15 +36,50 @@ export default function App() {
     flaggedTopics,
     mockSelectedTopics,
     saveInterviewScore,
+    saveInterviewAttempt,
     getInterviewScore,
     getSubjectScore,
     toggleTopicChecked,
-    toggleTopicFlagged,
+    setTopicFlagged,
     toggleMockSelected,
     resetStudyProgress,
     resetInterviewProgress,
     resetAllProgress,
+    interviewHistory,
+    getTopicTrend,
   } = useLearningProgress();
+
+  const {
+    reviewedCount,
+    poorCount,
+    weakCount,
+    decentCount,
+    strongCount,
+    mockQuestionsCount,
+    poorTrend,
+    weakTrend,
+    decentTrend,
+    strongTrend,
+  } = getSubjectMetrics({
+    subject,
+    checkedTopics,
+    flaggedTopics,
+    mockSelectedTopics,
+    interviewHistory,
+  });
+
+  const subjectInterviewHistory = interviewHistory[subject] ?? [];
+  const hasInterviewHistory = subjectInterviewHistory.length > 0;
+  const hasInterviewScore = getSubjectScore(subject) !== null;
+
+  const interviewButtonMode =
+    mockQuestionsCount === 0
+      ? null
+      : !hasInterviewHistory
+        ? "take"
+        : hasInterviewScore
+          ? "view"
+          : "retake";
 
   const {toasts, addToast, removeToast, clearToasts} = useToasts();
 
@@ -87,20 +124,6 @@ export default function App() {
     setExpandedTopic(null);
   };
 
-  const reviewedCount = Object.entries(checkedTopics).filter(
-    ([key, value]) => key.startsWith(`${subject}::`) && value,
-  ).length;
-
-  const flaggedCount = Object.entries(flaggedTopics).filter(([key, value]) => {
-    return key.startsWith(`${subject}::`) && value;
-  }).length;
-
-  const mockQuestionsCount = Object.entries(mockSelectedTopics).filter(
-    ([key, value]) => {
-      return key.startsWith(`${subject}::`) && value;
-    },
-  ).length;
-
   function handleResetStudy() {
     resetStudyProgress(subject);
     addToast({
@@ -122,7 +145,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-bg p-10 pt-0 lg:pt-10 text-text">
+    <div className="min-h-screen bg-bg p-4 lg:p-10 pt-0 lg:pt-10 text-text">
       <SubjectNav
         subjects={subjects}
         subject={subject}
@@ -157,11 +180,20 @@ export default function App() {
           showFlaggedOnly={showFlaggedOnly}
           onShowFlaggedOnlyChange={setShowFlaggedOnly}
           onShowMockQuestions={() => setShowMockQuestions(true)}
+          interviewButtonMode={interviewButtonMode}
         />
 
         <ScoreBoard
           reviewedCount={reviewedCount}
-          flaggedCount={flaggedCount}
+          // flaggedCount={flaggedCount}
+          poorCount={poorCount}
+          weakCount={weakCount}
+          decentCount={decentCount}
+          strongCount={strongCount}
+          poorTrend={poorTrend}
+          weakTrend={weakTrend}
+          decentTrend={decentTrend}
+          strongTrend={strongTrend}
           subjectScore={getSubjectScore(subject)}
           mockQuestionsCount={mockQuestionsCount}
         />
@@ -184,6 +216,8 @@ export default function App() {
                 flaggedTopics={flaggedTopics}
                 mockQuestions={mockSelectedTopics}
                 interviewScore={getInterviewScore(subject, section.title)}
+                interviewHistory={interviewHistory}
+                getTopicTrend={getTopicTrend}
                 onOpen={() => {
                   setSelectedSection(section);
                   setExpandedTopic(null);
@@ -201,6 +235,8 @@ export default function App() {
         setShowMockQuestions={setShowMockQuestions}
         questions={mockSessionQuestions}
         saveInterviewScore={saveInterviewScore}
+        saveInterviewAttempt={saveInterviewAttempt}
+        setTopicFlagged={setTopicFlagged}
       />
 
       {selectedSection && (
@@ -213,9 +249,11 @@ export default function App() {
           onToggleOpen={setExpandedTopic}
           onToggleChecked={toggleTopicChecked}
           flaggedTopics={flaggedTopics}
+          interviewHistory={interviewHistory}
           mockSelectedTopics={mockSelectedTopics}
           onToggleMockSelected={toggleMockSelected}
-          onToggleFlagged={toggleTopicFlagged}
+          setTopicFlagged={setTopicFlagged}
+          getTopicTrend={getTopicTrend}
         />
       )}
 

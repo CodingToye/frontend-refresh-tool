@@ -1,12 +1,18 @@
 import type {CheckedTopics} from "@/components/TopicModal/types";
 import {
   FLAGGED_STORAGE_KEY,
+  INTERVIEW_HISTORY_STORAGE_KEY,
   INTERVIEW_SCORE_STORAGE_KEY,
   MOCK_SELECTED_STORAGE_KEY,
   STORAGE_KEY,
 } from "@/constants/storage";
 import type {SubjectKey} from "@/data/subjects";
+import type {
+  InterviewAttempt,
+  InterviewHistory,
+} from "@/types/Interviews.types";
 import {getTopicKey} from "@/utils/topicKeys";
+import type {TopicReviewLevel} from "@/utils/TopicReviewLevel/types";
 
 import {useLocalStorageState} from "./useLocalStorageState";
 
@@ -15,9 +21,11 @@ export function useLearningProgress() {
     STORAGE_KEY,
     {},
   );
+  const [interviewHistory, setInterviewHistory] =
+    useLocalStorageState<InterviewHistory>(INTERVIEW_HISTORY_STORAGE_KEY, {});
 
   const [flaggedTopics, setFlaggedTopics] = useLocalStorageState<
-    Record<string, boolean>
+    Record<string, TopicReviewLevel>
   >(FLAGGED_STORAGE_KEY, {});
 
   const [mockSelectedTopics, setMockSelectedTopics] = useLocalStorageState<
@@ -53,17 +61,22 @@ export function useLearningProgress() {
     });
   };
 
-  const toggleTopicFlagged = (
-    subject: SubjectKey,
-    sectionTitle: string,
-    topicName: string,
+  const setTopicFlagged = (
+    topicKey: string,
+    level: TopicReviewLevel | null,
   ) => {
-    const key = getTopicKey(subject, sectionTitle, topicName);
+    console.log(topicKey, flaggedTopics[topicKey]);
+    setFlaggedTopics((prev) => {
+      const updated = {...prev};
 
-    setFlaggedTopics((prev) => ({
-      ...prev,
-      [key]: !prev[key],
-    }));
+      if (level) {
+        updated[topicKey] = level;
+      } else {
+        delete updated[topicKey];
+      }
+
+      return updated;
+    });
   };
 
   const toggleMockSelected = (
@@ -118,6 +131,34 @@ export function useLearningProgress() {
     });
   };
 
+  const levelRank = {
+    poor: 0,
+    weak: 1,
+    decent: 2,
+    strong: 3,
+  } as const;
+
+  const getTopicTrend = (
+    previous?: TopicReviewLevel,
+    current?: TopicReviewLevel,
+  ) => {
+    if (!previous || !current) return null;
+    if (levelRank[current] > levelRank[previous]) return "up";
+    if (levelRank[current] < levelRank[previous]) return "down";
+
+    return "same";
+  };
+
+  const saveInterviewAttempt = (
+    subjectKey: string,
+    attempt: InterviewAttempt,
+  ) => {
+    setInterviewHistory((prev) => ({
+      ...prev,
+      [subjectKey]: [...(prev[subjectKey] ?? []), attempt],
+    }));
+  };
+
   const resetStudyProgress = (subject: SubjectKey) => {
     setCheckedTopics((prev) =>
       Object.fromEntries(
@@ -158,6 +199,11 @@ export function useLearningProgress() {
     setFlaggedTopics((prev) => removeSubjectEntries(prev, subject));
     setMockSelectedTopics((prev) => removeSubjectEntries(prev, subject));
     setInterviewScores((prev) => removeSubjectEntries(prev, subject));
+    setInterviewHistory((prev) => {
+      const next = {...prev};
+      delete next[subject];
+      return next;
+    });
   };
 
   return {
@@ -165,14 +211,17 @@ export function useLearningProgress() {
     flaggedTopics,
     mockSelectedTopics,
     interviewScores,
+    interviewHistory,
     toggleTopicChecked,
-    toggleTopicFlagged,
+    setTopicFlagged,
     toggleMockSelected,
     saveInterviewScore,
+    saveInterviewAttempt,
     resetStudyProgress,
     resetInterviewProgress,
     resetAllProgress,
     getInterviewScore,
     getSubjectScore,
+    getTopicTrend,
   };
 }
