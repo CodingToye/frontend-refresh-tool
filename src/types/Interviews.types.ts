@@ -1,4 +1,4 @@
-import type {TopicReviewLevel} from "./Progress.types";
+import type {TopicReviewLevel} from "@/utils/TopicReviewLevel";
 
 export type InterviewAttempt = {
   date: string;
