@@ -1,4 +1,3 @@
-import {Badge} from "@/components/shared/Badge";
 import type {TrendLevel} from "@/types/Progress.types";
 import {buildSparklinePath} from "@/utils/buildSparklinePath";
 import {getTopicKey} from "@/utils/topicKeys";

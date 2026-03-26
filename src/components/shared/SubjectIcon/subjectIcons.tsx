@@ -332,7 +332,7 @@ export function TestIcon({className}: {className?: string}) {
         </filter>
       </defs>
       <use
-        xlink:href="#i"
+        xlinkHref="#i"
         width="100%"
         height="100%"
         mask="url(#j)"
@@ -351,42 +351,42 @@ export function TestIcon({className}: {className?: string}) {
         d="M90.975 14.882c.515-1.334-3.206-4.001-8.311-5.955-5.106-1.954-9.665-2.453-10.183-1.119-.516 1.337 3.205 4.004 8.31 5.955 5.11 1.954 9.665 2.455 10.184 1.119zm0 0"
       ></path>
       <use
-        xlink:href="#m"
+        xlinkHref="#m"
         width="100%"
         height="100%"
         mask="url(#n)"
         transform="translate(17.464 -.608) scale(.72491)"
       ></use>
       <use
-        xlink:href="#o"
+        xlinkHref="#o"
         width="100%"
         height="100%"
         mask="url(#p)"
         transform="translate(17.464 -.608) scale(.72491)"
       ></use>
       <use
-        xlink:href="#q"
+        xlinkHref="#q"
         width="100%"
         height="100%"
         mask="url(#r)"
         transform="translate(17.464 -.608) scale(.72491)"
       ></use>
       <use
-        xlink:href="#s"
+        xlinkHref="#s"
         width="100%"
         height="100%"
         mask="url(#t)"
         transform="translate(17.464 -.608) scale(.72491)"
       ></use>
       <use
-        xlink:href="#u"
+        xlinkHref="#u"
         width="100%"
         height="100%"
         mask="url(#v)"
         transform="translate(17.464 -.608) scale(.72491)"
       ></use>
       <use
-        xlink:href="#w"
+        xlinkHref="#w"
         width="100%"
         height="100%"
         mask="url(#x)"
