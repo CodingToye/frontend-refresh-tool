@@ -10,18 +10,18 @@ import {sections as nextJSSections} from "./nextjsSections";
 import {sections as nodeSections} from "./nodeSections";
 import {sections as reactSections} from "./reactSections";
 import {sections as testingSections} from "./testingSections";
-import {sections as testSections} from "./testSections";
+// import {sections as testSections} from "./testSections";
 import {sections as typescriptSections} from "./typescriptSections";
 import {sections as webPerformanceSections} from "./webperformanceSections";
 
 type SubjectFileType = "jsx" | "js" | "css" | "tsx" | "ts" | "html" | "basic";
 
 export const subjectData = {
-  testSection: {
-    label: "Test",
-    sections: testSections,
-    fileType: "js",
-  },
+  // testSection: {
+  //   label: "Test",
+  //   sections: testSections,
+  //   fileType: "js",
+  // },
   react: {
     label: "React",
     sections: reactSections,
