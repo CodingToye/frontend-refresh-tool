@@ -9,6 +9,7 @@ const buttonStyles = {
 export function Button({
   buttonLabel,
   buttonIcon,
+  buttonIconColour = "primary-500",
   buttonStyle = "primary",
   handleClick,
   extraClasses,
@@ -19,7 +20,9 @@ export function Button({
   return (
     <button onClick={handleClick} className={`${baseClasses} ${colourClasses}`}>
       {buttonIcon && (
-        <span className="material-symbols-outlined text-base! mr-2">
+        <span
+          className={`material-symbols-outlined text-base! text-${buttonIconColour} mr-2`}
+        >
           {buttonIcon}
         </span>
       )}

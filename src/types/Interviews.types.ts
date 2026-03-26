@@ -8,3 +8,8 @@ export type InterviewAttempt = {
 export type InterviewHistory = {
   [subjectKey: string]: InterviewAttempt[];
 };
+
+export type InterviewScoreData = {
+  attempted: number;
+  correct: number;
+};

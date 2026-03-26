@@ -29,7 +29,10 @@ export default function App() {
   const [mockInterviewResetKey, setMockInterviewResetKey] = useState(0);
 
   const sections = subjectData[subject].sections;
-  const subjects = Object.entries(subjectData);
+  const subjects = Object.entries(subjectData) as [
+    SubjectKey,
+    (typeof subjectData)[SubjectKey],
+  ][];
 
   const {
     checkedTopics,
@@ -39,6 +42,7 @@ export default function App() {
     saveInterviewAttempt,
     getInterviewScore,
     getSubjectScore,
+    getSubjectInterviewMetrics,
     toggleTopicChecked,
     setTopicFlagged,
     toggleMockSelected,
@@ -68,6 +72,9 @@ export default function App() {
     interviewHistory,
   });
 
+  const subjectMetrics = Object.fromEntries(
+    subjects.map(([key]) => [key, getSubjectInterviewMetrics(key)]),
+  ) as Record<SubjectKey, ReturnType<typeof getSubjectInterviewMetrics>>;
   const subjectInterviewHistory = interviewHistory[subject] ?? [];
   const hasInterviewHistory = subjectInterviewHistory.length > 0;
   const hasInterviewScore = getSubjectScore(subject) !== null;
@@ -145,86 +152,101 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-bg p-4 lg:p-10 pt-0 lg:pt-10 text-text">
+    <div className="min-h-screen bg-bg p-4 lg:p-10 pt-0 lg:pt-18 text-text">
       <SubjectNav
         subjects={subjects}
         subject={subject}
         setSubject={setSubject}
+        subjectMetrics={subjectMetrics}
       />
-      <div className="mx-auto max-w-7xl">
-        <header className="mt-4 mb-8">
+      <div className="flex flex-col gap-8 mx-auto max-w-7xl">
+        <header className="mt-4">
           <h1 className="mb-0 text-3xl font-bold">
-            {subjectData[subject].label} Knowledge Refresh
+            {subjectData[subject].label}{" "}
+            <span className="text-primary-500">Knowledge Refresh</span>
           </h1>
           <p className="mb-4 text-slate-300/50">
             Click a section to open its topics.
           </p>
         </header>
 
-        <Toolbar
-          subjectKey={subject}
-          searchTerm={searchTerm}
-          onSearchChange={setSearchTerm}
-          mockQuestionsCount={mockQuestionsCount}
-          onResetProgress={handleResetStudy}
-          onResetInterviewProgress={() => {
-            resetInterviewProgress(subject);
-            setMockInterviewResetKey((prev) => prev + 1);
-          }}
-          onResetAllProgress={() => {
-            handleResetAll();
-            setMockInterviewResetKey((prev) => prev + 1);
-          }}
-          showInterviewOnly={showInterviewOnly}
-          onShowInterviewOnlyChange={setShowInterviewOnly}
-          showFlaggedOnly={showFlaggedOnly}
-          onShowFlaggedOnlyChange={setShowFlaggedOnly}
-          onShowMockQuestions={() => setShowMockQuestions(true)}
-          interviewButtonMode={interviewButtonMode}
-        />
+        <div className="flex flex-row gap-8">
+          <div className="w-1/5">
+            <Toolbar
+              subjectKey={subject}
+              searchTerm={searchTerm}
+              onSearchChange={setSearchTerm}
+              mockQuestionsCount={mockQuestionsCount}
+              onResetProgress={handleResetStudy}
+              onResetInterviewProgress={() => {
+                resetInterviewProgress(subject);
+                setMockInterviewResetKey((prev) => prev + 1);
+              }}
+              onResetAllProgress={() => {
+                handleResetAll();
+                setMockInterviewResetKey((prev) => prev + 1);
+              }}
+              showInterviewOnly={showInterviewOnly}
+              onShowInterviewOnlyChange={setShowInterviewOnly}
+              showFlaggedOnly={showFlaggedOnly}
+              onShowFlaggedOnlyChange={setShowFlaggedOnly}
+              onShowMockQuestions={() => setShowMockQuestions(true)}
+              interviewButtonMode={interviewButtonMode}
+            />
+          </div>
+          <div className="flex flex-col gap-8 w-3/5">
+            <section className="">
+              <header className="mb-4">
+                <h2 className="text-primary-500 text-left mb-0">Topics</h2>
+              </header>
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-2">
+                {filteredSections.map((section) => {
+                  const totalTopics = section.items.length;
+                  const completedTopics = section.items.filter(
+                    (item) =>
+                      checkedTopics[
+                        getTopicKey(subject, section.title, item.name)
+                      ],
+                  ).length;
 
-        <ScoreBoard
-          reviewedCount={reviewedCount}
-          // flaggedCount={flaggedCount}
-          poorCount={poorCount}
-          weakCount={weakCount}
-          decentCount={decentCount}
-          strongCount={strongCount}
-          poorTrend={poorTrend}
-          weakTrend={weakTrend}
-          decentTrend={decentTrend}
-          strongTrend={strongTrend}
-          subjectScore={getSubjectScore(subject)}
-          mockQuestionsCount={mockQuestionsCount}
-        />
-
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3 xl:grid-cols-4">
-          {filteredSections.map((section) => {
-            const totalTopics = section.items.length;
-            const completedTopics = section.items.filter(
-              (item) =>
-                checkedTopics[getTopicKey(subject, section.title, item.name)],
-            ).length;
-
-            return (
-              <SectionCard
-                key={section.title}
-                section={section}
-                subject={subject}
-                completedTopics={completedTopics}
-                totalTopics={totalTopics}
-                flaggedTopics={flaggedTopics}
-                mockQuestions={mockSelectedTopics}
-                interviewScore={getInterviewScore(subject, section.title)}
-                interviewHistory={interviewHistory}
-                getTopicTrend={getTopicTrend}
-                onOpen={() => {
-                  setSelectedSection(section);
-                  setExpandedTopic(null);
-                }}
-              />
-            );
-          })}
+                  return (
+                    <SectionCard
+                      key={section.title}
+                      section={section}
+                      subject={subject}
+                      completedTopics={completedTopics}
+                      totalTopics={totalTopics}
+                      flaggedTopics={flaggedTopics}
+                      mockQuestions={mockSelectedTopics}
+                      interviewScore={getInterviewScore(subject, section.title)}
+                      interviewHistory={interviewHistory}
+                      getTopicTrend={getTopicTrend}
+                      onOpen={() => {
+                        setSelectedSection(section);
+                        setExpandedTopic(null);
+                      }}
+                    />
+                  );
+                })}
+              </div>
+            </section>
+          </div>
+          <div className="w-1/5">
+            <ScoreBoard
+              reviewedCount={reviewedCount}
+              poorCount={poorCount}
+              weakCount={weakCount}
+              decentCount={decentCount}
+              strongCount={strongCount}
+              poorTrend={poorTrend}
+              weakTrend={weakTrend}
+              decentTrend={decentTrend}
+              strongTrend={strongTrend}
+              subjectScore={getSubjectScore(subject)}
+              subjectMetrics={subjectMetrics[subject]}
+              mockQuestionsCount={mockQuestionsCount}
+            />
+          </div>
         </div>
       </div>
 

@@ -10,6 +10,44 @@
   }
 }
 
+@layer components {
+  .shadow-soft {
+    @apply shadow-md shadow-black/30;
+  }
+  .inner-shadow-soft {
+    @apply shadow-sm shadow-primary-500/10 inset-shadow-sm inset-shadow-black/20;
+  }
+}
+
+@layer utilities {
+  .inner-glow-gradient {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .inner-glow-gradient::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    /* pointer-events: none; */
+    top: 2px;
+    background: radial-gradient(
+      circle at 50% 0%,
+      rgba(255, 255, 255, 0.12),
+      rgba(255, 255, 255, 0.06) 30%,
+      transparent 70%
+    );
+
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  .inner-glow-gradient:hover::after {
+    opacity: 1;
+  }
+}
+
 @theme {
   --color-bg: #0b132b;
   --color-text: #ffffff;
@@ -149,7 +187,7 @@ h2 {
   font-size: 24px !default;
   line-height: 118%;
   letter-spacing: -0.24px !default;
-  margin: 0 0 8px;
+  margin: 0 0 8px !default;
   @media (max-width: 1024px) {
     font-size: 20px !default;
   }

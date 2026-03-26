@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 
 import type {TopicReviewLevel} from "@/utils/TopicReviewLevel";
 import {getTopicReviewLevel} from "@/utils/TopicReviewLevel";
@@ -34,35 +34,40 @@ export function MockInterview({
     maxScore > 0 ? Math.round((totalScore / maxScore) * 100) : 0;
   const isComplete = totalQuestions > 0 && currentIndex >= totalQuestions;
 
-  useEffect(() => {
-    if (!isComplete || savedScoreRef.current) return;
+  const persistInterviewProgress = useCallback(() => {
+    const answeredQuestions = questions.filter(
+      (question) => question.id in scores,
+    );
 
-    const sectionTotals: Record<string, {earned: number; max: number}> = {};
+    if (answeredQuestions.length === 0) return;
 
-    questions.forEach((question) => {
+    const sectionTotals: Record<string, {attempted: number; correct: number}> =
+      {};
+
+    answeredQuestions.forEach((question) => {
       const sectionTitle = question.sectionTitle;
       const score = scores[question.id] ?? 0;
 
       if (!sectionTotals[sectionTitle]) {
-        sectionTotals[sectionTitle] = {earned: 0, max: 0};
+        sectionTotals[sectionTitle] = {attempted: 0, correct: 0};
       }
 
-      sectionTotals[sectionTitle].earned += score;
-      sectionTotals[sectionTitle].max += 3;
+      sectionTotals[sectionTitle].attempted += 1;
+
+      if (score >= 2) {
+        sectionTotals[sectionTitle].correct += 1;
+      }
     });
 
-    Object.entries(sectionTotals).forEach(([sectionTitle, totals]) => {
-      const sectionPercentage =
-        totals.max > 0 ? Math.round((totals.earned / totals.max) * 100) : 0;
-
-      saveInterviewScore(subject, sectionTitle, sectionPercentage);
+    Object.entries(sectionTotals).forEach(([sectionTitle, scoreData]) => {
+      saveInterviewScore(subject, sectionTitle, scoreData);
     });
 
     const topicResults: Record<string, TopicReviewLevel> = {};
-    const topicKeys = [...new Set(questions.map((q) => q.key))];
+    const topicKeys = [...new Set(answeredQuestions.map((q) => q.key))];
 
     topicKeys.forEach((topicKey) => {
-      const topicScores = questions
+      const topicScores = answeredQuestions
         .filter((q) => q.key === topicKey)
         .map((q) => scores[q.id] ?? 0);
 
@@ -73,20 +78,20 @@ export function MockInterview({
       }
     });
 
-    saveInterviewAttempt(subject, {
-      date: new Date().toISOString(),
-      topics: topicResults,
-    });
+    if (Object.keys(topicResults).length > 0) {
+      saveInterviewAttempt(subject, {
+        date: new Date().toISOString(),
+        topics: topicResults,
+      });
+    }
+  }, [questions, scores, subject, saveInterviewScore, saveInterviewAttempt]);
 
+  useEffect(() => {
+    if (!isComplete || savedScoreRef.current) return;
+
+    persistInterviewProgress();
     savedScoreRef.current = true;
-  }, [
-    isComplete,
-    questions,
-    scores,
-    subject,
-    saveInterviewScore,
-    saveInterviewAttempt,
-  ]);
+  }, [isComplete, persistInterviewProgress]);
 
   if (!showMockQuestions) {
     return null;
@@ -99,6 +104,7 @@ export function MockInterview({
   const nextQuestion = questions[nextIndex];
 
   const handlePause = () => {
+    persistInterviewProgress();
     setShowMockQuestions(false);
   };
 

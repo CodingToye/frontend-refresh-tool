@@ -1,58 +1,105 @@
-import {Score} from "./Score";
+import {InterviewGauge} from "@/components/InterviewGauge";
+
+import {Metric} from "./Metric";
+// import {Score} from "./Score";
 import type {ScoreBoardProps} from "./types";
 export function ScoreBoard({
-  poorCount,
-  weakCount,
-  decentCount,
-  strongCount,
-  poorTrend,
-  weakTrend,
-  decentTrend,
-  strongTrend,
+  // poorCount,
+  // weakCount,
+  // decentCount,
+  // strongCount,
+  // poorTrend,
+  // weakTrend,
+  // decentTrend,
+  // strongTrend,
+  subjectScore,
+  subjectMetrics,
 }: ScoreBoardProps) {
-  const scores = [
-    {
-      count: poorCount,
-      scoreStyle: "poor" as const,
-      contentNoun: "Topic",
-      contentVerb: "poor",
-      trend: poorTrend,
-    },
-    {
-      count: weakCount,
-      scoreStyle: "weak" as const,
-      contentNoun: "Topic",
-      contentVerb: "weak",
-      trend: weakTrend,
-    },
-    {
-      count: decentCount,
-      scoreStyle: "decent" as const,
-      contentNoun: "Topic",
-      contentVerb: "decent",
-      trend: decentTrend,
-    },
-    {
-      count: strongCount,
-      scoreStyle: "strong" as const,
-      contentNoun: "Topic",
-      contentVerb: "strong",
-      trend: strongTrend,
-    },
-  ];
+  // const scores = [
+  //   {
+  //     count: poorCount,
+  //     scoreStyle: "poor" as const,
+  //     contentNoun: "Topic",
+  //     contentVerb: "poor",
+  //     trend: poorTrend,
+  //   },
+  //   {
+  //     count: weakCount,
+  //     scoreStyle: "weak" as const,
+  //     contentNoun: "Topic",
+  //     contentVerb: "weak",
+  //     trend: weakTrend,
+  //   },
+  //   {
+  //     count: decentCount,
+  //     scoreStyle: "decent" as const,
+  //     contentNoun: "Topic",
+  //     contentVerb: "decent",
+  //     trend: decentTrend,
+  //   },
+  //   {
+  //     count: strongCount,
+  //     scoreStyle: "strong" as const,
+  //     contentNoun: "Topic",
+  //     contentVerb: "strong",
+  //     trend: strongTrend,
+  //   },
+  // ];
+
+  console.log("ScoreBoard subjectScore prop", subjectScore);
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-      {scores.map(({count, scoreStyle, contentNoun, contentVerb, trend}, i) => (
-        <Score
-          key={i}
-          count={count}
-          scoreIcon="flag"
-          scoreStyle={scoreStyle}
-          contentNoun={contentNoun}
-          contentVerb={contentVerb}
-          trend={trend}
-        />
-      ))}
-    </div>
+    <section className="">
+      <header className="mb-4">
+        <h2 className="text-primary-500 text-left mb-0">Scoreboard</h2>
+      </header>
+
+      <div className="flex flex-col gap-2">
+        {subjectScore !== null && (
+          <>
+            <div className="grid grid-cols-2 lg:grid-cols-2 gap-4">
+              <Metric
+                metricValue={subjectScore}
+                metricValueSuffix="%"
+                metricIcon="workspace_premium"
+                metric="Current Interview Score"
+              />
+              <Metric
+                metricValue={Math.round(subjectMetrics.coverage * 100)}
+                metricValueSuffix="%"
+                metricIcon="full_coverage"
+                metric="Coverage"
+              />
+              <Metric
+                metricValue={Math.round(subjectMetrics.accuracy * 100)}
+                metricValueSuffix="%"
+                metricIcon="my_location"
+                metric="Accuracy"
+              />
+              <Metric
+                metricValue={subjectMetrics.confidence}
+                metricIcon="star_shine"
+                metric="Confidence"
+              />
+            </div>
+            <InterviewGauge score={subjectScore} />
+          </>
+        )}
+        {/* <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          {scores.map(
+            ({count, scoreStyle, contentNoun, contentVerb, trend}, i) => (
+              <Score
+                key={i}
+                count={count}
+                scoreIcon="flag"
+                scoreStyle={scoreStyle}
+                contentNoun={contentNoun}
+                contentVerb={contentVerb}
+                trend={trend}
+              />
+            ),
+          )}
+        </div> */}
+      </div>
+    </section>
   );
 }

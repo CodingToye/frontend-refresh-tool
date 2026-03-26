@@ -10,19 +10,19 @@ const tagStyles = {
     variant: "bg-secondary-500 border-black/50 text-black/70",
   },
   poor: {
-    default: "bg-danger-300 border-black/50 text-black/70",
+    default: "bg-danger-200 border-black/50 text-black/70",
     variant: "bg-danger-500 border-black/50 text-black/70",
   },
   weak: {
-    default: "bg-warning-300 border-warning/50 text-black/70",
+    default: "bg-warning-200 border-warning/50 text-black/70",
     variant: "bg-warning-500 border-warning/50 text-black/70",
   },
   decent: {
-    default: "bg-info-300 border-black/50 text-black/70",
+    default: "bg-info-200 border-black/50 text-black/70",
     variant: "bg-info-500 border-black/50 text-black/70",
   },
   strong: {
-    default: "bg-success-300 border-warning/50 text-black/70",
+    default: "bg-success-200 border-warning/50 text-black/70",
     variant: "bg-success-500 border-warning/50 text-black/70",
   },
 } as const;
@@ -35,7 +35,7 @@ export function Tag({
   tagClose = false,
 }: TagProps) {
   const baseClasses =
-    "flex items-center rounded px-1 lg:px-2 text-xxs text-black text-center font-semibold shadow-lg shadow-white/10";
+    "flex items-center w-fit rounded px-1 lg:px-2 text-xxs text-black text-center font-semibold shadow-lg shadow-white/10";
   const colourClasses = tagVariant
     ? tagStyles[tagStyle].variant
     : tagStyles[tagStyle].default;

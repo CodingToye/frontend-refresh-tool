@@ -154,7 +154,7 @@ export function SectionCard({
     flaggedCount > 0 || mockQuestionsCount > 0 || interviewScore !== null;
 
   // Presentation
-  const baseClasses = `flex flex-col gap-4 justify-between rounded-xl border p-3 text-left transition hover:shadow-[0_0_10px_rgba(91,192,190,0.25)]`;
+  const baseClasses = `flex flex-col gap-4 justify-between rounded-xl border p-3 text-left transition shadow-soft hover:shadow-[0_0_10px_rgba(91,192,190,0.25)]`;
 
   const levelStyles = sectionLevel ? sectionLevelStyles[sectionLevel] : null;
   const trendStyle = sectionTrend ? trendStyles[sectionTrend] : null;
@@ -175,13 +175,13 @@ export function SectionCard({
       className={`${baseClasses} ${opacityClasses} ${cardClass}`}
     >
       <div className="flex flex-col gap-6">
-        <div className="flex flex-col">
+        <div className="flex flex-col gap-3">
           <div className="flex justify-between gap-1">
-            <h3 className={`text-lg font-semibold ${sectionTitleClass}`}>
+            <h3 className={`text-sm font-semibold ${sectionTitleClass}`}>
               {section.title}
             </h3>
 
-            <Badge badgeLabel={section.items.length} badgeStyle={badgeStyle} />
+            {/* <Badge badgeLabel={section.items.length} badgeStyle={badgeStyle} /> */}
           </div>
           {interviewCount > 0 && (
             <Tag tagLabel="Interview-focused" tagStyle={badgeStyle} />
@@ -189,9 +189,9 @@ export function SectionCard({
         </div>
 
         {hasMeta && (
-          <div className="flex flex-col gap-4 bg-tertiary-800 border border-black text-secondary-700 p-4 rounded-lg mb-4 shadow shadow-black/40">
+          <div className="flex flex-col gap-4 bg-black/30 border border-black/20 text-secondary-700 p-4 rounded-lg mb-4 inner-shadow-soft">
             {(poorCount > 0 || reviewCount > 0) && (
-              <div className="flex flex-col bg-tertiary-400 rounded p-2 inset-shadow-sm inset-shadow-black/40">
+              <div className="flex flex-col bg-tertiary-600 rounded p-2 shadow-soft">
                 {poorCount > 0 && (
                   <div className="text-xxs flex items-center justify-between leading-normal">
                     <p className="text-danger-500 font-bold">
@@ -218,14 +218,14 @@ export function SectionCard({
               </div>
             )}
 
-            <div className="flex flex-col gap-2 bg-tertiary-400 rounded p-2 inset-shadow-sm inset-shadow-black/40">
+            <div className="flex flex-col gap-2 bg-tertiary-600 rounded p-2 shadow-soft">
               {mockQuestionsCount > 0 && (
                 <div className="text-xxs flex items-center justify-between leading-normal">
                   <p className="text-white font-bold">
                     <span className="material-symbols-outlined material-filled align-middle text-base! mr-2">
                       group_add
                     </span>
-                    Added to mock interview
+                    Questions added to mock interview
                   </p>
                   <Pill pillStyle={badgeStyle} pillLabel={mockQuestionsCount} />
                 </div>
@@ -247,7 +247,7 @@ export function SectionCard({
             </div>
 
             {sectionHistory.length > 1 && (
-              <div className="flex flex-col items-center gap-4 rounded bg-tertiary-400 p-2 inset-shadow-sm inset-shadow-black/20">
+              <div className="flex flex-col items-center gap-4 rounded bg-tertiary-600 p-2 shadow-soft">
                 <div className="flex w-full flex-row items-center justify-between">
                   <p className="mb-1 text-xxs text-white leading-normal">
                     Performance Progress
@@ -284,15 +284,15 @@ export function SectionCard({
         )}
       </div>
 
-      <div className="bg-black/30 border border-black/20 py-2 px-3 rounded-lg">
+      <div className="bg-black/30 border border-black/20 py-2 px-3 rounded-lg inner-shadow-soft">
         <div className="flex gap-2 items-center text-xxs text-text/50">
           <span>
             {completedTopics}/{totalTopics}
           </span>
           <div className="flex-1">
-            <div className="h-2 rounded-full bg-slate-900">
+            <div className="h-2 rounded-full bg-tertiary-800 inner-shadow-soft">
               <div
-                className={`h-2 ${progressClass} rounded-full transition-all duration-300 shadow-lg shadow-primary-500/50`}
+                className={`h-2 ${progressClass} rounded-full transition-all duration-300 inner-shadow-soft`}
                 style={{width: `${progress}%`}}
               />
             </div>
