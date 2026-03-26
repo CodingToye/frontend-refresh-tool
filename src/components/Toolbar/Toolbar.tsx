@@ -1,4 +1,5 @@
 import {Button} from "@/components/shared/Button";
+import {SearchInput} from "@/components/shared/SearchInput";
 
 import type {ActionButtonConfig, ToolbarProps} from "./types";
 export function Toolbar({
@@ -90,22 +91,13 @@ export function Toolbar({
     "flex flex-col flex-wrap items-start gap-2 rounded-xl bg-black/20 p-4 pt-2 text-shadow inner-shadow-soft";
   const panelHeadingClasses =
     "text-[12px] uppercase text-primary-600 font-bold";
-  const searchInputClasses =
-    "w-full rounded-xl bg-tertiary-400 px-4 h-8 text-xs text-white outline-none placeholder:text-slate-400 transition focus:bg-black/50 inner-shadow-soft";
 
   // Render
   return (
     <>
       <div className="rounded bg-tertiary-800 p-4 inner-shadow-soft">
         <div className="flex flex-col gap-4 justify-between">
-          <div className="flex-1">
-            <input
-              value={searchTerm}
-              onChange={(e) => onSearchChange(e.target.value)}
-              placeholder="Search topics or summaries"
-              className={searchInputClasses}
-            />
-          </div>
+          <SearchInput searchTerm={searchTerm} handleChange={onSearchChange} />
 
           <div className="flex flex-col gap-4 lg:flex-col ">
             <div className={panelClasses}>
