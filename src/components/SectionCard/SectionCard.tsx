@@ -50,7 +50,7 @@ const trendStyles: Record<TrendLevel, {icon: string; className: string}> = {
     className: "text-danger-300",
   },
   same: {
-    icon: "horizontal_rule",
+    icon: "",
     className: "text-warning-300",
   },
 } as const;
