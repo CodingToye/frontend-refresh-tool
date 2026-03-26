@@ -33,6 +33,7 @@ export function MockInterviewQuestions({
               <Button
                 buttonLabel="Pause Interview"
                 buttonIcon="pause_circle"
+                buttonIconColour="primary"
                 buttonStyle="primary"
                 handleClick={onHandlePause}
               />
@@ -75,6 +76,7 @@ export function MockInterviewQuestions({
                 buttonLabel="Reveal Answer"
                 buttonIcon="visibility"
                 buttonStyle="primary"
+                buttonIconColour="primary"
                 handleClick={onHandleReveal}
               />
             </div>
