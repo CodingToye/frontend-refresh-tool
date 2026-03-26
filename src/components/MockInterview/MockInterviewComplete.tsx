@@ -38,6 +38,7 @@ export function MockInterviewComplete({
             buttonLabel="Finish Interview"
             buttonIcon="check"
             buttonStyle="primary"
+            buttonIconColour="primary"
             handleClick={onHandlePause}
           />
         </div>
