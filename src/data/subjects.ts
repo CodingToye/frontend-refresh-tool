@@ -1,18 +1,27 @@
 import type {Section} from "../components/SectionCard/types";
 import {sections as accessibilitySections} from "./accessibilitySections";
+import {sections as awsSections} from "./awsSections";
 import {sections as browserAPIsSections} from "./browserAPIsSections";
 import {sections as cssSections} from "./cssSections";
+import {sections as fullstackSections} from "./fullstackSections";
 import {sections as htmlSections} from "./htmlSections";
 import {sections as javascriptSections} from "./javascriptSections";
+import {sections as nextJSSections} from "./nextjsSections";
 import {sections as nodeSections} from "./nodeSections";
 import {sections as reactSections} from "./reactSections";
 import {sections as testingSections} from "./testingSections";
+// import {sections as testSections} from "./testSections";
 import {sections as typescriptSections} from "./typescriptSections";
 import {sections as webPerformanceSections} from "./webperformanceSections";
 
 type SubjectFileType = "jsx" | "js" | "css" | "tsx" | "ts" | "html" | "basic";
 
 export const subjectData = {
+  // testSection: {
+  //   label: "Test",
+  //   sections: testSections,
+  //   fileType: "js",
+  // },
   react: {
     label: "React",
     sections: reactSections,
@@ -33,6 +42,11 @@ export const subjectData = {
     sections: typescriptSections,
     fileType: "tsx",
   },
+  nextJS: {
+    label: "Next.JS",
+    sections: nextJSSections,
+    fileType: "js",
+  },
   html: {
     label: "HTML",
     sections: htmlSections,
@@ -41,6 +55,16 @@ export const subjectData = {
   node: {
     label: "Node.js",
     sections: nodeSections,
+    fileType: "js",
+  },
+  aws: {
+    label: "AWS",
+    sections: awsSections,
+    fileType: "js",
+  },
+  fullStack: {
+    label: "Full Stack System Design",
+    sections: fullstackSections,
     fileType: "js",
   },
   testing: {

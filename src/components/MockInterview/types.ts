@@ -1,5 +1,8 @@
 import type {SubjectKey} from "@/data/subjects";
-import type {InterviewAttempt} from "@/types/Interviews.types";
+import type {
+  InterviewAttempt,
+  InterviewScoreData,
+} from "@/types/Interviews.types";
 import type {TopicReviewLevel} from "@/utils/TopicReviewLevel";
 
 export type MockSessionQuestion = {
@@ -19,7 +22,7 @@ export type MockInterviewProps = {
   saveInterviewScore: (
     subject: SubjectKey,
     sectionTitle: string,
-    score: number,
+    score: InterviewScoreData,
   ) => void;
   saveInterviewAttempt: (subjectKey: string, attempt: InterviewAttempt) => void;
   setTopicFlagged: (topicKey: string, level: TopicReviewLevel | null) => void;

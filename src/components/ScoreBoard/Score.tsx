@@ -33,12 +33,12 @@ export function Score({
   contentVerb,
 }: ScoreProps) {
   const baseClasses =
-    "flex flex-col items-center gap-3 transition bg-tertiary-600 border-b-4 p-4 rounded";
+    "flex flex-col items-center gap-3 transition bg-tertiary-600 border-b-4 p-4 rounded shadow-soft";
   const label = `${count === 1 ? contentNoun : `${contentNoun}s`} ${contentVerb}`;
 
   return (
     <div className={`${baseClasses} ${colourMap[scoreStyle].border}`}>
-      <h2 className="text-xxs uppercase">{label}</h2>
+      <h2 className="text-xxs uppercase text-tertiary-200">{label}</h2>
       <p className="text-2xl">{count}</p>
       {trend && (
         <span

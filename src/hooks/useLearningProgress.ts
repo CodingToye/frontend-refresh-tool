@@ -6,11 +6,15 @@ import {
   MOCK_SELECTED_STORAGE_KEY,
   STORAGE_KEY,
 } from "@/constants/storage";
-import type {SubjectKey} from "@/data/subjects";
+import {subjectData, type SubjectKey} from "@/data/subjects";
 import type {
   InterviewAttempt,
   InterviewHistory,
+  InterviewScoreData,
 } from "@/types/Interviews.types";
+import {getTotalSectionQuestions} from "@/utils/getTotalSectionQuestions";
+import {getTotalSubjectQuestions} from "@/utils/getTotalSubjectQuestions";
+import {getInterviewScoreMetrics, toPercentage} from "@/utils/InterviewScore";
 import {getTopicKey} from "@/utils/topicKeys";
 import type {TopicReviewLevel} from "@/utils/TopicReviewLevel/types";
 
@@ -33,7 +37,7 @@ export function useLearningProgress() {
   >(MOCK_SELECTED_STORAGE_KEY, {});
 
   const [interviewScores, setInterviewScores] = useLocalStorageState<
-    Record<string, number>
+    Record<string, InterviewScoreData>
   >(INTERVIEW_SCORE_STORAGE_KEY, {});
 
   const toggleTopicChecked = (
@@ -94,7 +98,54 @@ export function useLearningProgress() {
 
   const getInterviewScore = (subject: SubjectKey, sectionTitle: string) => {
     const key = `${subject}::${sectionTitle}`;
-    return interviewScores[key] ?? null;
+    const scoreData = interviewScores[key];
+
+    if (
+      !scoreData ||
+      typeof scoreData !== "object" ||
+      !("attempted" in scoreData) ||
+      !("correct" in scoreData)
+    ) {
+      return 0;
+    }
+    if (scoreData.attempted === 0) return 0;
+
+    const section = subjectData[subject].sections.find(
+      (section) => section.title === sectionTitle,
+    );
+
+    if (!section) return 0;
+
+    const totalAvailable = getTotalSectionQuestions(section);
+
+    const metrics = getInterviewScoreMetrics({
+      attempted: scoreData.attempted,
+      correct: scoreData.correct,
+      totalAvailable,
+    });
+
+    return toPercentage(metrics.weightedScore);
+  };
+
+  const saveInterviewScore = (
+    subject: SubjectKey,
+    sectionTitle: string,
+    scoreData: InterviewScoreData,
+  ) => {
+    const key = `${subject}::${sectionTitle}`;
+
+    const safeAttempted = Math.max(0, scoreData.attempted);
+    const safeCorrect = Math.min(Math.max(0, scoreData.correct), safeAttempted);
+
+    console.log("saveInterviewScore input", {key, scoreData});
+
+    setInterviewScores((prev) => ({
+      ...prev,
+      [key]: {
+        attempted: safeAttempted,
+        correct: safeCorrect,
+      },
+    }));
   };
 
   const getSubjectScore = (subject: SubjectKey) => {
@@ -102,32 +153,81 @@ export function useLearningProgress() {
       key.startsWith(`${subject}::`),
     );
 
-    if (subjectEntries.length === 0) return null;
+    if (subjectEntries.length === 0) return 0;
 
-    const scores = subjectEntries.map(([, score]) => score);
-    const average =
-      scores.reduce((sum, score) => sum + score, 0) / scores.length;
+    const totals = subjectEntries.reduce(
+      (acc, [, scoreData]) => {
+        if (
+          typeof scoreData === "object" &&
+          scoreData !== null &&
+          "attempted" in scoreData &&
+          "correct" in scoreData
+        ) {
+          acc.attempted += scoreData.attempted;
+          acc.correct += scoreData.correct;
+        }
+        return acc;
+      },
+      {attempted: 0, correct: 0},
+    );
 
-    return Math.round(average);
+    if (totals.attempted === 0) return 0;
+
+    const totalAvailable = getTotalSubjectQuestions(
+      subjectData[subject].sections,
+    );
+
+    const metrics = getInterviewScoreMetrics({
+      attempted: totals.attempted,
+      correct: totals.correct,
+      totalAvailable,
+    });
+
+    console.log("interviewScores", interviewScores);
+    console.log("subjectEntries", subjectEntries);
+
+    console.log("getSubjectScore debug", {
+      subject,
+      subjectEntries,
+      totals,
+      totalAvailable,
+      metrics,
+      finalScore: toPercentage(metrics.weightedScore),
+    });
+
+    return toPercentage(metrics.weightedScore);
   };
 
-  const saveInterviewScore = (
-    subject: SubjectKey,
-    sectionTitle: string,
-    score: number,
-  ) => {
-    const key = `${subject}::${sectionTitle}`;
+  const getSubjectInterviewMetrics = (subject: SubjectKey) => {
+    const subjectEntries = Object.entries(interviewScores).filter(([key]) =>
+      key.startsWith(`${subject}::`),
+    );
 
-    console.log("saveInterviewScore called", {key, score});
+    if (subjectEntries.length === 0) {
+      return getInterviewScoreMetrics({
+        attempted: 0,
+        correct: 0,
+        totalAvailable: getTotalSubjectQuestions(subjectData[subject].sections),
+      });
+    }
 
-    setInterviewScores((prev) => {
-      const next = {
-        ...prev,
-        [key]: score,
-      };
+    const totals = subjectEntries.reduce(
+      (acc, [, scoreData]) => {
+        acc.attempted += scoreData.attempted ?? 0;
+        acc.correct += scoreData.correct ?? 0;
+        return acc;
+      },
+      {attempted: 0, correct: 0},
+    );
 
-      console.log("next interviewScores state", next);
-      return next;
+    const totalAvailable = getTotalSubjectQuestions(
+      subjectData[subject].sections,
+    );
+
+    return getInterviewScoreMetrics({
+      attempted: totals.attempted,
+      correct: totals.correct,
+      totalAvailable,
     });
   };
 
@@ -174,14 +274,15 @@ export function useLearningProgress() {
   };
 
   const resetInterviewProgress = (subject: SubjectKey) => {
-    setInterviewScores((prev) => {
-      console.log("before reset", prev);
-
-      const next = Object.fromEntries(
+    setInterviewScores((prev) =>
+      Object.fromEntries(
         Object.entries(prev).filter(([key]) => !key.startsWith(`${subject}::`)),
-      );
+      ),
+    );
 
-      console.log("after reset", next);
+    setInterviewHistory((prev) => {
+      const next = {...prev};
+      delete next[subject];
       return next;
     });
   };
@@ -222,6 +323,7 @@ export function useLearningProgress() {
     resetAllProgress,
     getInterviewScore,
     getSubjectScore,
+    getSubjectInterviewMetrics,
     getTopicTrend,
   };
 }
