@@ -170,8 +170,8 @@ export default function App() {
           </p>
         </header>
 
-        <div className="flex flex-row gap-8">
-          <div className="w-1/5">
+        <div className="flex flex-col lg:flex-row gap-8">
+          <div className="order-3 lg:order-0 lg:w-1/5">
             <Toolbar
               subjectKey={subject}
               searchTerm={searchTerm}
@@ -194,7 +194,7 @@ export default function App() {
               interviewButtonMode={interviewButtonMode}
             />
           </div>
-          <div className="flex flex-col gap-8 w-3/5">
+          <div className="flex flex-col gap-8 order-1 lg:order-0 lg:w-3/5">
             <section className="">
               <header className="mb-4">
                 <h2 className="text-primary-500 text-left mb-0">Topics</h2>
@@ -231,7 +231,7 @@ export default function App() {
               </div>
             </section>
           </div>
-          <div className="w-1/5">
+          <div className="order-2 lg:order-0 lg:w-1/5">
             <ScoreBoard
               reviewedCount={reviewedCount}
               poorCount={poorCount}
