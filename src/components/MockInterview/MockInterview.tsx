@@ -12,6 +12,8 @@ export function MockInterview({
   subject,
   showMockQuestions,
   setShowMockQuestions,
+  setHasStartedInterview,
+  setHasCompletedInterview,
   saveInterviewScore,
   saveInterviewAttempt,
   setTopicFlagged,
@@ -90,8 +92,9 @@ export function MockInterview({
     if (!isComplete || savedScoreRef.current) return;
 
     persistInterviewProgress();
+    setHasCompletedInterview(subject, true);
     savedScoreRef.current = true;
-  }, [isComplete, persistInterviewProgress]);
+  }, [isComplete, persistInterviewProgress, setHasCompletedInterview, subject]);
 
   if (!showMockQuestions) {
     return null;
@@ -105,6 +108,10 @@ export function MockInterview({
 
   const handlePause = () => {
     persistInterviewProgress();
+
+    if (!isComplete) {
+      setHasStartedInterview(subject, true);
+    }
     setShowMockQuestions(false);
   };
 

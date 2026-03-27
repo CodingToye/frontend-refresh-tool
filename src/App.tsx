@@ -12,6 +12,7 @@ import type {SubjectKey} from "@/data/subjects";
 import {subjectData} from "@/data/subjects";
 import {useLearningProgress} from "@/hooks/useLearningProgress";
 import {useToasts} from "@/hooks/useToasts";
+import type {InterviewButtonMode} from "@/types/Interviews.types";
 import {filterSections} from "@/utils/filterSections";
 import {getMockSessionQuestions} from "@/utils/getMockSessionQuestions";
 import {getTopicKey} from "@/utils/topicKeys";
@@ -50,6 +51,10 @@ export default function App() {
     resetInterviewProgress,
     resetAllProgress,
     interviewHistory,
+    getHasStartedInterview,
+    getHasCompletedInterview,
+    setHasStartedInterview,
+    setHasCompletedInterview,
     getTopicTrend,
   } = useLearningProgress();
 
@@ -75,18 +80,18 @@ export default function App() {
   const subjectMetrics = Object.fromEntries(
     subjects.map(([key]) => [key, getSubjectInterviewMetrics(key)]),
   ) as Record<SubjectKey, ReturnType<typeof getSubjectInterviewMetrics>>;
-  const subjectInterviewHistory = interviewHistory[subject] ?? [];
-  const hasInterviewHistory = subjectInterviewHistory.length > 0;
-  const hasInterviewScore = getSubjectScore(subject) !== null;
 
-  const interviewButtonMode =
+  const hasStartedInterview = getHasStartedInterview(subject);
+  const hasCompletedInterview = getHasCompletedInterview(subject);
+
+  const interviewButtonMode: InterviewButtonMode =
     mockQuestionsCount === 0
       ? null
-      : !hasInterviewHistory
-        ? "take"
-        : hasInterviewScore
-          ? "view"
-          : "retake";
+      : hasCompletedInterview
+        ? "retake"
+        : hasStartedInterview
+          ? "continue"
+          : "take";
 
   const {toasts, addToast, removeToast, clearToasts} = useToasts();
 
@@ -118,11 +123,7 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (showMockQuestions) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    document.body.style.overflow = showMockQuestions ? "hidden" : "";
   }, [showMockQuestions]);
 
   const handleCloseModal = () => {
@@ -149,17 +150,38 @@ export default function App() {
       title: "Everything reset",
       message: "All study progress has been cleared",
     });
+
+    setMockInterviewResetKey((prev) => prev + 1);
   }
 
+  const handleOpenMockQuestions = (): void => {
+    if (interviewButtonMode === "retake") {
+      resetInterviewProgress(subject);
+      setHasCompletedInterview(subject, false);
+      setHasStartedInterview(subject, true);
+      setMockInterviewResetKey((prev) => prev + 1);
+      setShowMockQuestions(true);
+      return;
+    }
+
+    setHasStartedInterview(subject, true);
+    setShowMockQuestions(true);
+  };
+
+  const handleSetShowMockQuestions = (value: boolean): void => {
+    setShowMockQuestions(value);
+  };
+
   return (
-    <div className="min-h-screen bg-bg p-4 lg:p-10 pt-0 lg:pt-18 text-text">
+    <div className="min-h-screen bg-bg p-4 pt-0 text-text lg:p-10 lg:pt-18">
       <SubjectNav
         subjects={subjects}
         subject={subject}
         setSubject={setSubject}
         subjectMetrics={subjectMetrics}
       />
-      <div className="flex flex-col gap-8 mx-auto max-w-7xl">
+
+      <div className="mx-auto flex max-w-7xl flex-col gap-8">
         <header className="mt-4">
           <h1 className="mb-0 text-3xl font-bold">
             {subjectData[subject].label}{" "}
@@ -170,7 +192,7 @@ export default function App() {
           </p>
         </header>
 
-        <div className="flex flex-col lg:flex-row gap-8">
+        <div className="flex flex-col gap-8 lg:flex-row">
           <div className="order-3 lg:order-0 lg:w-1/5">
             <Toolbar
               subjectKey={subject}
@@ -180,30 +202,31 @@ export default function App() {
               onResetProgress={handleResetStudy}
               onResetInterviewProgress={() => {
                 resetInterviewProgress(subject);
+                setHasCompletedInterview(subject, false);
+                setHasStartedInterview(subject, false);
                 setMockInterviewResetKey((prev) => prev + 1);
               }}
-              onResetAllProgress={() => {
-                handleResetAll();
-                setMockInterviewResetKey((prev) => prev + 1);
-              }}
+              onResetAllProgress={handleResetAll}
               showInterviewOnly={showInterviewOnly}
               onShowInterviewOnlyChange={setShowInterviewOnly}
               showFlaggedOnly={showFlaggedOnly}
               onShowFlaggedOnlyChange={setShowFlaggedOnly}
-              onShowMockQuestions={() => setShowMockQuestions(true)}
+              onShowMockQuestions={handleOpenMockQuestions}
               interviewButtonMode={interviewButtonMode}
             />
           </div>
-          <div className="flex flex-col gap-8 order-1 lg:order-0 lg:w-3/5">
+
+          <div className="order-1 flex flex-col gap-8 lg:order-0 lg:w-3/5">
             <section className="flex flex-col gap-2">
               <header className="flex justify-center">
-                <div className="flex items-center flex-row">
-                  <span className="material-symbols-outlined text-base! mr-2">
+                <div className="flex flex-row items-center">
+                  <span className="material-symbols-outlined mr-2 text-base!">
                     folder
                   </span>
-                  <h2 className="text-primary-500 mb-0">Topics</h2>
+                  <h2 className="mb-0 text-primary-500">Topics</h2>
                 </div>
               </header>
+
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-2">
                 {filteredSections.map((section) => {
                   const totalTopics = section.items.length;
@@ -236,6 +259,7 @@ export default function App() {
               </div>
             </section>
           </div>
+
           <div className="order-2 lg:order-0 lg:w-1/5">
             <ScoreBoard
               reviewedCount={reviewedCount}
@@ -247,7 +271,7 @@ export default function App() {
               weakTrend={weakTrend}
               decentTrend={decentTrend}
               strongTrend={strongTrend}
-              subjectScore={getSubjectScore(subject)}
+              subjectScore={getSubjectScore(subject) ?? 0}
               subjectMetrics={subjectMetrics[subject]}
               mockQuestionsCount={mockQuestionsCount}
             />
@@ -259,7 +283,9 @@ export default function App() {
         key={`${subject}-${mockInterviewResetKey}`}
         subject={subject}
         showMockQuestions={showMockQuestions}
-        setShowMockQuestions={setShowMockQuestions}
+        setShowMockQuestions={handleSetShowMockQuestions}
+        setHasStartedInterview={setHasStartedInterview}
+        setHasCompletedInterview={setHasCompletedInterview}
         questions={mockSessionQuestions}
         saveInterviewScore={saveInterviewScore}
         saveInterviewAttempt={saveInterviewAttempt}
@@ -284,7 +310,7 @@ export default function App() {
         />
       )}
 
-      <div className="flex flex-col gap-2 fixed w-full lg:w-auto top-0 left-0 lg:top-10 lg:left-auto lg:right-10">
+      <div className="fixed left-0 top-0 flex w-full flex-col gap-2 lg:left-auto lg:right-10 lg:top-10 lg:w-auto">
         {toasts.map((toast) => (
           <Toast
             key={toast.id}
