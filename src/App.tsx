@@ -195,9 +195,14 @@ export default function App() {
             />
           </div>
           <div className="flex flex-col gap-8 order-1 lg:order-0 lg:w-3/5">
-            <section className="">
-              <header className="mb-4">
-                <h2 className="text-primary-500 text-left mb-0">Topics</h2>
+            <section className="flex flex-col gap-2">
+              <header className="flex justify-center">
+                <div className="flex items-center flex-row">
+                  <span className="material-symbols-outlined text-base! mr-2">
+                    folder
+                  </span>
+                  <h2 className="text-primary-500 mb-0">Topics</h2>
+                </div>
               </header>
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-2">
                 {filteredSections.map((section) => {

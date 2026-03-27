@@ -94,8 +94,16 @@ export function Toolbar({
 
   // Render
   return (
-    <>
-      <div className="rounded bg-tertiary-800 p-4 inner-shadow-soft">
+    <div className="flex flex-col gap-2">
+      <header className="flex justify-center">
+        <div className="flex items-center flex-row">
+          <span className="material-symbols-outlined text-base! mr-2">
+            construction
+          </span>
+          <h2 className="text-primary-500 mb-0">Tools</h2>
+        </div>
+      </header>
+      <div className="rounded bg-tertiary-600 p-4 shadow-soft">
         <div className="flex flex-col gap-4 justify-between">
           <SearchInput searchTerm={searchTerm} handleChange={onSearchChange} />
 
@@ -148,6 +156,6 @@ export function Toolbar({
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

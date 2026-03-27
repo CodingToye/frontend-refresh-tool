@@ -46,11 +46,15 @@ export function ScoreBoard({
   //   },
   // ];
 
-  console.log("ScoreBoard subjectScore prop", subjectScore);
   return (
-    <section className="">
-      <header className="mb-4">
-        <h2 className="text-primary-500 text-left mb-0">Scoreboard</h2>
+    <section className="flex flex-col gap-2">
+      <header className="flex justify-center">
+        <div className="flex items-center flex-row">
+          <span className="material-symbols-outlined text-base! mr-2">
+            leaderboard
+          </span>
+          <h2 className="text-primary-500 mb-0">Scoreboard</h2>
+        </div>
       </header>
 
       <div className="flex flex-col gap-2">

@@ -19,24 +19,28 @@ const sectionLevelStyles = {
     text: "text-danger-700",
     badge: "poor",
     progress: "bg-danger-300",
+    indicator: "bg-danger-300",
   },
   weak: {
     card: "bg-warning-500 border-warning-500",
     text: "text-warning-700",
     badge: "weak",
     progress: "bg-warning-300",
+    indicator: "bg-warning-300",
   },
   decent: {
     card: "bg-info-500 border-info-500",
-    text: "text-info-700",
+    text: "text-info-500",
     badge: "decent",
     progress: "bg-info-300",
+    indicator: "bg-info-500",
   },
   strong: {
     card: "bg-success-500 border-success-500",
     text: "text-success-700",
     badge: "strong",
     progress: "bg-success-300",
+    indicator: "bg-success-300",
   },
 } as const;
 
@@ -153,7 +157,7 @@ export function SectionCard({
     flaggedCount > 0 || mockQuestionsCount > 0 || interviewScore !== null;
 
   // Presentation
-  const baseClasses = `flex flex-col gap-4 justify-between rounded-xl border p-3 text-left transition shadow-soft hover:shadow-[0_0_10px_rgba(91,192,190,0.25)]`;
+  const baseClasses = `flex flex-col gap-4 justify-between rounded-xl bg-surface border-surface/70 border p-3 text-left transition shadow-soft hover:shadow-[0_0_10px_rgba(91,192,190,0.25)]`;
 
   const levelStyles = sectionLevel ? sectionLevelStyles[sectionLevel] : null;
   const trendStyle = sectionTrend ? trendStyles[sectionTrend] : null;
@@ -162,28 +166,29 @@ export function SectionCard({
     ? "opacity-30 inset-shadow-sm inset-shadow-black"
     : "opacity-100";
 
-  const cardClass = levelStyles?.card ?? "bg-surface border-surface/70";
   const badgeStyle = levelStyles?.badge ?? "primary";
-  const sectionTitleClass = levelStyles?.text ?? "text-white";
   const progressClass = levelStyles?.progress ?? "bg-primary-500";
+  const indicatorClass = levelStyles?.indicator ?? "bg-tertiary-600";
+
+  console.log(levelStyles?.indicator);
 
   // Render
   return (
-    <button
-      onClick={onOpen}
-      className={`${baseClasses} ${opacityClasses} ${cardClass}`}
-    >
+    <button onClick={onOpen} className={`${baseClasses} ${opacityClasses}`}>
       <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-3">
           <div className="flex justify-between gap-1">
-            <h3 className={`text-sm font-semibold ${sectionTitleClass}`}>
+            <h3 className="text-sm font-semibold text-white/50">
               {section.title}
             </h3>
+            <div
+              className={`rounded-full h-4 w-4  ${indicatorClass} ${levelStyles?.indicator ? "shadow-soft-dark" : "inner-shadow-soft"}`}
+            />
 
             {/* <Badge badgeLabel={section.items.length} badgeStyle={badgeStyle} /> */}
           </div>
           {interviewCount > 0 && (
-            <Tag tagLabel="Interview-focused" tagStyle={badgeStyle} />
+            <Tag tagLabel="Interview-focused" tagStyle="primary" />
           )}
         </div>
 
@@ -226,7 +231,7 @@ export function SectionCard({
                     </span>
                     Questions added to mock interview
                   </p>
-                  <Pill pillStyle={badgeStyle} pillLabel={mockQuestionsCount} />
+                  <Pill pillStyle="primary" pillLabel={mockQuestionsCount} />
                 </div>
               )}
               {interviewScore !== null && (
@@ -237,10 +242,7 @@ export function SectionCard({
                     </span>
                     Current Interview Score
                   </p>
-                  <Pill
-                    pillStyle={badgeStyle}
-                    pillLabel={`${interviewScore}%`}
-                  />
+                  <Pill pillStyle="primary" pillLabel={`${interviewScore}%`} />
                 </div>
               )}
             </div>
