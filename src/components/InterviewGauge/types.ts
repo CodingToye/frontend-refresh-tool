@@ -9,5 +9,5 @@ export type Band = {
   max: number;
   startAngle: number;
   endAngle: number;
-  colorClass: string;
+  colorClass: {default: string; dark: string};
 };
