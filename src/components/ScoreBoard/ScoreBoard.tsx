@@ -58,7 +58,7 @@ export function ScoreBoard({
       </header>
 
       <div className="flex flex-col gap-4">
-        {subjectScore !== null && (
+        {subjectScore !== null ? (
           <>
             <div className="grid grid-cols-2 lg:grid-cols-2 gap-4">
               <Metric
@@ -87,6 +87,8 @@ export function ScoreBoard({
             </div>
             <InterviewGauge score={subjectScore} />
           </>
+        ) : (
+          <p>Scores will appear once an interview has taken place</p>
         )}
         {/* <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {scores.map(

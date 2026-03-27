@@ -18,6 +18,8 @@ export type MockInterviewProps = {
   subject: SubjectKey;
   showMockQuestions: boolean;
   setShowMockQuestions: (show: boolean) => void;
+  setHasStartedInterview: (subject: SubjectKey, started: boolean) => void;
+  setHasCompletedInterview: (subject: SubjectKey, completed: boolean) => void;
   questions: MockSessionQuestion[];
   saveInterviewScore: (
     subject: SubjectKey,

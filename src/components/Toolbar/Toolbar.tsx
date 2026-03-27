@@ -7,7 +7,6 @@ export function Toolbar({
   onSearchChange,
   interviewButtonMode,
   onResetProgress,
-  onResetInterviewProgress,
   onResetAllProgress,
   showInterviewOnly,
   onShowInterviewOnlyChange,
@@ -41,9 +40,9 @@ export function Toolbar({
           handleClick: onShowMockQuestions,
           extraClasses: "w-full lg:w-auto lg:justify-normal",
         }
-      : interviewButtonMode === "view"
+      : interviewButtonMode === "continue"
         ? {
-            buttonLabel: "View Mock Interview Results",
+            buttonLabel: "Continue Interview",
             buttonIcon: "assessment",
             buttonStyle: "primary" as const,
             buttonIconColour: "tertiary-500",
@@ -69,13 +68,6 @@ export function Toolbar({
       buttonIconColour: "primary-500",
       buttonStyle: "tertiary" as const,
       handleClick: onResetProgress,
-    },
-    {
-      buttonLabel: "Reset Interview",
-      buttonIcon: "groups",
-      buttonIconColour: "primary-500",
-      buttonStyle: "tertiary" as const,
-      handleClick: onResetInterviewProgress,
     },
     {
       buttonLabel: "Reset All",
@@ -110,7 +102,6 @@ export function Toolbar({
           <div className="flex flex-col gap-4 lg:flex-col ">
             <div className={panelClasses}>
               <small className={panelHeadingClasses}>Filter Topics</small>
-              {/* <div className="flex flex-col lg:flex-col gap-1"> */}
               {filterOptions.map(({id, label, checked, onChange}) => (
                 <label
                   key={id}
@@ -125,7 +116,6 @@ export function Toolbar({
                   {label}
                 </label>
               ))}
-              {/* </div> */}
             </div>
 
             <div className={panelClasses}>

@@ -1,9 +1,11 @@
 import type {CheckedTopics} from "@/components/TopicModal/types";
 import {
+  COMPLETED_INTERVIEWS_STORAGE_KEY,
   FLAGGED_STORAGE_KEY,
   INTERVIEW_HISTORY_STORAGE_KEY,
   INTERVIEW_SCORE_STORAGE_KEY,
   MOCK_SELECTED_STORAGE_KEY,
+  STARTED_INTERVIEWS_STORAGE_KEY,
   STORAGE_KEY,
 } from "@/constants/storage";
 import {subjectData, type SubjectKey} from "@/data/subjects";
@@ -39,6 +41,14 @@ export function useLearningProgress() {
   const [interviewScores, setInterviewScores] = useLocalStorageState<
     Record<string, InterviewScoreData>
   >(INTERVIEW_SCORE_STORAGE_KEY, {});
+
+  const [startedInterviews, setStartedInterviews] = useLocalStorageState<
+    Record<string, boolean>
+  >(STARTED_INTERVIEWS_STORAGE_KEY, {});
+
+  const [completedInterviews, setCompletedInterviews] = useLocalStorageState<
+    Record<string, boolean>
+  >(COMPLETED_INTERVIEWS_STORAGE_KEY, {});
 
   const toggleTopicChecked = (
     subject: SubjectKey,
@@ -148,12 +158,35 @@ export function useLearningProgress() {
     }));
   };
 
-  const getSubjectScore = (subject: SubjectKey) => {
+  const setHasStartedInterview = (subject: SubjectKey, started: boolean) => {
+    setStartedInterviews((prev) => ({
+      ...prev,
+      [subject]: started,
+    }));
+  };
+
+  const getHasStartedInterview = (subject: SubjectKey) =>
+    !!startedInterviews[subject];
+
+  const setHasCompletedInterview = (
+    subject: SubjectKey,
+    completed: boolean,
+  ) => {
+    setCompletedInterviews((prev) => ({
+      ...prev,
+      [subject]: completed,
+    }));
+  };
+
+  const getHasCompletedInterview = (subject: SubjectKey) =>
+    !!completedInterviews[subject];
+
+  const getSubjectScore = (subject: SubjectKey): number | null => {
     const subjectEntries = Object.entries(interviewScores).filter(([key]) =>
       key.startsWith(`${subject}::`),
     );
 
-    if (subjectEntries.length === 0) return 0;
+    if (subjectEntries.length === 0) return null;
 
     const totals = subjectEntries.reduce(
       (acc, [, scoreData]) => {
@@ -171,7 +204,7 @@ export function useLearningProgress() {
       {attempted: 0, correct: 0},
     );
 
-    if (totals.attempted === 0) return 0;
+    if (totals.attempted === 0) return null;
 
     const totalAvailable = getTotalSubjectQuestions(
       subjectData[subject].sections,
@@ -181,18 +214,6 @@ export function useLearningProgress() {
       attempted: totals.attempted,
       correct: totals.correct,
       totalAvailable,
-    });
-
-    console.log("interviewScores", interviewScores);
-    console.log("subjectEntries", subjectEntries);
-
-    console.log("getSubjectScore debug", {
-      subject,
-      subjectEntries,
-      totals,
-      totalAvailable,
-      metrics,
-      finalScore: toPercentage(metrics.weightedScore),
     });
 
     return toPercentage(metrics.weightedScore);
@@ -279,12 +300,6 @@ export function useLearningProgress() {
         Object.entries(prev).filter(([key]) => !key.startsWith(`${subject}::`)),
       ),
     );
-
-    setInterviewHistory((prev) => {
-      const next = {...prev};
-      delete next[subject];
-      return next;
-    });
   };
 
   const removeSubjectEntries = <T extends Record<string, unknown>>(
@@ -318,6 +333,10 @@ export function useLearningProgress() {
     toggleMockSelected,
     saveInterviewScore,
     saveInterviewAttempt,
+    setHasStartedInterview,
+    getHasStartedInterview,
+    setHasCompletedInterview,
+    getHasCompletedInterview,
     resetStudyProgress,
     resetInterviewProgress,
     resetAllProgress,

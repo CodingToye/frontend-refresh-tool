@@ -1,5 +1,7 @@
+import type {InterviewButtonMode} from "@/types/Interviews.types";
+
 export type ToolbarProps = {
-  interviewButtonMode: "take" | "view" | "retake" | null;
+  interviewButtonMode: InterviewButtonMode;
   subjectKey: string;
   searchTerm: string;
   onSearchChange: (value: string) => void;
