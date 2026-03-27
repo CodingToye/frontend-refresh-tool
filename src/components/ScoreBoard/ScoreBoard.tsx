@@ -57,7 +57,7 @@ export function ScoreBoard({
         </div>
       </header>
 
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-4">
         {subjectScore !== null && (
           <>
             <div className="grid grid-cols-2 lg:grid-cols-2 gap-4">
@@ -65,24 +65,24 @@ export function ScoreBoard({
                 metricValue={subjectScore}
                 metricValueSuffix="%"
                 metricIcon="workspace_premium"
-                metric="Current Interview Score"
+                metric="Interview Score"
               />
               <Metric
                 metricValue={Math.round(subjectMetrics.coverage * 100)}
                 metricValueSuffix="%"
                 metricIcon="full_coverage"
-                metric="Coverage"
+                metric="Subject Coverage"
               />
               <Metric
                 metricValue={Math.round(subjectMetrics.accuracy * 100)}
                 metricValueSuffix="%"
                 metricIcon="my_location"
-                metric="Accuracy"
+                metric="Total Accuracy"
               />
               <Metric
                 metricValue={subjectMetrics.confidence}
                 metricIcon="star_shine"
-                metric="Confidence"
+                metric="Subject Confidence"
               />
             </div>
             <InterviewGauge score={subjectScore} />
