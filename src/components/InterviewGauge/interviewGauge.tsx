@@ -7,7 +7,10 @@ const bands: Band[] = [
     max: 24,
     startAngle: -90,
     endAngle: -45,
-    colorClass: "text-danger-500 shadow-soft",
+    colorClass: {
+      default: "text-danger-500",
+      dark: "text-danger-600",
+    },
   },
   {
     label: "Weak",
@@ -15,7 +18,10 @@ const bands: Band[] = [
     max: 49,
     startAngle: -45,
     endAngle: 0,
-    colorClass: "text-warning-500 shadow-soft",
+    colorClass: {
+      default: "text-warning-500",
+      dark: "text-warning-600",
+    },
   },
   {
     label: "Decent",
@@ -23,7 +29,10 @@ const bands: Band[] = [
     max: 74,
     startAngle: 0,
     endAngle: 45,
-    colorClass: "text-info-500 shadow-soft",
+    colorClass: {
+      default: "text-info-500",
+      dark: "text-info-600",
+    },
   },
   {
     label: "Strong",
@@ -31,7 +40,10 @@ const bands: Band[] = [
     max: 100,
     startAngle: 45,
     endAngle: 90,
-    colorClass: "text-success-500 shadow-soft",
+    colorClass: {
+      default: "text-success-500",
+      dark: "text-success-600",
+    },
   },
 ];
 
@@ -86,9 +98,14 @@ export function InterviewGauge({score}: InterviewGaugeProps) {
   const cx = 120;
   const cy = 120;
   const outerRadius = 88;
+  const outerTrackRadius = 90;
+  const outerTrackWidth = 24;
+  const bandStrokeWidth = 18;
+  const highlightRadius = 88;
+  const highlightWidth = 6;
   const labelRadius = 132;
   const tickRadius = 110;
-  const needleLength = 68;
+  const needleLength = 70;
 
   // Maps 0-100 to -90deg to +90deg
   const needleAngle = -90 + (safeScore / 100) * 180;
@@ -96,19 +113,18 @@ export function InterviewGauge({score}: InterviewGaugeProps) {
 
   const ticks = [0, 25, 50, 75, 100];
 
-  const bandLabelRadius = 125;
-
   const activeBand =
     bands.find((band) => safeScore >= band.min && safeScore <= band.max) ??
     bands[0];
 
-  const needleColourClass = activeBand.colorClass.split(" ")[0];
+  console.log(activeBand);
+
+  const needleColourClass = activeBand.colorClass.default.split(" ")[0];
+  const needleCentreColourClass = activeBand.colorClass.dark.split(" ")[0];
 
   return (
-    <div className="flex flex-col items-center gap-2 transition bg-tertiary-600 border-b-4 border-primary-500 p-4 rounded shadow-soft">
-      <h2 className="text-xxs uppercase text-tertiary-200">
-        Overall Interview Score
-      </h2>
+    <div className="flex flex-col items-center gap-2 transition bg-tertiary-600  p-4 rounded shadow-soft">
+      <h2 className="text-xxs uppercase text-tertiary-200">Progression Band</h2>
 
       <div className="flex flex-col items-center">
         <svg
@@ -117,6 +133,15 @@ export function InterviewGauge({score}: InterviewGaugeProps) {
           aria-label={`Interview score gauge showing ${safeScore}%`}
           role="img"
         >
+          <path
+            d={describeArc(cx, cy, outerTrackRadius, -90, 90)}
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={outerTrackWidth}
+            className="text-zinc-950/40"
+            strokeLinecap="round"
+          />
+
           {bands.map((band) => (
             <path
               key={band.label}
@@ -129,9 +154,27 @@ export function InterviewGauge({score}: InterviewGaugeProps) {
               )}
               fill="none"
               stroke="currentColor"
-              strokeWidth="18"
-              className={band.colorClass}
+              strokeWidth={bandStrokeWidth}
+              className={band.colorClass.default}
               strokeLinecap="round"
+            />
+          ))}
+
+          {bands.map((band) => (
+            <path
+              key={`${band.label}-highlight`}
+              d={describeArc(
+                cx,
+                cy,
+                highlightRadius,
+                band.startAngle,
+                band.endAngle,
+              )}
+              fill="none"
+              stroke="rgba(255,255,255,0.15)"
+              strokeWidth={highlightWidth}
+              strokeLinecap="round"
+              className={band.colorClass.dark}
             />
           ))}
 
@@ -150,7 +193,7 @@ export function InterviewGauge({score}: InterviewGaugeProps) {
                   y2={end.y}
                   stroke="currentColor"
                   strokeWidth="2"
-                  className="text-tertiary-300"
+                  className="text-white"
                   strokeLinecap="round"
                 />
                 <text
@@ -158,29 +201,11 @@ export function InterviewGauge({score}: InterviewGaugeProps) {
                   y={label.y}
                   textAnchor="middle"
                   dominantBaseline="middle"
-                  className="fill-primary-500 text-[10px] font-bold"
+                  className="fill-white/40 text-xxs font-bold"
                 >
                   {tick}
                 </text>
               </g>
-            );
-          })}
-
-          {bands.map((band) => {
-            const midAngle = (band.startAngle + band.endAngle) / 2;
-            const pos = polarToCartesian(cx, cy, bandLabelRadius, midAngle);
-
-            return (
-              <text
-                key={`${band.label}-text`}
-                x={pos.x}
-                y={pos.y}
-                textAnchor="middle"
-                dominantBaseline="middle"
-                className="fill-zinc-300 text-[10px] font-medium"
-              >
-                {band.label}
-              </text>
             );
           })}
 
@@ -190,7 +215,7 @@ export function InterviewGauge({score}: InterviewGaugeProps) {
             x2={needlePoint.x}
             y2={needlePoint.y}
             stroke="currentColor"
-            strokeWidth="4"
+            strokeWidth="6"
             strokeLinecap="round"
             className={`${needleColourClass} text-shadow-lg`}
           />
@@ -207,11 +232,16 @@ export function InterviewGauge({score}: InterviewGaugeProps) {
             cy={cy}
             r="4"
             fill="currentColor"
-            className="text-zinc-900"
+            className={needleCentreColourClass}
           />
         </svg>
       </div>
-      <div className="text-2xl">{safeScore}%</div>
+      <div className="flex flex-col items-center text-2xl">
+        <span className={`text-xxs uppercase ${activeBand.colorClass.default}`}>
+          {activeBand.label}
+        </span>{" "}
+        {safeScore}%
+      </div>
     </div>
   );
 }
