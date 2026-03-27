@@ -7,7 +7,7 @@ export function Metric({
   metricIcon,
 }: MetricProps) {
   const baseClasses =
-    "flex flex-col items-center gap-3 transition bg-tertiary-600 border-b-4 border-primary-500 p-4 rounded shadow-soft";
+    "flex flex-col items-center gap-3 transition bg-tertiary-600 border border-tertiary-800 p-4 rounded shadow-soft";
 
   return (
     <div className={`${baseClasses} `}>

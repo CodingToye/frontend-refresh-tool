@@ -88,7 +88,7 @@ export function Toolbar({
 
   // Presentation
   const panelClasses =
-    "flex flex-col flex-wrap items-start gap-2 rounded-xl bg-black/20 p-4 pt-2 text-shadow inner-shadow-soft";
+    "flex flex-col flex-wrap items-start gap-2 rounded-xl bg-black/20 p-4 pt-2 text-shadow border border-tertiary-800 inner-shadow-soft";
   const panelHeadingClasses =
     "text-[12px] uppercase text-primary-600 font-bold";
 
