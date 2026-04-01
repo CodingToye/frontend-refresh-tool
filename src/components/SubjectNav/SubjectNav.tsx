@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 
 import type {SubjectKey} from "@/data/subjects";
 
+import {Button} from "../shared/Button";
 import {subjectIcon} from "../shared/SubjectIcon/subjectIcon";
 import type {SubjectNavProps} from "./types";
 
@@ -49,14 +50,14 @@ export function SubjectNav({
   return (
     <>
       {/* Mobile button */}
-      <div className="mb-4 flex justify-center lg:hidden">
-        <button
-          onClick={openMobileMenu}
-          className="flex items-center rounded-b bg-primary-500 px-4 py-2 text-xs font-medium text-black shadow-lg shadow-white/10 transition hover:bg-primary-600"
-        >
-          <span className="material-symbols-outlined mr-2">menu</span>
-          Subjects
-        </button>
+      <div className="lg:hidden absolute top-2 left-2">
+        <Button
+          buttonIcon="menu"
+          buttonIconColour="primary"
+          buttonStyle="tertiary"
+          handleClick={openMobileMenu}
+          iconOnly
+        />
       </div>
 
       {/* Desktop nav */}
