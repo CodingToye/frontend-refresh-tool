@@ -260,7 +260,7 @@ export default function App() {
           </header>
 
           <div className="flex flex-col gap-8 lg:flex-row">
-            <div className="order-3 lg:order-0 lg:w-1/5 lg:min-w-3xs">
+            <div className="order-1 lg:order-0 lg:w-1/5 lg:min-w-3xs">
               <Toolbar
                 searchTerm={searchTerm}
                 onSearchChange={setSearchTerm}
@@ -278,7 +278,7 @@ export default function App() {
               />
             </div>
 
-            <div className="order-1 flex flex-col gap-8 lg:order-0 lg:w-3/5">
+            <div className="order-2 flex flex-col gap-8 lg:order-0 lg:w-3/5">
               <section className="flex flex-col gap-2">
                 <header className="flex justify-center">
                   <div className="flex flex-row items-center">
