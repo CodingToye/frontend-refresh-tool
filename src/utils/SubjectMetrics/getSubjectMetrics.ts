@@ -1,13 +1,13 @@
 import type {SubjectKey} from "@/data/subjects";
+import {subjectData} from "@/data/subjects";
 import type {InterviewHistory} from "@/types/Interviews.types";
 import type {TopicReviewLevel} from "@/utils/TopicReviewLevel";
 
+import {getTopicKey} from "../topicKeys";
 import type {CountTrend, SubjectMetrics} from "./types";
 
 const getCountTrend = (previous: number, current: number): CountTrend => {
-  if (current > previous) return "up";
-  if (current < previous) return "down";
-  return "same";
+  return current > previous ? "up" : "down";
 };
 
 const getAttemptLevelCount = (
@@ -31,6 +31,7 @@ export function getSubjectMetrics({
   checkedTopics: Record<string, boolean>;
   flaggedTopics: Record<string, TopicReviewLevel>;
   mockSelectedTopics: Record<string, boolean>;
+
   interviewHistory: InterviewHistory;
 }): SubjectMetrics {
   const reviewedCount = Object.entries(checkedTopics).filter(
@@ -53,11 +54,19 @@ export function getSubjectMetrics({
     ([key, value]) => key.startsWith(`${subject}::`) && value === "strong",
   ).length;
 
-  const mockQuestionsCount = Object.entries(mockSelectedTopics).filter(
-    ([key, value]) => {
-      return key.startsWith(`${subject}::`) && value;
-    },
-  ).length;
+  const mockQuestionsCount = subjectData[subject].sections.reduce(
+    (sectionTotal, section) =>
+      sectionTotal +
+      section.items.reduce((itemTotal, item) => {
+        const topicKey = getTopicKey(subject, section.title, item.name);
+        const isSelected = !!mockSelectedTopics[topicKey];
+
+        if (!isSelected) return itemTotal;
+
+        return itemTotal + (item.mockQuestions?.length ?? 0);
+      }, 0),
+    0,
+  );
 
   const attempts = interviewHistory[subject] ?? [];
   const latestAttempt = attempts[attempts.length - 1];

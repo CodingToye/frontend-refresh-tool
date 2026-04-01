@@ -2,11 +2,12 @@ import type {TagProps} from "./types";
 
 const tagStyles = {
   primary: {
-    default: "bg-primary-300 border-black/50 text-black/70",
+    default: "bg-primary-300 border-black/50 text-black/70 text-primary-950",
     variant: "bg-primary-500 border-black/50 text-black/70",
   },
   secondary: {
-    default: "bg-secondary-300 border-black/50 text-black/70",
+    default:
+      "bg-secondary-500 border-black/50 text-black/70 text-secondary-950",
     variant: "bg-secondary-500 border-black/50 text-black/70",
   },
   poor: {
@@ -33,9 +34,10 @@ export function Tag({
   tagVariant = false,
   onClose,
   tagClose = false,
+  extraClasses,
 }: TagProps) {
   const baseClasses =
-    "flex items-center w-fit rounded px-1 lg:px-2 text-xxs text-black text-center font-semibold shadow-lg shadow-white/10";
+    "flex items-center w-fit h-4 rounded px-1 lg:px-2 text-micro uppercase   text-shadow text-shadow-white text-center font-bold shadow-lg shadow-white/10";
   const colourClasses = tagVariant
     ? tagStyles[tagStyle].variant
     : tagStyles[tagStyle].default;
@@ -44,7 +46,7 @@ export function Tag({
     onClose?.();
   };
   return (
-    <span className={`${baseClasses} ${colourClasses}`}>
+    <span className={`${baseClasses} ${colourClasses} ${extraClasses}`}>
       {tagLabel}{" "}
       {tagClose && (
         <button

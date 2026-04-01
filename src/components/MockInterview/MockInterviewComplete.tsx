@@ -17,7 +17,7 @@ export function MockInterviewComplete({
       onClick={onHandlePause}
     >
       <div
-        className="w-full max-w-2xl rounded-2xl bg-surface p-6 flex flex-col items-center"
+        className="w-full max-w-2xl rounded-2xl bg-tertiary-500 p-6 flex flex-col items-center"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mb-4">

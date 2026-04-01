@@ -1,9 +1,9 @@
 import type {TrendLevel} from "@/types/Progress.types";
-import {buildSparklinePath} from "@/utils/buildSparklinePath";
 import {getTopicKey} from "@/utils/topicKeys";
 
-import {Pill} from "../shared/Pill";
+import {Metric} from "../ScoreBoard";
 import {Tag} from "../shared/Tag";
+import {TrendSparkline} from "../TrendSparkline";
 import type {InterviewAttempt, SectionCardProps} from "./types";
 
 const levelRank = {
@@ -44,20 +44,23 @@ const sectionLevelStyles = {
   },
 } as const;
 
-const trendStyles: Record<TrendLevel, {icon: string; className: string}> = {
+const trendConfig = {
   up: {
     icon: "trending_up",
-    className: "text-success-300",
+    className: "text-success-500",
+    color: "#4ade80",
   },
   down: {
     icon: "trending_down",
-    className: "text-danger-300",
+    className: "text-danger-500",
+    color: "#f87171",
   },
   same: {
-    icon: "horizontal_rule",
-    className: "text-warning-300",
+    icon: "trending_flat",
+    className: "text-warning-500",
+    color: "#facc15",
   },
-} as const;
+};
 
 export function SectionCard({
   subject,
@@ -88,22 +91,26 @@ export function SectionCard({
 
   const isComplete = totalTopics > 0 && completedTopics === totalTopics;
 
-  const interviewCount = topicEntries.filter(({item}) => item.interview).length;
-  const flaggedCount = topicEntries.filter(
-    ({flaggedLevel}) => flaggedLevel,
+  const potentialInterviewQuestionCount = topicEntries.filter(
+    ({item}) => item.interview,
   ).length;
 
   const poorCount = topicEntries.filter(
     (e) => e.flaggedLevel === "poor",
   ).length;
 
-  const reviewCount = topicEntries.filter(
+  const weakCount = topicEntries.filter(
     (e) => e.flaggedLevel === "weak",
   ).length;
 
-  const mockQuestionsCount = topicEntries.filter(
-    ({inMockInterview}) => inMockInterview,
-  ).length;
+  const mockQuestionsCount = section.items.reduce((total, item) => {
+    const topicKey = getTopicKey(subject, section.title, item.name);
+    const isSelected = !!mockQuestions[topicKey];
+
+    if (!isSelected) return total;
+
+    return total + (item.mockQuestions?.length ?? 0);
+  }, 0);
 
   const attempts: InterviewAttempt[] = interviewHistory[subject] ?? [];
 
@@ -125,8 +132,6 @@ export function SectionCard({
     })
     .filter((value): value is number => value !== null);
 
-  const sparklinePath = buildSparklinePath(sectionHistory, 300, 24);
-
   const topicLevels = topicEntries
     .map(({flaggedLevel}) => flaggedLevel)
     .filter((level): level is NonNullable<typeof level> => level !== null);
@@ -144,7 +149,7 @@ export function SectionCard({
   const latestScore = sectionHistory[sectionHistory.length - 1];
   const previousScore = sectionHistory[sectionHistory.length - 2];
 
-  const sectionTrend =
+  const sectionTrend: TrendLevel | null =
     latestScore == null || previousScore == null
       ? null
       : latestScore > previousScore
@@ -153,24 +158,25 @@ export function SectionCard({
           ? "down"
           : "same";
 
-  const hasMeta =
-    flaggedCount > 0 || mockQuestionsCount > 0 || interviewScore !== null;
-
   // Presentation
-  const baseClasses = `flex flex-col gap-4 justify-between rounded-xl bg-surface border-surface/70 border p-3 text-left transition shadow-soft hover:shadow-[0_0_10px_rgba(91,192,190,0.25)]`;
+  const baseClasses = `flex flex-col gap-4 justify-between rounded-xl bg-tertiary-500 border-tertiary-400/20 border p-3 text-left transition shadow-soft hover:shadow-[0_0_10px_rgba(91,192,190,0.25)]`;
 
   const levelStyles = sectionLevel ? sectionLevelStyles[sectionLevel] : null;
-  const trendStyle = sectionTrend ? trendStyles[sectionTrend] : null;
+  const trendStyle = sectionTrend ? trendConfig[sectionTrend] : null;
 
   const opacityClasses = isComplete
     ? "opacity-30 inset-shadow-sm inset-shadow-black"
     : "opacity-100";
 
-  const badgeStyle = levelStyles?.badge ?? "primary";
-  const progressClass = levelStyles?.progress ?? "bg-primary-500";
+  const progressClass = "bg-secondary-500";
   const indicatorClass = levelStyles?.indicator ?? "bg-tertiary-600";
 
-  console.log(levelStyles?.indicator);
+  const hasInterviewScore = (interviewScore ?? 0) > 0;
+  const hasAttentionMetrics =
+    poorCount > 0 || weakCount > 0 || mockQuestionsCount > 0;
+  const hasAnyTopMetrics = hasInterviewScore || hasAttentionMetrics;
+
+  const hasHistory = interviewHistory[subject]?.length > 1;
 
   // Render
   return (
@@ -184,70 +190,67 @@ export function SectionCard({
             <div
               className={`rounded-full h-4 w-4  ${indicatorClass} ${levelStyles?.indicator ? "shadow-soft-dark" : "inner-shadow-soft"}`}
             />
-
-            {/* <Badge badgeLabel={section.items.length} badgeStyle={badgeStyle} /> */}
           </div>
-          {interviewCount > 0 && (
-            <Tag tagLabel="Interview-focused" tagStyle="primary" />
+          {potentialInterviewQuestionCount > 0 && (
+            <div className="inner-shadow-wider p-px w-fit rounded flex items-center outline outline-white/10 shadow-2xl shadow-white/50">
+              <Tag
+                tagLabel="Interview-focused"
+                tagStyle="secondary"
+                extraClasses="shadow-soft"
+              />
+            </div>
           )}
         </div>
 
-        {hasMeta && (
-          <div className="flex flex-col gap-4 bg-black/30 border border-black/20 text-secondary-700 p-4 rounded-lg mb-4 inner-shadow-soft">
-            {(poorCount > 0 || reviewCount > 0) && (
-              <div className="flex flex-col bg-tertiary-600 rounded p-2 shadow-soft">
-                {poorCount > 0 && (
-                  <div className="text-xxs flex items-center justify-between leading-normal">
-                    <p className="text-danger-500 font-bold">
-                      <span className="material-symbols-outlined material-filled align-middle text-base! mr-2">
-                        warning
-                      </span>
-                      Topics needing attention
-                    </p>
-                    <Pill pillStyle={badgeStyle} pillLabel={poorCount} />
-                  </div>
-                )}
+        {hasAnyTopMetrics && (
+          <div className="flex flex-col gap-4 ">
+            {(poorCount > 0 || weakCount > 0) && (
+              <div className="grid grid-cols-2 gap-2 text-center  ">
+                <Metric
+                  metricValue={poorCount}
+                  metricIcon="warning"
+                  metricIconStyle="danger"
+                  metric="Topics needing attention"
+                />
 
-                {reviewCount > 0 && (
-                  <div className="text-xxs flex items-center justify-between leading-normal">
-                    <p className="text-warning-500 font-bold">
-                      <span className="material-symbols-outlined material-filled align-middle text-base! mr-2">
-                        warning
-                      </span>
-                      Topics to review
-                    </p>
-                    <Pill pillStyle="weak" pillLabel={reviewCount} />
-                  </div>
+                {weakCount > 0 && (
+                  <Metric
+                    metricValue={weakCount}
+                    metricIcon="warning"
+                    metricIconStyle="warning"
+                    metric="Topics to review"
+                  />
                 )}
               </div>
             )}
 
-            <div className="flex flex-col gap-2 bg-tertiary-600 rounded p-2 shadow-soft">
-              {mockQuestionsCount > 0 && (
-                <div className="text-xxs flex items-center justify-between leading-normal">
-                  <p className="text-white font-bold">
-                    <span className="material-symbols-outlined material-filled align-middle text-base! mr-2">
-                      group_add
-                    </span>
-                    Questions added to mock interview
-                  </p>
-                  <Pill pillStyle="primary" pillLabel={mockQuestionsCount} />
-                </div>
-              )}
-              {interviewScore !== null && (
-                <div className="text-xxs flex items-center justify-between leading-normal">
-                  <p className="text-white font-bold">
-                    <span className="material-symbols-outlined material-filled align-middle text-base! mr-2">
-                      leaderboard
-                    </span>
-                    Current Interview Score
-                  </p>
-                  <Pill pillStyle="primary" pillLabel={`${interviewScore}%`} />
-                </div>
-              )}
-            </div>
-
-            {sectionHistory.length > 1 && (
+            {(mockQuestionsCount > 0 || hasInterviewScore) && (
+              <div className="flex flex-col gap-2 bg-tertiary-600 rounded p-2 shadow-soft">
+                {mockQuestionsCount > 0 && (
+                  <div className="text-xxs flex items-center justify-between leading-normal">
+                    <p className="text-white font-bold">
+                      <span className="material-symbols-outlined material-filled align-middle text-base! mr-2">
+                        group_add
+                      </span>
+                      Questions added
+                    </p>
+                    <Tag tagStyle="primary" tagLabel={mockQuestionsCount} />
+                  </div>
+                )}
+                {hasInterviewScore && (
+                  <div className="text-xxs flex items-center justify-between leading-normal">
+                    <p className="text-white font-bold">
+                      <span className="material-symbols-outlined material-filled align-middle text-base! mr-2">
+                        leaderboard
+                      </span>
+                      Current Interview Score
+                    </p>
+                    <Tag tagStyle="primary" tagLabel={`${interviewScore}%`} />
+                  </div>
+                )}
+              </div>
+            )}
+            {hasHistory && (
               <div className="flex flex-col items-center gap-4 rounded bg-tertiary-600 p-2 shadow-soft">
                 <div className="flex w-full flex-row items-center justify-between">
                   <p className="mb-1 text-xxs text-white leading-normal">
@@ -263,21 +266,14 @@ export function SectionCard({
                     )}
                   </div>
                 </div>
-                <div className="w-full bg-tertiary-700 rounded p-2">
-                  <svg
-                    viewBox="0 0 300 24"
-                    className="h-6 w-full overflow-visible"
-                  >
-                    <path
-                      d={sparklinePath}
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className={trendStyle?.className}
+
+                <div className="w-full rounded bg-tertiary-700 p-2">
+                  <div className={trendStyle?.className}>
+                    <TrendSparkline
+                      values={sectionHistory}
+                      lineColour={trendStyle ? trendStyle.color : "#94a3b8"}
                     />
-                  </svg>
+                  </div>
                 </div>
               </div>
             )}
@@ -293,7 +289,7 @@ export function SectionCard({
           <div className="flex-1">
             <div className="h-2 rounded-full bg-tertiary-800 inner-shadow-soft">
               <div
-                className={`h-2 ${progressClass} rounded-full transition-all duration-300 inner-shadow-soft`}
+                className={`h-2 ${progressClass} rounded-full transition-all duration-300 shadow-soft ${progress > 0 && "glow-soft"}`}
                 style={{width: `${progress}%`}}
               />
             </div>

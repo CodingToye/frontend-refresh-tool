@@ -1,3 +1,4 @@
+import type {MockSessionQuestion} from "@/components/MockInterview/types";
 import type {CheckedTopics} from "@/components/TopicModal/types";
 import {
   COMPLETED_INTERVIEWS_STORAGE_KEY,
@@ -106,6 +107,43 @@ export function useLearningProgress() {
     }));
   };
 
+  const addRecommendedQuestionsForSubject = (subject: SubjectKey) => {
+    const subjectSections = subjectData[subject].sections;
+
+    setMockSelectedTopics((prev) => {
+      const next = {...prev};
+
+      for (const section of subjectSections) {
+        for (const item of section.items) {
+          if (!item.interview) continue;
+
+          const topicKey = getTopicKey(subject, section.title, item.name);
+          next[topicKey] = true;
+        }
+      }
+      return next;
+    });
+  };
+
+  const removeRecommendedQuestionsForSubject = (subject: SubjectKey) => {
+    const subjectSections = subjectData[subject].sections;
+
+    setMockSelectedTopics((prev) => {
+      const next = {...prev};
+
+      for (const section of subjectSections) {
+        for (const item of section.items) {
+          if (!item.interview) continue;
+
+          const topicKey = getTopicKey(subject, section.title, item.name);
+          delete next[topicKey];
+        }
+      }
+
+      return next;
+    });
+  };
+
   const getInterviewScore = (subject: SubjectKey, sectionTitle: string) => {
     const key = `${subject}::${sectionTitle}`;
     const scoreData = interviewScores[key];
@@ -147,8 +185,6 @@ export function useLearningProgress() {
     const safeAttempted = Math.max(0, scoreData.attempted);
     const safeCorrect = Math.min(Math.max(0, scoreData.correct), safeAttempted);
 
-    console.log("saveInterviewScore input", {key, scoreData});
-
     setInterviewScores((prev) => ({
       ...prev,
       [key]: {
@@ -180,6 +216,20 @@ export function useLearningProgress() {
 
   const getHasCompletedInterview = (subject: SubjectKey) =>
     !!completedInterviews[subject];
+
+  const getTotalAvailableQuestions = (subject: SubjectKey): number | null => {
+    const totalAvailable = getTotalSubjectQuestions(
+      subjectData[subject].sections,
+    );
+    return totalAvailable;
+  };
+
+  function getQuestionCountByTopic(questions: MockSessionQuestion[]) {
+    return questions.reduce<Record<string, number>>((acc, q) => {
+      acc[q.key] = (acc[q.key] ?? 0) + 1;
+      return acc;
+    }, {});
+  }
 
   const getSubjectScore = (subject: SubjectKey): number | null => {
     const subjectEntries = Object.entries(interviewScores).filter(([key]) =>
@@ -267,7 +317,7 @@ export function useLearningProgress() {
     if (levelRank[current] > levelRank[previous]) return "up";
     if (levelRank[current] < levelRank[previous]) return "down";
 
-    return "same";
+    return null;
   };
 
   const saveInterviewAttempt = (
@@ -310,7 +360,7 @@ export function useLearningProgress() {
       Object.entries(state).filter(([key]) => !key.startsWith(`${subject}::`)),
     ) as T;
 
-  const resetAllProgress = (subject: SubjectKey) => {
+  const resetSubjectProgress = (subject: SubjectKey) => {
     setCheckedTopics((prev) => removeSubjectEntries(prev, subject));
     setFlaggedTopics((prev) => removeSubjectEntries(prev, subject));
     setMockSelectedTopics((prev) => removeSubjectEntries(prev, subject));
@@ -320,6 +370,16 @@ export function useLearningProgress() {
       delete next[subject];
       return next;
     });
+  };
+
+  const resetAllSubjectsProgress = () => {
+    setCheckedTopics({});
+    setInterviewHistory({});
+    setFlaggedTopics({});
+    setMockSelectedTopics({});
+    setInterviewScores({});
+    setStartedInterviews({});
+    setCompletedInterviews({});
   };
 
   return {
@@ -339,10 +399,16 @@ export function useLearningProgress() {
     getHasCompletedInterview,
     resetStudyProgress,
     resetInterviewProgress,
-    resetAllProgress,
+    resetSubjectProgress,
+    resetAllSubjectsProgress,
     getInterviewScore,
     getSubjectScore,
     getSubjectInterviewMetrics,
     getTopicTrend,
+    getTotalAvailableQuestions,
+    getQuestionCountByTopic,
+    addRecommendedQuestionsForSubject,
+    removeRecommendedQuestionsForSubject,
+    setMockSelectedTopics,
   };
 }

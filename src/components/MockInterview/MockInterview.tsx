@@ -107,9 +107,8 @@ export function MockInterview({
   const nextQuestion = questions[nextIndex];
 
   const handlePause = () => {
-    persistInterviewProgress();
-
     if (!isComplete) {
+      persistInterviewProgress();
       setHasStartedInterview(subject, true);
     }
     setShowMockQuestions(false);

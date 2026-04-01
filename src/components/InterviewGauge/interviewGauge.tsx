@@ -117,8 +117,6 @@ export function InterviewGauge({score}: InterviewGaugeProps) {
     bands.find((band) => safeScore >= band.min && safeScore <= band.max) ??
     bands[0];
 
-  console.log(activeBand);
-
   const needleColourClass = activeBand.colorClass.default.split(" ")[0];
   const needleCentreColourClass = activeBand.colorClass.dark.split(" ")[0];
 

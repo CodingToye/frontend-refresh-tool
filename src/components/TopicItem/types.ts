@@ -1,5 +1,6 @@
 import type {SubjectKey} from "@/data/subjects";
 import type {TrendLevel} from "@/types/Progress.types";
+import type {TopicReviewLevel} from "@/utils/TopicReviewLevel";
 
 export type MockQuestion = {
   id: string;
@@ -21,16 +22,10 @@ export type TopicItemProps = {
   sectionTitle: string;
   isOpen: boolean;
   isChecked: boolean;
-  isFlagged: boolean;
-  isMockSelected: boolean;
+  flagLevel?: TopicReviewLevel | null;
   trend?: TrendLevel | null;
   onToggleOpen: () => void;
   onToggleChecked: (
-    subject: SubjectKey,
-    sectionTitle: string,
-    topicName: string,
-  ) => void;
-  onToggleMockSelected: (
     subject: SubjectKey,
     sectionTitle: string,
     topicName: string,

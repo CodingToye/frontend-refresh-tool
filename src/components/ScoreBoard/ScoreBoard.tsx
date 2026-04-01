@@ -1,51 +1,13 @@
 import {InterviewGauge} from "@/components/InterviewGauge";
 
 import {Metric} from "./Metric";
-// import {Score} from "./Score";
 import type {ScoreBoardProps} from "./types";
 export function ScoreBoard({
-  // poorCount,
-  // weakCount,
-  // decentCount,
-  // strongCount,
-  // poorTrend,
-  // weakTrend,
-  // decentTrend,
-  // strongTrend,
   subjectScore,
   subjectMetrics,
+  totalAvailable,
+  questionMode,
 }: ScoreBoardProps) {
-  // const scores = [
-  //   {
-  //     count: poorCount,
-  //     scoreStyle: "poor" as const,
-  //     contentNoun: "Topic",
-  //     contentVerb: "poor",
-  //     trend: poorTrend,
-  //   },
-  //   {
-  //     count: weakCount,
-  //     scoreStyle: "weak" as const,
-  //     contentNoun: "Topic",
-  //     contentVerb: "weak",
-  //     trend: weakTrend,
-  //   },
-  //   {
-  //     count: decentCount,
-  //     scoreStyle: "decent" as const,
-  //     contentNoun: "Topic",
-  //     contentVerb: "decent",
-  //     trend: decentTrend,
-  //   },
-  //   {
-  //     count: strongCount,
-  //     scoreStyle: "strong" as const,
-  //     contentNoun: "Topic",
-  //     contentVerb: "strong",
-  //     trend: strongTrend,
-  //   },
-  // ];
-
   return (
     <section className="flex flex-col gap-2">
       <header className="flex justify-center">
@@ -61,6 +23,18 @@ export function ScoreBoard({
         {subjectScore !== null ? (
           <>
             <div className="grid grid-cols-2 lg:grid-cols-2 gap-4">
+              <Metric
+                metricValue={`${totalAvailable}`}
+                metricValueSuffix=""
+                metricIcon="shield_question"
+                metric="Interview Questions"
+                metricNote={
+                  questionMode === "extended"
+                    ? "extended questions used"
+                    : "classic questions used"
+                }
+                extraClasses="col-span-2"
+              />
               <Metric
                 metricValue={subjectScore}
                 metricValueSuffix="%"
@@ -90,21 +64,6 @@ export function ScoreBoard({
         ) : (
           <p>Scores will appear once an interview has taken place</p>
         )}
-        {/* <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          {scores.map(
-            ({count, scoreStyle, contentNoun, contentVerb, trend}, i) => (
-              <Score
-                key={i}
-                count={count}
-                scoreIcon="flag"
-                scoreStyle={scoreStyle}
-                contentNoun={contentNoun}
-                contentVerb={contentVerb}
-                trend={trend}
-              />
-            ),
-          )}
-        </div> */}
       </div>
     </section>
   );

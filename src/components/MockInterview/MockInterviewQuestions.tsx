@@ -21,43 +21,43 @@ export function MockInterviewQuestions({
       onClick={onHandlePause}
     >
       <div
-        className="w-full max-w-3xl max-h-full overflow-y-auto rounded-2xl bg-surface-light p-6"
+        className="w-full max-w-3xl max-h-full overflow-y-auto rounded-2xl bg-tertiary-400 p-6"
         onClick={(e) => e.stopPropagation()}
       >
         <div>
           <div className="mb-4 flex flex-col gap-4 lg:gap-0 items-center lg:items-start">
-            <div className="flex flex-col lg:flex-row lg:w-full justify-between items-center">
+            <div className="flex flex-col gap-2 lg:flex-row lg:w-full justify-between items-center">
               <h2 className="text-xl font-semibold">
                 {subjectData[subject].label} Mock Interview
               </h2>
               <Button
-                buttonLabel="Pause Interview"
                 buttonIcon="pause_circle"
                 buttonIconColour="primary"
-                buttonStyle="primary"
+                buttonStyle="tertiary"
                 handleClick={onHandlePause}
+                iconOnly
               />
             </div>
-            <p className="mt-1 text-xs lg:text-sm text-slate-400 text-left">
-              Question {currentIndex + 1} of {totalQuestions}
+            <p className="mt-1 text-xs lg:text-xs text-secondary-500 text-left">
+              Question {currentIndex + 1} / {totalQuestions}
             </p>
           </div>
 
           <div className="mb-4 flex flex-col lg:flex-row flex-wrap items-center lg:gap-2">
-            <span className="rounded bg-primary-500 px-2 py-0.5 text-xs font-medium text-black">
+            <span className="rounded bg-secondary-500 px-2 py-0.5 text-xs font-medium text-black">
               {currentQuestion.sectionTitle}
             </span>
-            <span className="text-xxs lg:text-sm text-white">
+            <em className="text-xxs lg:text-sm text-white">
               {currentQuestion.topicName}
-            </span>
+            </em>
           </div>
 
-          <div className="mb-6 rounded-xl border border-black/10 bg-surface p-4">
+          <div className="mb-6 rounded-xl border border-black/10 bg-tertiary-500 p-4">
             <p className="text-base text-white">{currentQuestion.question}</p>
           </div>
 
           <div className="mb-4">
-            <label className="mb-2 block text-sm text-slate-300">
+            <label className="mb-2 block text-sm text-primary-500">
               Your answer
             </label>
             <textarea
@@ -65,7 +65,7 @@ export function MockInterviewQuestions({
               onChange={(e) => setCurrentAnswer(e.target.value)}
               rows={4}
               disabled={revealed}
-              className="w-full rounded-xl bg-surface px-4 py-3 text-xs text-white outline-none placeholder:text-slate-400 shadow-inner transition focus:bg-black/50 inset-shadow-sm inset-shadow-black/20"
+              className="w-full rounded-xl bg-tertiary-500 px-4 py-3 text-xs text-white outline-none placeholder:text-slate-400 shadow-inner transition focus:bg-black/50 inset-shadow-sm inset-shadow-black/20"
               placeholder="Type your answer here..."
             />
           </div>
@@ -82,8 +82,8 @@ export function MockInterviewQuestions({
             </div>
           ) : (
             <div className="space-y-4">
-              <div className="rounded-xl border border-black/10 bg-surface p-4">
-                <h3 className="mb-2 text-sm font-medium text-primary">
+              <div className="rounded-xl border border-black/10 bg-tertiary-500 p-4">
+                <h3 className="mb-2 text-sm font-medium text-primary-500">
                   Suggested answer
                 </h3>
                 <p className="text-xs lg:text-base text-slate-200">
@@ -92,32 +92,30 @@ export function MockInterviewQuestions({
               </div>
 
               <div>
-                <p className="mb-4 text-sm text-slate-300">Score your answer</p>
+                <p className="mb-4 text-sm text-primary-500">
+                  Score your answer
+                </p>
                 <div className="flex flex-wrap justify-center gap-2">
-                  <button
-                    onClick={() => onHandleScore(0)}
-                    className="rounded-xl bg-danger-400 px-4 py-1 text-xs text-white shadow-lg shadow-white/10 transition hover:bg-danger-600"
-                  >
-                    0 - Poor
-                  </button>
-                  <button
-                    onClick={() => onHandleScore(1)}
-                    className="rounded-xl bg-warning-400 px-4 py-1 text-xs text-white shadow-lg shadow-white/10 transition hover:bg-warning-600"
-                  >
-                    1 - Weak
-                  </button>
-                  <button
-                    onClick={() => onHandleScore(2)}
-                    className="rounded-xl bg-info-400 px-4 py-1 text-xs text-white shadow-lg shadow-white/10 transition hover:bg-info-600"
-                  >
-                    2 - Decent
-                  </button>
-                  <button
-                    onClick={() => onHandleScore(3)}
-                    className="rounded-xl bg-success-400 px-4 py-1 text-xs text-white shadow-lg shadow-white/10 transition hover:bg-success-600"
-                  >
-                    3 - Strong
-                  </button>
+                  <Button
+                    buttonLabel="Poor"
+                    buttonStyle="danger"
+                    handleClick={() => onHandleScore(0)}
+                  />
+                  <Button
+                    buttonLabel="Weak"
+                    buttonStyle="warning"
+                    handleClick={() => onHandleScore(1)}
+                  />
+                  <Button
+                    buttonLabel="Decent"
+                    buttonStyle="info"
+                    handleClick={() => onHandleScore(2)}
+                  />
+                  <Button
+                    buttonLabel="Strong"
+                    buttonStyle="success"
+                    handleClick={() => onHandleScore(3)}
+                  />
                 </div>
               </div>
             </div>
