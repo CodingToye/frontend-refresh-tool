@@ -17,6 +17,8 @@ export type ToolbarProps = {
   showFlaggedOnly: boolean;
   onShowFlaggedOnlyChange: (value: boolean) => void;
   onShowMockQuestions: () => void;
+  mobileToolsOpen: boolean;
+  toggleMobileTools: () => void;
 };
 
 export type ActionButtonConfig = {

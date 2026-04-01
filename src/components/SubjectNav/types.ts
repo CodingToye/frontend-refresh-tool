@@ -6,4 +6,10 @@ export type SubjectNavProps = {
   subject: SubjectKey;
   setSubject: (subject: SubjectKey) => void;
   subjectMetrics: Record<SubjectKey, InterviewScoreMetrics>;
+  mobileMenuOpen: boolean;
+  toggleMobileMenu: () => void;
+  mobileToolsOpen: boolean;
+  toggleMobileTools: () => void;
+  mobileScoreboardOpen: boolean;
+  toggleMobileScoreboard: () => void;
 };

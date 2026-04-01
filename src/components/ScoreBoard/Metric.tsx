@@ -20,7 +20,7 @@ export function Metric({
   extraClasses,
 }: MetricProps) {
   const baseClasses =
-    "flex flex-col items-center gap-3 justify-between transition bg-tertiary-600 border border-tertiary-800 p-4 rounded shadow-soft";
+    "flex flex-col items-center gap-3 justify-between transition bg-black/20 border border-tertiary-800 p-4 rounded shadow-soft";
 
   const colourClasses = metricIconStyles[metricIconStyle];
   return (
