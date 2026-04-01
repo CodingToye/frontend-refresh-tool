@@ -17,8 +17,10 @@ import {filterSections} from "@/utils/filterSections";
 import {getMockSessionQuestions} from "@/utils/getMockSessionQuestions";
 import {getTopicKey} from "@/utils/topicKeys";
 
+import {MobileNav} from "./components/MobileNav";
 import {subjectIcon} from "./components/shared/SubjectIcon";
 import {Tag} from "./components/shared/Tag";
+import {useMobileNav} from "./hooks/useMobileNav";
 import {getSubjectMetrics} from "./utils/SubjectMetrics";
 
 export default function App() {
@@ -81,6 +83,14 @@ export default function App() {
     mockSelectedTopics,
     interviewHistory,
   });
+  const {
+    mobileMenuOpen,
+    toggleMobileMenu,
+    mobileToolsOpen,
+    toggleMobileTools,
+    mobileScoreboardOpen,
+    toggleMobileScoreboard,
+  } = useMobileNav();
 
   const subjectMetrics = Object.fromEntries(
     subjects.map(([key]) => [key, getSubjectInterviewMetrics(key)]),
@@ -237,11 +247,22 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-bg  text-text">
+      <MobileNav
+        toggleMobileMenu={toggleMobileMenu}
+        toggleMobileTools={toggleMobileTools}
+        toggleMobileScoreboard={toggleMobileScoreboard}
+      />
       <SubjectNav
         subjects={subjects}
         subject={subject}
         setSubject={setSubject}
         subjectMetrics={subjectMetrics}
+        mobileMenuOpen={mobileMenuOpen}
+        toggleMobileMenu={toggleMobileMenu}
+        mobileToolsOpen={mobileToolsOpen}
+        toggleMobileTools={toggleMobileTools}
+        mobileScoreboardOpen={mobileScoreboardOpen}
+        toggleMobileScoreboard={toggleMobileScoreboard}
       />
 
       <div className="p-4 pt-0">
@@ -275,6 +296,8 @@ export default function App() {
                 onShowFlaggedOnlyChange={setShowFlaggedOnly}
                 onShowMockQuestions={handleOpenMockQuestions}
                 interviewButtonMode={interviewButtonMode}
+                mobileToolsOpen={mobileToolsOpen}
+                toggleMobileTools={toggleMobileTools}
               />
             </div>
 
@@ -351,53 +374,55 @@ export default function App() {
                 mockQuestionsCount={activeMockQuestionsCount}
                 totalAvailable={activeTotalAvailable}
                 questionMode={questionMode}
+                mobileScoreboardOpen={mobileScoreboardOpen}
+                toggleMobileScoreboard={toggleMobileScoreboard}
               />
             </div>
           </div>
         </div>
+      </div>
 
-        <MockInterview
-          key={`${subject}-${mockInterviewResetKey}`}
+      <MockInterview
+        key={`${subject}-${mockInterviewResetKey}`}
+        subject={subject}
+        showMockQuestions={showMockQuestions}
+        setShowMockQuestions={handleSetShowMockQuestions}
+        setHasStartedInterview={setHasStartedInterview}
+        setHasCompletedInterview={setHasCompletedInterview}
+        questions={mockSessionQuestions}
+        saveInterviewScore={saveInterviewScore}
+        saveInterviewAttempt={saveInterviewAttempt}
+        setTopicFlagged={setTopicFlagged}
+      />
+
+      {selectedSection && (
+        <TopicModal
           subject={subject}
-          showMockQuestions={showMockQuestions}
-          setShowMockQuestions={handleSetShowMockQuestions}
-          setHasStartedInterview={setHasStartedInterview}
-          setHasCompletedInterview={setHasCompletedInterview}
-          questions={mockSessionQuestions}
-          saveInterviewScore={saveInterviewScore}
-          saveInterviewAttempt={saveInterviewAttempt}
+          section={selectedSection}
+          expandedTopic={expandedTopic}
+          checkedTopics={checkedTopics}
+          onClose={handleCloseModal}
+          onToggleOpen={setExpandedTopic}
+          onToggleChecked={toggleTopicChecked}
+          flaggedTopics={flaggedTopics}
+          interviewHistory={interviewHistory}
+          mockSelectedTopics={mockSelectedTopics}
+          onToggleMockSelected={toggleMockSelected}
           setTopicFlagged={setTopicFlagged}
+          getTopicTrend={getTopicTrend}
         />
+      )}
 
-        {selectedSection && (
-          <TopicModal
-            subject={subject}
-            section={selectedSection}
-            expandedTopic={expandedTopic}
-            checkedTopics={checkedTopics}
-            onClose={handleCloseModal}
-            onToggleOpen={setExpandedTopic}
-            onToggleChecked={toggleTopicChecked}
-            flaggedTopics={flaggedTopics}
-            interviewHistory={interviewHistory}
-            mockSelectedTopics={mockSelectedTopics}
-            onToggleMockSelected={toggleMockSelected}
-            setTopicFlagged={setTopicFlagged}
-            getTopicTrend={getTopicTrend}
+      <div className="fixed left-0 top-0 flex w-full flex-col gap-2 lg:left-auto lg:right-10 lg:top-10 lg:w-auto">
+        {toasts.map((toast) => (
+          <Toast
+            key={toast.id}
+            title={toast.title}
+            message={toast.message}
+            toastStyle={toast.toastStyle}
+            onDismiss={() => removeToast(toast.id)}
           />
-        )}
-
-        <div className="fixed left-0 top-0 flex w-full flex-col gap-2 lg:left-auto lg:right-10 lg:top-10 lg:w-auto">
-          {toasts.map((toast) => (
-            <Toast
-              key={toast.id}
-              title={toast.title}
-              message={toast.message}
-              toastStyle={toast.toastStyle}
-              onDismiss={() => removeToast(toast.id)}
-            />
-          ))}
-        </div>
+        ))}
       </div>
     </div>
   );

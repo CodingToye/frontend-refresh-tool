@@ -17,6 +17,8 @@ export type ScoreBoardProps = {
   mockQuestionsCount: number;
   totalAvailable: number;
   questionMode: "classic" | "extended";
+  mobileScoreboardOpen: boolean;
+  toggleMobileScoreboard: () => void;
 };
 
 export type MetricProps = {

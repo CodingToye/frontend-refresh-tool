@@ -121,7 +121,7 @@ export function InterviewGauge({score}: InterviewGaugeProps) {
   const needleCentreColourClass = activeBand.colorClass.dark.split(" ")[0];
 
   return (
-    <div className="flex flex-col items-center gap-2 transition bg-tertiary-600  p-4 rounded shadow-soft">
+    <div className="flex flex-col items-center gap-2 transition bg-tertiary-600  p-4 rounded ">
       <h2 className="text-xxs uppercase text-tertiary-200">Progression Band</h2>
 
       <div className="flex flex-col items-center">
