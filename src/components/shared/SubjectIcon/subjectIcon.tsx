@@ -1,5 +1,3 @@
-// import {AwsIcon} from "@/icons/AwsIcon";
-
 import type {SubjectKey} from "@/data/subjects";
 
 import {
@@ -13,6 +11,7 @@ import {
   NextJSIcon,
   NodeJSIcon,
   ReactIcon,
+  ReactNativeIcon,
   TestIcon,
   TSIcon,
   WebPerformanceIcon,
@@ -23,6 +22,7 @@ export const subjectIcon: Record<
   React.ComponentType<{className?: string}>
 > = {
   react: ReactIcon,
+  reactNative: ReactNativeIcon,
   javaScript: JSIcon,
   css: CSSIcon,
   typeScript: TSIcon,
@@ -35,6 +35,4 @@ export const subjectIcon: Record<
   webPerformance: WebPerformanceIcon,
   browserAPIs: BrowserAPIIcon,
   fullStack: FullStackIcon,
-  // aws: AwsIcon,
-  // add others...
 };

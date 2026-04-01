@@ -1,12 +1,17 @@
+import type {InterviewButtonMode} from "@/types/Interviews.types";
+
 export type ToolbarProps = {
-  interviewButtonMode: "take" | "view" | "retake" | null;
-  subjectKey: string;
   searchTerm: string;
   onSearchChange: (value: string) => void;
-  mockQuestionsCount: number;
+  interviewButtonMode: InterviewButtonMode;
+
   onResetProgress: () => void;
-  onResetInterviewProgress: () => void;
-  onResetAllProgress: () => void;
+  onResetSubjectProgress: () => void;
+  onResetAllSubjectsProgress: () => void;
+
+  questionMode: "classic" | "extended";
+  onQuestionModeChange: (value: "classic" | "extended") => void;
+
   showInterviewOnly: boolean;
   onShowInterviewOnlyChange: (value: boolean) => void;
   showFlaggedOnly: boolean;
@@ -17,7 +22,7 @@ export type ToolbarProps = {
 export type ActionButtonConfig = {
   buttonLabel: string | number;
   buttonIcon?: string;
-  buttonStyle?: "primary" | "secondary" | "tertiary";
+  buttonStyle?: "primary" | "secondary" | "tertiary" | "danger" | "success";
   buttonIconColour: string;
   handleClick: () => void;
   extraClasses?: string;

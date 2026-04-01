@@ -1,20 +1,32 @@
 import {Button} from "@/components/shared/Button";
+import {SearchInput} from "@/components/shared/SearchInput";
 
+import {Checkbox} from "../shared/Checkbox";
+import {Droplet} from "../shared/Droplet";
+import {SwitchToggle} from "../shared/SwitchToggle";
 import type {ActionButtonConfig, ToolbarProps} from "./types";
+
+const panelClasses =
+  "flex flex-col flex-wrap items-start gap-2 rounded-xl border border-tertiary-800 bg-black/20 p-4 pt-2 text-shadow inner-shadow-soft";
+
+const panelHeadingClasses =
+  "text-[11px] font-bold uppercase text-secondary-200";
+
 export function Toolbar({
   searchTerm,
   onSearchChange,
   interviewButtonMode,
   onResetProgress,
-  onResetInterviewProgress,
-  onResetAllProgress,
+  onResetSubjectProgress,
+  onResetAllSubjectsProgress,
+  questionMode,
+  onQuestionModeChange,
   showInterviewOnly,
   onShowInterviewOnlyChange,
   showFlaggedOnly,
   onShowFlaggedOnlyChange,
   onShowMockQuestions,
 }: ToolbarProps) {
-  // Data
   const filterOptions = [
     {
       id: "interview-only",
@@ -35,16 +47,16 @@ export function Toolbar({
       ? {
           buttonLabel: "Take Mock Interview",
           buttonIcon: "groups",
-          buttonStyle: "primary" as const,
+          buttonStyle: "primary",
           buttonIconColour: "tertiary-500",
           handleClick: onShowMockQuestions,
           extraClasses: "w-full lg:w-auto lg:justify-normal",
         }
-      : interviewButtonMode === "view"
+      : interviewButtonMode === "continue"
         ? {
-            buttonLabel: "View Mock Interview Results",
+            buttonLabel: "Continue Interview",
             buttonIcon: "assessment",
-            buttonStyle: "primary" as const,
+            buttonStyle: "primary",
             buttonIconColour: "tertiary-500",
             handleClick: onShowMockQuestions,
             extraClasses: "w-full lg:w-auto lg:justify-normal",
@@ -53,84 +65,126 @@ export function Toolbar({
           ? {
               buttonLabel: "Retake Mock Interview",
               buttonIcon: "restart_alt",
-              buttonStyle: "primary" as const,
+              buttonStyle: "primary",
               buttonIconColour: "tertiary-500",
               handleClick: onShowMockQuestions,
               extraClasses: "w-full lg:w-auto lg:justify-normal",
             }
           : null;
 
+  const interviewButtons: ActionButtonConfig[] = interviewButtonConfig
+    ? [interviewButtonConfig]
+    : [];
+
   const actionButtons: ActionButtonConfig[] = [
-    ...(interviewButtonConfig ? [interviewButtonConfig] : []),
     {
       buttonLabel: "Reset Study",
       buttonIcon: "school",
       buttonIconColour: "primary-500",
-      buttonStyle: "tertiary" as const,
+      buttonStyle: "tertiary",
       handleClick: onResetProgress,
     },
     {
-      buttonLabel: "Reset Interview",
-      buttonIcon: "groups",
+      buttonLabel: "Reset Subject",
+      buttonIcon: "topic",
       buttonIconColour: "primary-500",
-      buttonStyle: "tertiary" as const,
-      handleClick: onResetInterviewProgress,
+      buttonStyle: "tertiary",
+      handleClick: onResetSubjectProgress,
     },
     {
-      buttonLabel: "Reset All",
+      buttonLabel: "Reset All Subjects",
       buttonIcon: "restart_alt",
-      buttonIconColour: "primary-500",
-      buttonStyle: "tertiary" as const,
-      handleClick: onResetAllProgress,
+      buttonIconColour: "white",
+      buttonStyle: "danger",
+      handleClick: onResetAllSubjectsProgress,
     },
   ];
 
-  // Presentation
-  const panelClasses =
-    "flex flex-col flex-wrap items-start gap-2 rounded-xl bg-black/20 p-4 pt-2 text-shadow inner-shadow-soft";
-  const panelHeadingClasses =
-    "text-[12px] uppercase text-primary-600 font-bold";
-  const searchInputClasses =
-    "w-full rounded-xl bg-tertiary-400 px-4 h-8 text-xs text-white outline-none placeholder:text-slate-400 transition focus:bg-black/50 inner-shadow-soft";
-
-  // Render
   return (
-    <>
-      <div className="rounded bg-tertiary-800 p-4 inner-shadow-soft">
-        <div className="flex flex-col gap-4 justify-between">
-          <div className="flex-1">
-            <input
-              value={searchTerm}
-              onChange={(e) => onSearchChange(e.target.value)}
-              placeholder="Search topics or summaries"
-              className={searchInputClasses}
-            />
+    <div className="flex flex-col gap-2">
+      <header className="flex justify-center">
+        <div className="flex flex-row items-center">
+          <span className="material-symbols-outlined mr-2 text-base!">
+            construction
+          </span>
+          <h2 className="mb-0 text-primary-500">Tools</h2>
+        </div>
+      </header>
+
+      <div className="rounded bg-tertiary-600 p-4 shadow-soft">
+        <div className="flex flex-col justify-between gap-4">
+          <SearchInput searchTerm={searchTerm} handleChange={onSearchChange} />
+
+          <div className={panelClasses}>
+            <small className={panelHeadingClasses}>Colour Key</small>
+            <div className="grid w-full grid-cols-4 gap-1">
+              <Droplet dropletLabel="Poor" dropletStyle="danger" />
+              <Droplet dropletLabel="Weak" dropletStyle="warning" />
+              <Droplet dropletLabel="Decent" dropletStyle="info" />
+              <Droplet dropletLabel="Strong" dropletStyle="success" />
+            </div>
           </div>
 
-          <div className="flex flex-col gap-4 lg:flex-col ">
+          <div className="flex flex-col gap-4">
             <div className={panelClasses}>
               <small className={panelHeadingClasses}>Filter Topics</small>
-              {/* <div className="flex flex-col lg:flex-col gap-1"> */}
+
               {filterOptions.map(({id, label, checked, onChange}) => (
-                <label
+                <Checkbox
                   key={id}
-                  className="flex items-center gap-2 text-xxs text-slate-300"
-                >
-                  <input
-                    type="checkbox"
-                    checked={checked}
-                    onChange={(e) => onChange(e.target.checked)}
-                    className="h-3 w-3 accent-primary-500"
-                  />
-                  {label}
-                </label>
+                  label={label}
+                  checked={checked}
+                  onChange={onChange}
+                />
               ))}
-              {/* </div> */}
             </div>
 
             <div className={panelClasses}>
-              <small className={panelHeadingClasses}>Actions</small>
-              <div className="flex flex-col w-full lg:w-full lg:flex-col gap-4">
+              <small className={panelHeadingClasses}>Interview Actions</small>
+
+              <div className="flex w-full flex-col gap-4">
+                {interviewButtons.map(
+                  ({
+                    buttonLabel,
+                    buttonIcon,
+                    buttonStyle,
+                    buttonIconColour,
+                    handleClick,
+                    extraClasses,
+                  }) => (
+                    <Button
+                      key={buttonLabel}
+                      buttonLabel={buttonLabel}
+                      buttonIcon={buttonIcon}
+                      buttonStyle={buttonStyle}
+                      buttonIconColour={buttonIconColour}
+                      handleClick={handleClick}
+                      extraClasses={extraClasses}
+                    />
+                  ),
+                )}
+
+                <section className="flex flex-col gap-2 text-left">
+                  <span className="text-left text-xxs">
+                    Choose which question set to load.
+                  </span>
+
+                  <SwitchToggle
+                    leftLabel="Classic"
+                    rightLabel="Extended"
+                    leftValue="classic"
+                    rightValue="extended"
+                    value={questionMode}
+                    onChange={onQuestionModeChange}
+                  />
+                </section>
+              </div>
+            </div>
+
+            <div className={panelClasses}>
+              <small className={panelHeadingClasses}>Reset Actions</small>
+
+              <div className="flex w-full flex-col gap-4">
                 {actionButtons.map(
                   ({
                     buttonLabel,
@@ -156,6 +210,6 @@ export function Toolbar({
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

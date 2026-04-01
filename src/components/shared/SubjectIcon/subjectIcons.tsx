@@ -9,6 +9,17 @@ export function ReactIcon({className}: {className?: string}) {
   );
 }
 
+export function ReactNativeIcon({className}: {className?: string}) {
+  return (
+    <svg viewBox="0 0 128 128" className={className}>
+      <g fill="#61DAFB">
+        <circle cx="64" cy="64" r="11.4"></circle>
+        <path d="M107.3 45.2c-2.2-.8-4.5-1.6-6.9-2.3.6-2.4 1.1-4.8 1.5-7.1 2.1-13.2-.2-22.5-6.6-26.1-1.9-1.1-4-1.6-6.4-1.6-7 0-15.9 5.2-24.9 13.9-9-8.7-17.9-13.9-24.9-13.9-2.4 0-4.5.5-6.4 1.6-6.4 3.7-8.7 13-6.6 26.1.4 2.3.9 4.7 1.5 7.1-2.4.7-4.7 1.4-6.9 2.3C8.2 50 1.4 56.6 1.4 64s6.9 14 19.3 18.8c2.2.8 4.5 1.6 6.9 2.3-.6 2.4-1.1 4.8-1.5 7.1-2.1 13.2.2 22.5 6.6 26.1 1.9 1.1 4 1.6 6.4 1.6 7.1 0 16-5.2 24.9-13.9 9 8.7 17.9 13.9 24.9 13.9 2.4 0 4.5-.5 6.4-1.6 6.4-3.7 8.7-13 6.6-26.1-.4-2.3-.9-4.7-1.5-7.1 2.4-.7 4.7-1.4 6.9-2.3 12.5-4.8 19.3-11.4 19.3-18.8s-6.8-14-19.3-18.8zM92.5 14.7c4.1 2.4 5.5 9.8 3.8 20.3-.3 2.1-.8 4.3-1.4 6.6-5.2-1.2-10.7-2-16.5-2.5-3.4-4.8-6.9-9.1-10.4-13 7.4-7.3 14.9-12.3 21-12.3 1.3 0 2.5.3 3.5.9zM81.3 74c-1.8 3.2-3.9 6.4-6.1 9.6-3.7.3-7.4.4-11.2.4-3.9 0-7.6-.1-11.2-.4-2.2-3.2-4.2-6.4-6-9.6-1.9-3.3-3.7-6.7-5.3-10 1.6-3.3 3.4-6.7 5.3-10 1.8-3.2 3.9-6.4 6.1-9.6 3.7-.3 7.4-.4 11.2-.4 3.9 0 7.6.1 11.2.4 2.2 3.2 4.2 6.4 6 9.6 1.9 3.3 3.7 6.7 5.3 10-1.7 3.3-3.4 6.6-5.3 10zm8.3-3.3c1.5 3.5 2.7 6.9 3.8 10.3-3.4.8-7 1.4-10.8 1.9 1.2-1.9 2.5-3.9 3.6-6 1.2-2.1 2.3-4.2 3.4-6.2zM64 97.8c-2.4-2.6-4.7-5.4-6.9-8.3 2.3.1 4.6.2 6.9.2 2.3 0 4.6-.1 6.9-.2-2.2 2.9-4.5 5.7-6.9 8.3zm-18.6-15c-3.8-.5-7.4-1.1-10.8-1.9 1.1-3.3 2.3-6.8 3.8-10.3 1.1 2 2.2 4.1 3.4 6.1 1.2 2.2 2.4 4.1 3.6 6.1zm-7-25.5c-1.5-3.5-2.7-6.9-3.8-10.3 3.4-.8 7-1.4 10.8-1.9-1.2 1.9-2.5 3.9-3.6 6-1.2 2.1-2.3 4.2-3.4 6.2zM64 30.2c2.4 2.6 4.7 5.4 6.9 8.3-2.3-.1-4.6-.2-6.9-.2-2.3 0-4.6.1-6.9.2 2.2-2.9 4.5-5.7 6.9-8.3zm22.2 21l-3.6-6c3.8.5 7.4 1.1 10.8 1.9-1.1 3.3-2.3 6.8-3.8 10.3-1.1-2.1-2.2-4.2-3.4-6.2zM31.7 35c-1.7-10.5-.3-17.9 3.8-20.3 1-.6 2.2-.9 3.5-.9 6 0 13.5 4.9 21 12.3-3.5 3.8-7 8.2-10.4 13-5.8.5-11.3 1.4-16.5 2.5-.6-2.3-1-4.5-1.4-6.6zM7 64c0-4.7 5.7-9.7 15.7-13.4 2-.8 4.2-1.5 6.4-2.1 1.6 5 3.6 10.3 6 15.6-2.4 5.3-4.5 10.5-6 15.5C15.3 75.6 7 69.6 7 64zm28.5 49.3c-4.1-2.4-5.5-9.8-3.8-20.3.3-2.1.8-4.3 1.4-6.6 5.2 1.2 10.7 2 16.5 2.5 3.4 4.8 6.9 9.1 10.4 13-7.4 7.3-14.9 12.3-21 12.3-1.3 0-2.5-.3-3.5-.9zM96.3 93c1.7 10.5.3 17.9-3.8 20.3-1 .6-2.2.9-3.5.9-6 0-13.5-4.9-21-12.3 3.5-3.8 7-8.2 10.4-13 5.8-.5 11.3-1.4 16.5-2.5.6 2.3 1 4.5 1.4 6.6zm9-15.6c-2 .8-4.2 1.5-6.4 2.1-1.6-5-3.6-10.3-6-15.6 2.4-5.3 4.5-10.5 6-15.5 13.8 4 22.1 10 22.1 15.6 0 4.7-5.8 9.7-15.7 13.4z"></path>
+      </g>
+    </svg>
+  );
+}
+
 export function CSSIcon({className}: {className?: string}) {
   return (
     <svg viewBox="0 0 128 128" className={className}>
@@ -226,73 +237,73 @@ export function TestIcon({className}: {className?: string}) {
         </clipPath>
         <mask id="j">
           <g filter="url(#a)">
-            <path fill-opacity=".102" d="M0 0h128v180H0z"></path>
+            <path fillOpacity=".102" d="M0 0h128v180H0z"></path>
           </g>
         </mask>
         <mask id="n">
           <g filter="url(#a)">
-            <path fill-opacity=".302" d="M0 0h128v180H0z"></path>
+            <path fillOpacity=".302" d="M0 0h128v180H0z"></path>
           </g>
         </mask>
         <mask id="p">
           <g filter="url(#a)">
-            <path fill-opacity=".502" d="M0 0h128v180H0z"></path>
+            <path fillOpacity=".502" d="M0 0h128v180H0z"></path>
           </g>
         </mask>
         <mask id="r">
           <g filter="url(#a)">
-            <path fill-opacity=".502" d="M0 0h128v180H0z"></path>
+            <path fillOpacity=".502" d="M0 0h128v180H0z"></path>
           </g>
         </mask>
         <mask id="t">
           <g filter="url(#a)">
-            <path fill-opacity=".502" d="M0 0h128v180H0z"></path>
+            <path fillOpacity=".502" d="M0 0h128v180H0z"></path>
           </g>
         </mask>
         <mask id="v">
           <g filter="url(#a)">
-            <path fill-opacity=".502" d="M0 0h128v180H0z"></path>
+            <path fillOpacity=".502" d="M0 0h128v180H0z"></path>
           </g>
         </mask>
         <mask id="x">
           <g filter="url(#a)">
-            <path fill-opacity=".502" d="M0 0h128v180H0z"></path>
+            <path fillOpacity=".502" d="M0 0h128v180H0z"></path>
           </g>
         </mask>
-        <g id="i" clip-path="url(#b)">
+        <g id="i" clipPath="url(#b)">
           <path d="M69.578 9.598a2.231 2.231 0 0 0-.012.953s1.016 6.722-.14 9.715l-49.14 127.078h.003c-3.508 9.336 1.195 19.754 10.566 23.34 9.372 3.586 19.88-1.02 23.567-10.286l.004.004 49.14-127.078c.961-2.488 6.442-7.304 6.442-7.304.273-.207.488-.446.633-.715l.023-.051c.027-.055.059-.106.078-.16 1.27-3.278-6.906-9.453-18.254-13.793C81.137 6.96 70.91 6.098 69.645 9.375c-.024.055-.036.113-.051.168Zm0 0"></path>
         </g>
-        <g id="m" clip-path="url(#c)">
+        <g id="m" clipPath="url(#c)">
           <path
             fill="#fff"
             d="M68.145 9.473s1.003 6.757-.137 9.71L18.863 146.263l.008.004c-3.508 9.332 1.192 19.754 10.563 23.34 1.628.62 3.285.988 4.941 1.136-6.316-4.726-9.027-13.18-6.129-20.89l-.008-.004L76.406 25.293s-6.554-6.125-8.261-15.82Zm0 0"
           ></path>
         </g>
-        <g id="o" clip-path="url(#d)">
+        <g id="o" clipPath="url(#d)">
           <path
             fill="#fff"
             d="M53.746 91.45c0 .78-.637 1.413-1.422 1.413-.789 0-1.426-.633-1.426-1.414a1.42 1.42 0 0 1 1.426-1.418c.785 0 1.422.633 1.422 1.418Zm0 0"
           ></path>
         </g>
-        <g id="q" clip-path="url(#e)">
+        <g id="q" clipPath="url(#e)">
           <path
             fill="#fff"
             d="M63.805 101.715c0 1.18-.961 2.137-2.149 2.137a2.141 2.141 0 0 1-2.144-2.137c0-1.18.96-2.133 2.144-2.133 1.188 0 2.149.953 2.149 2.133Zm0 0"
           ></path>
         </g>
-        <g id="s" clip-path="url(#f)">
+        <g id="s" clipPath="url(#f)">
           <path
             fill="#fff"
             d="M51.434 113.926c0 2.21-1.801 4.004-4.024 4.004-2.226 0-4.027-1.793-4.027-4.004 0-2.211 1.8-4.004 4.027-4.004 2.223 0 4.024 1.793 4.024 4.004Zm0 0"
           ></path>
         </g>
-        <g id="u" clip-path="url(#g)">
+        <g id="u" clipPath="url(#g)">
           <path
             fill="#fff"
             d="M43.035 121.332c0 1.18-.96 2.133-2.144 2.133a2.139 2.139 0 0 1-2.149-2.133c0-1.18.961-2.137 2.149-2.137 1.183 0 2.144.957 2.144 2.137Zm0 0"
           ></path>
         </g>
-        <g id="w" clip-path="url(#h)"></g>
+        <g id="w" clipPath="url(#h)"></g>
         <linearGradient
           id="k"
           x1="206.458"
@@ -302,8 +313,8 @@ export function TestIcon({className}: {className?: string}) {
           gradientTransform="matrix(.26902 -.11893 .11958 .26755 -35.038 25.835)"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0" stop-color="#919191"></stop>
-          <stop offset="1" stop-color="#fff"></stop>
+          <stop offset="0" stopColor="#919191"></stop>
+          <stop offset="1" stopColor="#fff"></stop>
         </linearGradient>
         <linearGradient
           id="l"
@@ -314,8 +325,8 @@ export function TestIcon({className}: {className?: string}) {
           gradientTransform="matrix(.26902 -.11893 .11958 .26755 -35.038 25.835)"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0" stop-color="#900"></stop>
-          <stop offset="1" stop-color="#e80000"></stop>
+          <stop offset="0" stopColor="#900"></stop>
+          <stop offset="1" stopColor="#e80000"></stop>
         </linearGradient>
         <filter
           id="a"
@@ -424,10 +435,10 @@ export function BrowserAPIIcon({className}: {className?: string}) {
     <svg viewBox="0 0 128 128" className={className}>
       <circle fill="#fff" cx="64.149" cy="64.236" r="60.999"></circle>
       <path
-        fill-opacity=".1"
+        fillOpacity=".1"
         d="M102.966 75.327c0-21.439-17.379-38.819-38.817-38.819s-38.818 17.38-38.818 38.819h11.09c0-15.314 12.415-27.727 27.727-27.727 15.313 0 27.727 12.413 27.727 27.727"
       ></path>
-      <circle fill-opacity=".1" cx="66.922" cy="71.999" r="21.072"></circle>
+      <circle fillOpacity=".1" cx="66.922" cy="71.999" r="21.072"></circle>
       <linearGradient
         id="chrome-original-a"
         gradientUnits="userSpaceOnUse"
@@ -437,8 +448,8 @@ export function BrowserAPIIcon({className}: {className?: string}) {
         y2="484.723"
         gradientTransform="matrix(82 0 0 82 -32341.5 -39660.313)"
       >
-        <stop offset="0" stop-color="#81B4E0"></stop>
-        <stop offset="1" stop-color="#0C5A94"></stop>
+        <stop offset="0" stopColor="#81B4E0"></stop>
+        <stop offset="1" stopColor="#0C5A94"></stop>
       </linearGradient>
       <circle
         fill="url(#chrome-original-a)"
@@ -455,8 +466,8 @@ export function BrowserAPIIcon({className}: {className?: string}) {
         y2="-547.185"
         gradientTransform="translate(675 599.775)"
       >
-        <stop offset="0" stop-color="#F06B59"></stop>
-        <stop offset="1" stop-color="#DF2227"></stop>
+        <stop offset="0" stopColor="#F06B59"></stop>
+        <stop offset="1" stopColor="#DF2227"></stop>
       </linearGradient>
       <path
         fill="url(#chrome-original-b)"
@@ -471,8 +482,8 @@ export function BrowserAPIIcon({className}: {className?: string}) {
         y2="-533.537"
         gradientTransform="translate(675 599.775)"
       >
-        <stop offset="0" stop-color="#388B41"></stop>
-        <stop offset="1" stop-color="#4CB749"></stop>
+        <stop offset="0" stopColor="#388B41"></stop>
+        <stop offset="1" stopColor="#4CB749"></stop>
       </linearGradient>
       <path
         fill="url(#chrome-original-c)"
@@ -487,8 +498,8 @@ export function BrowserAPIIcon({className}: {className?: string}) {
         y2="-552.345"
         gradientTransform="translate(675 599.775)"
       >
-        <stop offset="0" stop-color="#E4B022"></stop>
-        <stop offset=".3" stop-color="#FCD209"></stop>
+        <stop offset="0" stopColor="#E4B022"></stop>
+        <stop offset=".3" stopColor="#FCD209"></stop>
       </linearGradient>
       <path
         fill="url(#chrome-original-d)"
@@ -503,9 +514,9 @@ export function BrowserAPIIcon({className}: {className?: string}) {
         y2="-573.247"
         gradientTransform="translate(675 599.775)"
       >
-        <stop offset="0" stop-opacity=".15"></stop>
-        <stop offset=".3" stop-opacity=".06"></stop>
-        <stop offset="1" stop-opacity=".03"></stop>
+        <stop offset="0" stopOpacity=".15"></stop>
+        <stop offset=".3" stopOpacity=".06"></stop>
+        <stop offset="1" stopOpacity=".03"></stop>
       </linearGradient>
       <path
         fill="url(#chrome-original-e)"
@@ -520,9 +531,9 @@ export function BrowserAPIIcon({className}: {className?: string}) {
         y2="-483.505"
         gradientTransform="translate(675 599.775)"
       >
-        <stop offset="0" stop-opacity=".15"></stop>
-        <stop offset=".3" stop-opacity=".06"></stop>
-        <stop offset="1" stop-opacity=".03"></stop>
+        <stop offset="0" stopOpacity=".15"></stop>
+        <stop offset=".3" stopOpacity=".06"></stop>
+        <stop offset="1" stopOpacity=".03"></stop>
       </linearGradient>
       <path
         fill="url(#chrome-original-f)"
@@ -537,9 +548,9 @@ export function BrowserAPIIcon({className}: {className?: string}) {
         y2="-549.431"
         gradientTransform="translate(675 599.775)"
       >
-        <stop offset="0" stop-opacity=".15"></stop>
-        <stop offset=".3" stop-opacity=".06"></stop>
-        <stop offset="1" stop-opacity=".03"></stop>
+        <stop offset="0" stopOpacity=".15"></stop>
+        <stop offset=".3" stopOpacity=".06"></stop>
+        <stop offset="1" stopOpacity=".03"></stop>
       </linearGradient>
       <path
         fill="url(#chrome-original-g)"

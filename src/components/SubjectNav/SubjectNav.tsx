@@ -41,10 +41,10 @@ export function SubjectNav({
   }));
 
   const getDesktopButtonClasses = (isActive: boolean, isComplete: boolean) =>
-    `group flex items-center gap-1 rounded px-4 py-2 h-8 ${isComplete ? "bg-surface hover:bg-tertiary-600 text-white/50" : "bg-black/20 hover:bg-black/40"} text-xxs text-shadow inner-shadow-soft inner-glow-gradient leading-normal font-medium transition ${isActive ? "text-white  bg-black/50" : "text-white/50 hover:text-white"}`;
+    `group flex flex-col gap-1 justify-between rounded px-4 py-2 h-12 ${isComplete ? "bg-tertiary-500 hover:bg-tertiary-600 text-white/50" : "bg-black/20 hover:bg-black/40"} text-xxs text-shadow inner-shadow-soft inner-glow-gradient leading-normal font-medium transition ${isActive ? "text-white  bg-black/50" : "text-white/50 hover:text-white"}`;
 
   const getMobileButtonClasses = (isActive: boolean) =>
-    `rounded px-4 py-2 text-xs font-medium transition ${isActive ? "bg-secondary-500 text-black" : "bg-surface text-white hover:bg-black/40"}`;
+    `rounded px-4 py-2 text-xs font-medium transition ${isActive ? "bg-secondary-500 text-black" : "bg-tertiary-500 text-white hover:bg-black/40"}`;
 
   return (
     <>
@@ -60,28 +60,51 @@ export function SubjectNav({
       </div>
 
       {/* Desktop nav */}
-      <div className="mb-6 hidden w-full flex-wrap justify-center gap-2 bg-surface p-4 shadow-soft lg:fixed lg:left-0 lg:top-0 lg:flex">
+      <div className="mb-6 hidden w-full flex-wrap justify-center gap-2 bg-tertiary-500 p-4 shadow-soft lg:flex">
         {subjectEntries.map(({key, label, isActive}) => {
           const isComplete = isSubjectComplete(key);
           const Icon = subjectIcon[key];
+          const subjectCoverage = Math.round(
+            subjectMetrics[key].coverage * 100,
+          );
+          const confidenceOpacityMap = {
+            low: "bg-danger-500",
+            medium: "bg-warning-500",
+            high: "bg-success-500",
+          } as const;
+
+          const subjectConfidence =
+            confidenceOpacityMap[subjectMetrics[key].confidence];
 
           return (
             <button
               key={key}
               onClick={() => setSubject(key)}
-              className={` ${getDesktopButtonClasses(isActive, isComplete)}`}
+              className={`group relative overflow-hidden ${getDesktopButtonClasses(isActive, isComplete)}`}
             >
-              {Icon && (
-                <Icon
-                  className={`w-4 h-4 text-white/70 grayscale group-hover:grayscale-0 ${isActive ? "grayscale-0" : "grayscale"}`}
+              <div className="flex flex-row items-center gap-1 h-4">
+                {Icon && (
+                  <Icon
+                    className={`h-4 w-4 text-white/70 transition ${isActive ? "grayscale-0" : "grayscale group-hover:grayscale-0"}`}
+                  />
+                )}
+
+                {label}
+                {isComplete && (
+                  <span className="material-symbols-outlined text-base! text-success-400">
+                    check
+                  </span>
+                )}
+              </div>
+
+              <div className=" h-2 overflow-hidden rounded-full bg-black/20 inner-soft-shadow border border-black/20">
+                <div
+                  className={`h-full rounded-full transition-all ${
+                    subjectConfidence
+                  }`}
+                  style={{width: `${subjectCoverage}%`}}
                 />
-              )}
-              {label}
-              {isComplete && (
-                <span className="material-symbols-outlined text-success-400 text-base!">
-                  check
-                </span>
-              )}
+              </div>
             </button>
           );
         })}
@@ -94,7 +117,7 @@ export function SubjectNav({
           onClick={closeMobileMenu}
         >
           <div
-            className="absolute left-0 top-0 h-full w-full bg-surface-light p-4 shadow-2xl"
+            className="absolute left-0 top-0 h-full w-full bg-tertiary-600 p-4 shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="mb-4 flex items-center justify-between">

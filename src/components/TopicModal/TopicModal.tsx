@@ -17,7 +17,6 @@ export function TopicModal({
   onClose,
   onToggleOpen,
   onToggleChecked,
-  onToggleMockSelected,
   setTopicFlagged,
 }: TopicModalProps) {
   const [isVisible, setIsVisible] = useState(false);
@@ -46,6 +45,7 @@ export function TopicModal({
     const topicKey = getTopicKey(subject, section.title, item.name);
     const currentLevel = latestAttempt?.topics[topicKey];
     const previousLevel = previousAttempt?.topics[topicKey];
+    const flagLevel = flaggedTopics[topicKey] ?? null;
 
     return {
       item,
@@ -53,7 +53,7 @@ export function TopicModal({
       topicKey,
       isOpen: expandedTopic === item.name,
       isChecked: !!checkedTopics[topicKey],
-      isFlagged: !!flaggedTopics[topicKey],
+      flagLevel,
       isMockSelected: !!mockSelectedTopics[topicKey],
       trend: getTopicTrend(previousLevel, currentLevel),
     };
@@ -73,9 +73,8 @@ export function TopicModal({
   // Presentation
   const overlayClasses =
     "z-20 fixed inset-0 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm transition-opacity duration-600";
-  const panelClasses = `w-full max-w-5xl rounded-xl bg-surface p-6 transition-all duration-200 ${isVisible ? "scale-100 opacity-100" : "scale-75 opacity-0"}`;
-  const progressBarClasses =
-    "h-2 rounded-full bg-primary-500 transition-all duration-300 shadow-lg shadow-primary-500/50";
+  const panelClasses = `w-full max-w-5xl rounded-xl bg-tertiary-500 p-6 transition-all duration-200 ${isVisible ? "scale-100 opacity-100" : "scale-75 opacity-0"}`;
+  const progressBarClasses = `h-2 rounded-full bg-secondary-500 transition-all duration-300 shadow-soft ${progress > 0 && "glow-soft"}`;
   return (
     <div className={overlayClasses} onClick={onClose}>
       <div className={panelClasses} onClick={(e) => e.stopPropagation()}>
@@ -97,7 +96,7 @@ export function TopicModal({
             </span>
           </div>
 
-          <div className="h-2 rounded-full bg-slate-900">
+          <div className="h-2 rounded-full bg-tertiary-700 inner-shadow-soft">
             <div
               className={progressBarClasses}
               style={{width: `${progress}%`}}
@@ -113,16 +112,7 @@ export function TopicModal({
 
         <ul className="max-h-[60vh] space-y-3 overflow-y-auto pr-1">
           {topicEntries.map(
-            ({
-              item,
-              index,
-              topicKey,
-              isOpen,
-              isChecked,
-              isFlagged,
-              isMockSelected,
-              trend,
-            }) => {
+            ({item, index, topicKey, isOpen, isChecked, flagLevel, trend}) => {
               const next = topicEntries[index + 1];
               const prev = topicEntries[index - 1];
 
@@ -134,12 +124,10 @@ export function TopicModal({
                   subject={subject}
                   isOpen={isOpen}
                   isChecked={isChecked}
-                  isFlagged={isFlagged}
-                  isMockSelected={isMockSelected}
+                  flagLevel={flagLevel}
                   trend={trend}
                   onToggleOpen={() => onToggleOpen(isOpen ? null : item.name)}
                   onToggleChecked={onToggleChecked}
-                  onToggleMockSelected={onToggleMockSelected}
                   onToggleFlagSelected={() => setTopicFlagged(topicKey, null)}
                   onArrowDown={() => {
                     if (next) onToggleOpen(next.item.name);

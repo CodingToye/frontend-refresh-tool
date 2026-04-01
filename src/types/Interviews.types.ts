@@ -13,3 +13,6 @@ export type InterviewScoreData = {
   attempted: number;
   correct: number;
 };
+
+export type InterviewStatus = "not-started" | "in-progress" | "completed";
+export type InterviewButtonMode = "take" | "continue" | "retake" | null;

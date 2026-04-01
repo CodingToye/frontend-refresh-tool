@@ -1,11 +1,9 @@
 import type {InterviewScoreMetrics} from "@/utils/InterviewScore";
-import type {TopicReviewLevel} from "@/utils/TopicReviewLevel";
 
-export type ScoreTrend = "up" | "down" | "same";
+export type ScoreTrend = "up" | "down";
 
 export type ScoreBoardProps = {
   reviewedCount: number;
-  // flaggedCount: number;
   poorCount: number;
   weakCount: number;
   decentCount: number;
@@ -17,20 +15,23 @@ export type ScoreBoardProps = {
   subjectScore: number | null;
   subjectMetrics: InterviewScoreMetrics;
   mockQuestionsCount: number;
-};
-
-export type ScoreProps = {
-  count: number;
-  scoreStyle: TopicReviewLevel;
-  trend?: ScoreTrend;
-  scoreIcon: string;
-  contentNoun?: string;
-  contentVerb: string;
+  totalAvailable: number;
+  questionMode: "classic" | "extended";
 };
 
 export type MetricProps = {
   metricValue: number | string;
   metricValueSuffix?: string;
   metricIcon: string;
+  metricIconStyle?:
+    | "primary"
+    | "secondary"
+    | "tertiary"
+    | "danger"
+    | "warning"
+    | "info"
+    | "success";
   metric: string;
+  metricNote?: string;
+  extraClasses?: string;
 };

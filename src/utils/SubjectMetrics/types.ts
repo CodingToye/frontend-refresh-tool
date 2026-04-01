@@ -1,4 +1,4 @@
-export type CountTrend = "up" | "down" | "same";
+export type CountTrend = "up" | "down";
 
 export type SubjectMetrics = {
   reviewedCount: number;
