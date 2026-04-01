@@ -1,5 +1,3 @@
-import {useState} from "react";
-
 import {Button} from "@/components/shared/Button";
 import {SearchInput} from "@/components/shared/SearchInput";
 
@@ -28,9 +26,9 @@ export function Toolbar({
   showFlaggedOnly,
   onShowFlaggedOnlyChange,
   onShowMockQuestions,
+  mobileToolsOpen,
+  toggleMobileTools,
 }: ToolbarProps) {
-  const [mobileToolsOpen, setMobileToolsOpen] = useState(false);
-
   const filterOptions = [
     {
       id: "interview-only",
@@ -104,8 +102,6 @@ export function Toolbar({
     },
   ];
 
-  const toggleMobileTools = () => setMobileToolsOpen(!mobileToolsOpen);
-
   return (
     <>
       {mobileToolsOpen && (
@@ -114,19 +110,12 @@ export function Toolbar({
           onClick={toggleMobileTools}
         />
       )}
-      <div className="lg:hidden absolute top-2 right-2">
-        <Button
-          buttonIcon="construction"
-          buttonIconColour="primary"
-          buttonStyle="tertiary"
-          handleClick={toggleMobileTools}
-          iconOnly
-        />
-      </div>
+
       <div
         className={`${mobileToolsOpen ? "left-0" : "-left-100"} z-2 absolute top-12 transition-all duration-200 lg:relative lg:left-auto lg:top-auto lg:flex flex-col gap-2`}
       >
         <header className="hidden lg:flex justify-center">
+          {mobileToolsOpen}
           <div className="flex flex-row items-center">
             <span className="material-symbols-outlined mr-2 text-base!">
               construction

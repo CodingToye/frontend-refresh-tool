@@ -1,8 +1,5 @@
-import {useEffect, useState} from "react";
-
 import type {SubjectKey} from "@/data/subjects";
 
-import {Button} from "../shared/Button";
 import {subjectIcon} from "../shared/SubjectIcon/subjectIcon";
 import type {SubjectNavProps} from "./types";
 
@@ -11,23 +8,12 @@ export function SubjectNav({
   subject,
   setSubject,
   subjectMetrics,
+  mobileMenuOpen,
+  toggleMobileMenu,
 }: SubjectNavProps) {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  useEffect(() => {
-    document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
-
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [mobileMenuOpen]);
-
-  const openMobileMenu = () => setMobileMenuOpen(true);
-  const closeMobileMenu = () => setMobileMenuOpen(false);
-
   const handleSelect = (key: SubjectKey) => {
     setSubject(key);
-    closeMobileMenu();
+    toggleMobileMenu();
   };
 
   const isSubjectComplete = (key: SubjectKey) => {
@@ -49,17 +35,6 @@ export function SubjectNav({
 
   return (
     <>
-      {/* Mobile button */}
-      <div className="lg:hidden absolute top-2 left-2">
-        <Button
-          buttonIcon="menu"
-          buttonIconColour="primary"
-          buttonStyle="tertiary"
-          handleClick={openMobileMenu}
-          iconOnly
-        />
-      </div>
-
       {/* Desktop nav */}
       <div className="mb-6 hidden w-full flex-wrap justify-center gap-2 bg-tertiary-500 p-4 shadow-soft lg:flex">
         {subjectEntries.map(({key, label, isActive}) => {
@@ -115,7 +90,7 @@ export function SubjectNav({
       {mobileMenuOpen && (
         <div
           className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm lg:hidden"
-          onClick={closeMobileMenu}
+          onClick={toggleMobileMenu}
         >
           <div
             className="absolute left-0 top-0 h-full w-full bg-tertiary-600 p-4 shadow-2xl"
@@ -126,7 +101,7 @@ export function SubjectNav({
                 Choose subject
               </h2>
               <button
-                onClick={closeMobileMenu}
+                onClick={toggleMobileMenu}
                 className="text-slate-300 hover:text-white"
               >
                 <span className="material-symbols-outlined">close</span>
