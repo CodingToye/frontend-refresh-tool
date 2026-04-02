@@ -32,7 +32,7 @@ export function MockInterviewQuestions({
               </h2>
               <Button
                 buttonIcon="pause_circle"
-                buttonIconColour="primary"
+                buttonIconStyle="primary"
                 buttonStyle="tertiary"
                 handleClick={onHandlePause}
                 iconOnly
@@ -76,7 +76,7 @@ export function MockInterviewQuestions({
                 buttonLabel="Reveal Answer"
                 buttonIcon="visibility"
                 buttonStyle="primary"
-                buttonIconColour="primary"
+                buttonIconStyle="primary"
                 handleClick={onHandleReveal}
               />
             </div>
