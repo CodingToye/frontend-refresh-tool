@@ -9,7 +9,15 @@ export type ButtonProps = {
     | "warning"
     | "info"
     | "success";
-  buttonIconColour?: string;
+  buttonIconStyle?:
+    | "primary"
+    | "secondary"
+    | "tertiary"
+    | "danger"
+    | "warning"
+    | "info"
+    | "success"
+    | "white";
   handleClick: () => void;
   extraClasses?: string;
   iconOnly?: boolean;

@@ -17,15 +17,19 @@ export type ToolbarProps = {
   showFlaggedOnly: boolean;
   onShowFlaggedOnlyChange: (value: boolean) => void;
   onShowMockQuestions: () => void;
-  mobileToolsOpen: boolean;
-  toggleMobileTools: () => void;
 };
 
 export type ActionButtonConfig = {
   buttonLabel: string | number;
   buttonIcon?: string;
   buttonStyle?: "primary" | "secondary" | "tertiary" | "danger" | "success";
-  buttonIconColour: string;
+  buttonIconStyle:
+    | "primary"
+    | "secondary"
+    | "tertiary"
+    | "danger"
+    | "success"
+    | "white";
   handleClick: () => void;
   extraClasses?: string;
 };

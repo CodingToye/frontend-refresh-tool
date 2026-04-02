@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 
 import {MockInterview} from "@/components/MockInterview";
-import {ScoreBoard} from "@/components/ScoreBoard";
+// import {ScoreBoard} from "@/components/ScoreBoard";
 import {SectionCard} from "@/components/SectionCard";
 import type {Section} from "@/components/SectionCard/types";
 import {Toast} from "@/components/shared/Toast";
@@ -18,10 +18,11 @@ import {getMockSessionQuestions} from "@/utils/getMockSessionQuestions";
 import {getTopicKey} from "@/utils/topicKeys";
 
 import {MobileNav} from "./components/MobileNav";
+import {MobilePanelShell} from "./components/MobilePanelShell";
 import {subjectIcon} from "./components/shared/SubjectIcon";
 import {Tag} from "./components/shared/Tag";
 import {useMobileNav} from "./hooks/useMobileNav";
-import {getSubjectMetrics} from "./utils/SubjectMetrics";
+// import {getSubjectMetrics} from "./utils/SubjectMetrics";
 
 export default function App() {
   const [subject, setSubject] = useState<SubjectKey>("react");
@@ -49,7 +50,7 @@ export default function App() {
     saveInterviewScore,
     saveInterviewAttempt,
     getInterviewScore,
-    getSubjectScore,
+    // getSubjectScore,
     getSubjectInterviewMetrics,
     toggleTopicChecked,
     setTopicFlagged,
@@ -66,23 +67,23 @@ export default function App() {
     getTopicTrend,
   } = useLearningProgress();
 
-  const {
-    reviewedCount,
-    poorCount,
-    weakCount,
-    decentCount,
-    strongCount,
-    poorTrend,
-    weakTrend,
-    decentTrend,
-    strongTrend,
-  } = getSubjectMetrics({
-    subject,
-    checkedTopics,
-    flaggedTopics,
-    mockSelectedTopics,
-    interviewHistory,
-  });
+  // const {
+  //   reviewedCount,
+  //   poorCount,
+  //   weakCount,
+  //   decentCount,
+  //   strongCount,
+  //   poorTrend,
+  //   weakTrend,
+  //   decentTrend,
+  //   strongTrend,
+  // } = getSubjectMetrics({
+  //   subject,
+  //   checkedTopics,
+  //   flaggedTopics,
+  //   mockSelectedTopics,
+  //   interviewHistory,
+  // });
   const {
     mobileMenuOpen,
     toggleMobileMenu,
@@ -90,6 +91,8 @@ export default function App() {
     toggleMobileTools,
     mobileScoreboardOpen,
     toggleMobileScoreboard,
+    activePanel,
+    closeMobilePanels,
   } = useMobileNav();
 
   const subjectMetrics = Object.fromEntries(
@@ -129,23 +132,23 @@ export default function App() {
 
   const activeMockQuestionsCount = mockSessionQuestions.length;
 
-  const classicTotalAvailable = subjectData[subject].sections.reduce(
-    (total, section) =>
-      total +
-      section.items
-        .filter((item) => item.interview)
-        .reduce(
-          (sectionTotal, item) =>
-            sectionTotal + (item.mockQuestions?.length ?? 0),
-          0,
-        ),
-    0,
-  );
+  // const classicTotalAvailable = subjectData[subject].sections.reduce(
+  //   (total, section) =>
+  //     total +
+  //     section.items
+  //       .filter((item) => item.interview)
+  //       .reduce(
+  //         (sectionTotal, item) =>
+  //           sectionTotal + (item.mockQuestions?.length ?? 0),
+  //         0,
+  //       ),
+  //   0,
+  // );
 
-  const activeTotalAvailable =
-    questionMode === "extended"
-      ? subjectMetrics[subject].totalAvailable
-      : classicTotalAvailable;
+  // const activeTotalAvailable =
+  //   questionMode === "extended"
+  //     ? subjectMetrics[subject].totalAvailable
+  //     : classicTotalAvailable;
 
   const interviewButtonMode: InterviewButtonMode =
     activeMockQuestionsCount === 0
@@ -251,6 +254,9 @@ export default function App() {
         toggleMobileMenu={toggleMobileMenu}
         toggleMobileTools={toggleMobileTools}
         toggleMobileScoreboard={toggleMobileScoreboard}
+        mobileScoreboardOpen={mobileScoreboardOpen}
+        mobileToolsOpen={mobileToolsOpen}
+        mobileMenuOpen={mobileMenuOpen}
       />
       <SubjectNav
         subjects={subjects}
@@ -265,101 +271,118 @@ export default function App() {
         toggleMobileScoreboard={toggleMobileScoreboard}
       />
 
-      <div className="p-4 pt-0">
-        <div className="mx-auto flex max-w-7xl flex-col gap-8">
-          <header className="flex flex-col items-center mt-4">
-            <h1 className="flex flex-col items-center gap-2 mb-4 text-3xl font-bold leading-5">
-              <Icon className="w-8 h-8 text-white/70" />
-              {subjectData[subject].label}{" "}
-              <span className="text-primary-500 text-xl">
-                Knowledge Refresh
-              </span>
-            </h1>
-            <p className="mb-4 text-slate-300/50 text-sm">
-              Click a section to open its topics.
-            </p>
-          </header>
+      <div className="mx-auto flex max-w-7xl p-4 flex-col gap-8">
+        <header className="flex flex-col items-center mt-4">
+          <h1 className="flex flex-col items-center gap-2 mb-4 text-3xl font-bold leading-5">
+            <Icon className="w-8 h-8 text-white/70" />
+            {subjectData[subject].label}{" "}
+            <span className="text-primary-500 text-xl">Knowledge Refresh</span>
+          </h1>
+          <p className="mb-4 text-slate-300/50 text-sm">
+            Click a section to open its topics.
+          </p>
+        </header>
 
-          <div className="flex flex-col gap-8 lg:flex-row">
-            <div className="order-1 lg:order-0 lg:w-1/5 lg:min-w-3xs">
-              <Toolbar
-                searchTerm={searchTerm}
-                onSearchChange={setSearchTerm}
-                onResetProgress={handleResetStudy}
-                onResetSubjectProgress={handleResetSubject}
-                onResetAllSubjectsProgress={handleResetAllSubjects}
-                questionMode={questionMode}
-                onQuestionModeChange={setQuestionMode}
-                showInterviewOnly={showInterviewOnly}
-                onShowInterviewOnlyChange={setShowInterviewOnly}
-                showFlaggedOnly={showFlaggedOnly}
-                onShowFlaggedOnlyChange={setShowFlaggedOnly}
-                onShowMockQuestions={handleOpenMockQuestions}
-                interviewButtonMode={interviewButtonMode}
-                mobileToolsOpen={mobileToolsOpen}
-                toggleMobileTools={toggleMobileTools}
-              />
-            </div>
+        <div className="flex flex-col gap-8 lg:flex-row">
+          <div className="hidden lg:block order-1 lg:order-0 lg:w-1/5 lg:min-w-3xs">
+            <Toolbar
+              searchTerm={searchTerm}
+              onSearchChange={setSearchTerm}
+              onResetProgress={handleResetStudy}
+              onResetSubjectProgress={handleResetSubject}
+              onResetAllSubjectsProgress={handleResetAllSubjects}
+              questionMode={questionMode}
+              onQuestionModeChange={setQuestionMode}
+              showInterviewOnly={showInterviewOnly}
+              onShowInterviewOnlyChange={setShowInterviewOnly}
+              showFlaggedOnly={showFlaggedOnly}
+              onShowFlaggedOnlyChange={setShowFlaggedOnly}
+              onShowMockQuestions={handleOpenMockQuestions}
+              interviewButtonMode={interviewButtonMode}
+            />
+          </div>
 
-            <div className="order-2 flex flex-col gap-8 lg:order-0 lg:w-3/5">
-              <section className="flex flex-col gap-2">
-                <header className="flex justify-center">
-                  <div className="flex flex-row items-center">
-                    <span className="material-symbols-outlined mr-2 text-base!">
-                      folder
+          <MobilePanelShell
+            isOpen={activePanel === "tools"}
+            onClose={closeMobilePanels}
+          >
+            <Toolbar
+              searchTerm={searchTerm}
+              onSearchChange={setSearchTerm}
+              onResetProgress={handleResetStudy}
+              onResetSubjectProgress={handleResetSubject}
+              onResetAllSubjectsProgress={handleResetAllSubjects}
+              questionMode={questionMode}
+              onQuestionModeChange={setQuestionMode}
+              showInterviewOnly={showInterviewOnly}
+              onShowInterviewOnlyChange={setShowInterviewOnly}
+              showFlaggedOnly={showFlaggedOnly}
+              onShowFlaggedOnlyChange={setShowFlaggedOnly}
+              onShowMockQuestions={handleOpenMockQuestions}
+              interviewButtonMode={interviewButtonMode}
+              className=""
+            />
+          </MobilePanelShell>
+
+          <div className="order-2 flex flex-col gap-8 lg:order-0 lg:w-3/5">
+            <section className="flex flex-col gap-2">
+              <header className="flex justify-center">
+                <div className="flex flex-row items-center">
+                  <span className="material-symbols-outlined mr-2 text-base!">
+                    folder
+                  </span>
+                  <h2 className="mb-0 text-primary-500">
+                    Topics{" "}
+                    <span className="text-xxs text-secondary-200">
+                      ({filteredSections.length})
                     </span>
-                    <h2 className="mb-0 text-primary-500">
-                      Topics{" "}
-                      <span className="text-xxs text-secondary-200">
-                        ({filteredSections.length})
-                      </span>
-                    </h2>
-                  </div>
-                </header>
+                  </h2>
+                </div>
+              </header>
 
-                {hasFilteredSections ? (
-                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-2">
-                    {filteredSections.map((section) => {
-                      const totalTopics = section.items.length;
-                      const completedTopics = section.items.filter(
-                        (item) =>
-                          checkedTopics[
-                            getTopicKey(subject, section.title, item.name)
-                          ],
-                      ).length;
-                      return (
-                        <SectionCard
-                          key={section.title}
-                          section={section}
-                          subject={subject}
-                          completedTopics={completedTopics}
-                          totalTopics={totalTopics}
-                          flaggedTopics={flaggedTopics}
-                          mockQuestions={mockSelectedTopics}
-                          interviewScore={getInterviewScore(
-                            subject,
-                            section.title,
-                          )}
-                          interviewHistory={interviewHistory}
-                          getTopicTrend={getTopicTrend}
-                          onOpen={() => {
-                            setSelectedSection(section);
-                            setExpandedTopic(null);
-                          }}
-                        />
-                      );
-                    })}
-                  </div>
-                ) : (
-                  <div className="flex flex-col w-full py-4 items-center justify-center">
-                    <Tag tagLabel="No Topics Found" />
-                  </div>
-                )}
-              </section>
-            </div>
+              {hasFilteredSections ? (
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-2">
+                  {filteredSections.map((section) => {
+                    const totalTopics = section.items.length;
+                    const completedTopics = section.items.filter(
+                      (item) =>
+                        checkedTopics[
+                          getTopicKey(subject, section.title, item.name)
+                        ],
+                    ).length;
+                    return (
+                      <SectionCard
+                        key={section.title}
+                        section={section}
+                        subject={subject}
+                        completedTopics={completedTopics}
+                        totalTopics={totalTopics}
+                        flaggedTopics={flaggedTopics}
+                        mockQuestions={mockSelectedTopics}
+                        interviewScore={getInterviewScore(
+                          subject,
+                          section.title,
+                        )}
+                        interviewHistory={interviewHistory}
+                        getTopicTrend={getTopicTrend}
+                        onOpen={() => {
+                          setSelectedSection(section);
+                          setExpandedTopic(null);
+                        }}
+                      />
+                    );
+                  })}
+                </div>
+              ) : (
+                <div className="flex flex-col w-full py-4 items-center justify-center">
+                  <Tag tagLabel="No Topics Found" />
+                </div>
+              )}
+            </section>
+          </div>
 
-            <div className="order-2 lg:order-0 lg:w-1/5 lg:min-w-3xs">
-              <ScoreBoard
+          <div className="order-2 lg:order-0 lg:w-1/5 lg:min-w-3xs">
+            {/* <ScoreBoard
                 reviewedCount={reviewedCount}
                 poorCount={poorCount}
                 weakCount={weakCount}
@@ -376,8 +399,7 @@ export default function App() {
                 questionMode={questionMode}
                 mobileScoreboardOpen={mobileScoreboardOpen}
                 toggleMobileScoreboard={toggleMobileScoreboard}
-              />
-            </div>
+              /> */}
           </div>
         </div>
       </div>

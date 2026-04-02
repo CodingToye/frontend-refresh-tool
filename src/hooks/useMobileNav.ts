@@ -1,44 +1,43 @@
 import {useEffect, useState} from "react";
+
+type MobilePanel = "menu" | "tools" | "scoreboard" | null;
 export function useMobileNav() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [mobileToolsOpen, setMobileToolsOpen] = useState(false);
-  const [mobileScoreboardOpen, setMobileScoreboardOpen] = useState(false);
-
+  const [activePanel, setActivePanel] = useState<MobilePanel>(null);
   useEffect(() => {
-    document.body.style.overflow =
-      mobileMenuOpen || mobileToolsOpen || mobileScoreboardOpen ? "hidden" : "";
-
-    console.log(mobileToolsOpen);
+    document.body.style.overflow = activePanel ? "hidden" : "";
 
     return () => {
       document.body.style.overflow = "";
     };
-  }, [mobileMenuOpen, mobileToolsOpen, mobileScoreboardOpen]);
+  }, [activePanel]);
 
-  const openMobileMenu = () => setMobileMenuOpen(true);
-  const closeMobileMenu = () => setMobileMenuOpen(false);
-  const toggleMobileMenu = () => setMobileMenuOpen((prev) => !prev);
+  const openMobileMenu = () => setActivePanel("menu");
+  const openMobileTools = () => setActivePanel("tools");
+  const openMobileScoreboard = () => setActivePanel("scoreboard");
+  const closeMobilePanels = () => setActivePanel(null);
 
-  const openMobileTools = () => setMobileToolsOpen(true);
-  const closeMobileTools = () => setMobileToolsOpen(false);
-  const toggleMobileTools = () => setMobileToolsOpen((prev) => !prev);
+  // const mobileMenuOpen = activePanel === "menu";
+  // const mobileToolsOpen = activePanel === "tools";
+  // const mobileScoreboardOpen = activePanel === "scoreboard";
 
-  const openMobileScoreboard = () => setMobileScoreboardOpen(true);
-  const closeMobileScoreboard = () => setMobileScoreboardOpen(false);
-  const toggleMobileScoreboard = () => setMobileScoreboardOpen((prev) => !prev);
+  const toggleMobileMenu = () =>
+    setActivePanel((prev) => (prev === "menu" ? null : "menu"));
+  const toggleMobileTools = () =>
+    setActivePanel((prev) => (prev === "tools" ? null : "tools"));
+  const toggleMobileScoreboard = () =>
+    setActivePanel((prev) => (prev === "scoreboard" ? null : "scoreboard"));
 
   return {
+    activePanel,
+    mobileMenuOpen: activePanel === "menu",
+    mobileToolsOpen: activePanel === "tools",
+    mobileScoreboardOpen: activePanel === "scoreboard",
     openMobileMenu,
-    closeMobileMenu,
-    toggleMobileMenu,
-    mobileMenuOpen,
     openMobileTools,
-    closeMobileTools,
-    mobileToolsOpen,
-    toggleMobileTools,
     openMobileScoreboard,
-    closeMobileScoreboard,
+    closeMobilePanels,
+    toggleMobileMenu,
+    toggleMobileTools,
     toggleMobileScoreboard,
-    mobileScoreboardOpen,
   };
 }
