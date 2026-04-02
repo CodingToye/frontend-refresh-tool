@@ -109,7 +109,7 @@ export function Toolbar({
 
   return (
     <div className={className}>
-      <div className="flex flex-col rounded bg-tertiary-600 p-4 pt-0 shadow-soft">
+      <div className="flex flex-col rounded bg-tertiary-600 p-4 pt-0 h-screen shadow-soft">
         {showHeader && (
           <header className="flex justify-center p-4">
             <div className="flex flex-row items-center">
