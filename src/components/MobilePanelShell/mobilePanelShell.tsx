@@ -14,7 +14,7 @@ export function MobilePanelShell({
             : "pointer-events-none translate-x-full opacity-0"
         }`}
       >
-        <div className="flex h-screen flex-col">
+        <div className="flex h-full flex-col">
           <div className="relative shrink-0">
             <button
               onClick={onClose}
