@@ -88,12 +88,9 @@ export function SubjectNav({
 
       {/* Mobile drawer */}
       {mobileMenuOpen && (
-        <div
-          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm lg:hidden"
-          onClick={toggleMobileMenu}
-        >
+        <>
           <div
-            className="absolute left-0 top-0 h-full w-full bg-tertiary-600 p-4 shadow-2xl"
+            className="absolute left-0 top-18 h-full w-full bg-tertiary-600 p-4 shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="mb-4 flex items-center justify-between">
@@ -120,7 +117,7 @@ export function SubjectNav({
               ))}
             </div>
           </div>
-        </div>
+        </>
       )}
     </>
   );
