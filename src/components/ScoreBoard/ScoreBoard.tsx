@@ -8,29 +8,28 @@ export function ScoreBoard({
   totalAvailable,
   questionMode,
   mobileScoreboardOpen,
-  toggleMobileScoreboard,
+  // toggleMobileScoreboard,
 }: ScoreBoardProps) {
   return (
     <>
-      {mobileScoreboardOpen && (
+      {/* {mobileScoreboardOpen && (
         <div
           className="z-1 fixed inset-0 bg-black/30 backdrop-blur-sm lg:hidden"
           onClick={toggleMobileScoreboard}
         />
-      )}
+      )} */}
       <section
-        className={`${mobileScoreboardOpen ? "right-0" : "-right-100"} w-full z-2 absolute top-12 transition-all duration-200 lg:flex lg:top-auto lg:right-auto flex-col lg:gap-2 lg:w-auto`}
+        className={`${mobileScoreboardOpen ? "right-0" : "-right-100"} w-full z-2 absolute top-18 transition-all duration-200 lg:flex lg:top-auto lg:right-auto flex-col lg:gap-2 lg:w-auto`}
       >
-        <header className="flex justify-center">
-          <div className="flex items-center flex-row">
-            <span className="material-symbols-outlined text-base! mr-2">
-              leaderboard
-            </span>
-            <h2 className="text-primary-500 mb-0">Scoreboard</h2>
-          </div>
-        </header>
-
-        <div className="rounded bg-tertiary-600 p-4 shadow-soft">
+        <div className="flex flex-col gap-4 rounded bg-tertiary-600 p-4 shadow-soft">
+          <header className="flex justify-center p-4">
+            <div className="flex items-center flex-row">
+              <span className="material-symbols-outlined text-base! mr-2">
+                leaderboard
+              </span>
+              <h2 className="text-primary-500 mb-0">Scoreboard</h2>
+            </div>
+          </header>
           <div className="flex flex-col gap-4">
             {subjectScore !== null ? (
               <div>

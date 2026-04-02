@@ -10,11 +10,22 @@ const buttonStyles = {
   info: "bg-info-500 text-text hover:bg-info-700 shadow-black/50",
   success: "bg-success-500 text-text hover:bg-success-700 shadow-black/50",
 } as const;
+
+const buttonIconStyles = {
+  primary: "text-primary-500",
+  secondary: "text-secondary-500",
+  tertiary: "text-tertiary-500",
+  danger: "text-danger-500",
+  warning: "text-warning-500",
+  info: "text-info-500",
+  success: "text-success-500",
+  white: "text-white",
+} as const;
 export function Button({
   buttonLabel,
-  buttonIcon,
-  buttonIconColour = "primary-500",
   buttonStyle = "primary",
+  buttonIcon,
+  buttonIconStyle = "primary",
   handleClick,
   extraClasses,
   iconOnly = false,
@@ -22,11 +33,12 @@ export function Button({
   const baseClasses = `flex items-center rounded-xl px-4 h-8 text-xxs transition shadow-sm ${extraClasses}`;
 
   const colourClasses = buttonStyles[buttonStyle];
+  const buttonIconClasses = buttonIconStyles[buttonIconStyle];
   return (
     <button onClick={handleClick} className={`${baseClasses} ${colourClasses}`}>
       {buttonIcon && (
         <span
-          className={`material-symbols-outlined text-base! text-${buttonIconColour} ${!iconOnly ? "mr-2" : ""}`}
+          className={`material-symbols-outlined text-base! ${buttonIconClasses} ${!iconOnly ? "mr-2" : ""}`}
         >
           {buttonIcon}
         </span>
