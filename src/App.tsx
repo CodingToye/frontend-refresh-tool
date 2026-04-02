@@ -249,7 +249,7 @@ export default function App() {
   const hasFilteredSections = filteredSections.length > 0;
 
   return (
-    <div className="min-h-screen w-screen bg-bg  text-text">
+    <div className="min-h-screen bg-bg  text-text">
       <MobileNav
         toggleMobileMenu={toggleMobileMenu}
         toggleMobileTools={toggleMobileTools}
